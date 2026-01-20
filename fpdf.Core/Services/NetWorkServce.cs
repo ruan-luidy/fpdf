@@ -13,6 +13,15 @@ public class NetworkService : INetworkService
 
       try
       {
+        // Caso especial: raiz da rede \\
+        if (path == "\\\\")
+        {
+          // Lista computadores da rede (workgroup/domain)
+          // Nota: Isso pode ser lento dependendo da rede
+          // Por enquanto, retorna vazio e o usuário deve digitar o caminho UNC manualmente
+          return folders;
+        }
+
         var dirInfo = new DirectoryInfo(path);
         var directories = dirInfo.GetDirectories()
             .Where(d => !d.Attributes.HasFlag(FileAttributes.Hidden))
@@ -140,14 +149,30 @@ public class NetworkService : INetworkService
     {
       var roots = new List<NetworkFolder>();
 
-      // Adiciona "Rede" como root
-      var networkRoot = new NetworkFolder
+      // Adiciona caminho de rede customizado - GERENCIAMENTO DE PROJETOS
+      try
       {
-        Name = "Rede (\\\\)",
-        FullPath = "\\\\"
-      };
-      networkRoot.AddDummyChild();
-      roots.Add(networkRoot);
+        var customNetworkPath = @"\\clbrfs\Operational\GERENCIAMENTO DE PROJETOS\";
+        if (Directory.Exists(customNetworkPath))
+        {
+          var customFolder = new NetworkFolder
+          {
+            Name = "GERENCIAMENTO DE PROJETOS (clbrfs)",
+            FullPath = customNetworkPath
+          };
+
+          if (Directory.GetDirectories(customNetworkPath).Any())
+          {
+            customFolder.AddDummyChild();
+          }
+
+          roots.Add(customFolder);
+        }
+      }
+      catch
+      {
+        // Caminho nao disponivel - ignora
+      }
 
       // Adiciona drives locais
       foreach (var drive in DriveInfo.GetDrives().Where(d => d.IsReady))
