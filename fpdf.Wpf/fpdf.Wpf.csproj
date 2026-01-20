@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<!-- Pacotes de UI (Wpf-specific) -->
+	<ItemGroup>
+		<PackageReference Include="HandyControls" Version="3.6.0" />
+		<PackageReference Include="HandyControl.Lang.pt-BR" Version="3.5.1" />
+		<PackageReference Include="MahApps.Metro.IconPacks.PhosphorIcons" Version="6.2.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+	</ItemGroup>
+
+	<!-- Pacotes opcionais (Dapper/Sqlite para cache local, MediatR para mensageria) -->
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.44" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.4" />
+		<PackageReference Include="MediatR" Version="12.4.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\fpdf.Core\fpdf.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Include="Properties\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
+			<Generator>MSBuild:Compile</Generator>
+			<SubType>Designer</SubType>
+			<ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+		</Page>
+	</ItemGroup>
+
+</Project>

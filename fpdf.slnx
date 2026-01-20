@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="fpdf.Core/fpdf.Core.csproj" />
+  <Project Path="fpdf.Wpf/fpdf.Wpf.csproj" />
+</Solution>
