@@ -33,6 +33,9 @@ public partial class PdfViewerViewModel : ObservableObject
   private bool _isLoading;
 
   [ObservableProperty]
+  private bool _isFitToWindow = true;
+
+  [ObservableProperty]
   private string? _errorMessage;
 
   public bool HasPreviousPage => CurrentPageIndex > 0;
@@ -53,6 +56,11 @@ public partial class PdfViewerViewModel : ObservableObject
   }
 
   partial void OnZoomChanged(double value)
+  {
+    _ = RenderCurrentPageAsync();
+  }
+
+  partial void OnIsFitToWindowChanged(bool value)
   {
     _ = RenderCurrentPageAsync();
   }
@@ -141,6 +149,7 @@ public partial class PdfViewerViewModel : ObservableObject
   [RelayCommand]
   private void ZoomIn()
   {
+    IsFitToWindow = false;
     if (Zoom < 4.0)
     {
       Zoom = Math.Min(4.0, Zoom + 0.25);
@@ -150,6 +159,7 @@ public partial class PdfViewerViewModel : ObservableObject
   [RelayCommand]
   private void ZoomOut()
   {
+    IsFitToWindow = false;
     if (Zoom > 0.25)
     {
       Zoom = Math.Max(0.25, Zoom - 0.25);
@@ -159,7 +169,14 @@ public partial class PdfViewerViewModel : ObservableObject
   [RelayCommand]
   private void ResetZoom()
   {
+    IsFitToWindow = false;
     Zoom = 1.0;
+  }
+
+  [RelayCommand]
+  private void ToggleFitToWindow()
+  {
+    IsFitToWindow = !IsFitToWindow;
   }
 
   [RelayCommand]
@@ -192,10 +209,13 @@ public partial class PdfViewerViewModel : ObservableObject
 
     try
     {
+      // Quando IsFitToWindow está ativo, renderiza com zoom 1.0 e deixa o Stretch="Uniform" ajustar
+      var renderZoom = IsFitToWindow ? 1.0 : Zoom;
+      
       CurrentPage = await _pdfService.RenderPageAsync(
           CurrentFile.FullPath,
           CurrentPageIndex,
-          Zoom,
+          renderZoom,
           _renderCts.Token);
     }
     catch (OperationCanceledException)

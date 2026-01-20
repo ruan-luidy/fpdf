@@ -100,6 +100,13 @@
           <icon:PackIconPhosphorIcons Kind="Equals" />
         </Button>
 
+        <Button
+          Command="{Binding ToggleFitToWindowCommand}"
+          Style="{StaticResource ButtonIconCustom}"
+          ToolTip="Ajustar à janela">
+          <icon:PackIconPhosphorIcons Kind="FrameCorners" />
+        </Button>
+
         <hc:Divider
           MaxHeight="16"
           LineStrokeThickness="2"
