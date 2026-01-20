@@ -64,6 +64,7 @@
       IsReadOnly="True"
       ItemsSource="{Binding FilesView}"
       SelectedItem="{Binding SelectedFile}"
+      SelectionChanged="DataGrid_SelectionChanged"
       SelectionMode="Extended"
       Style="{StaticResource DataGrid.Small}"
       VirtualizingPanel.IsVirtualizing="True"
@@ -71,7 +72,7 @@
 
       <DataGrid.Columns>
         <!--  Checkbox de selecao  -->
-        <DataGridTemplateColumn Width="30">
+        <DataGridTemplateColumn MinWidth="40" MaxWidth="40">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate DataType="{x:Type models:PdfFileInfo}">
               <CheckBox HorizontalAlignment="Center" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />

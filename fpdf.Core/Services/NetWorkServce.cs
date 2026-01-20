@@ -140,14 +140,27 @@ public class NetworkService : INetworkService
     {
       var roots = new List<NetworkFolder>();
 
+      // Adiciona "Rede" como root
+      var networkRoot = new NetworkFolder
+      {
+        Name = "Rede (\\\\)",
+        FullPath = "\\\\"
+      };
+      networkRoot.AddDummyChild();
+      roots.Add(networkRoot);
+
       // Adiciona drives locais
       foreach (var drive in DriveInfo.GetDrives().Where(d => d.IsReady))
       {
         cancellationToken.ThrowIfCancellationRequested();
 
+        var volumeLabel = string.IsNullOrEmpty(drive.VolumeLabel) 
+          ? "Disco Local" 
+          : drive.VolumeLabel;
+
         var folder = new NetworkFolder
         {
-          Name = $"{drive.Name.TrimEnd('\\')} ({drive.VolumeLabel})",
+          Name = $"{drive.Name.TrimEnd('\\')} ({volumeLabel})",
           FullPath = drive.Name
         };
 
