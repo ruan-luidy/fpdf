@@ -27,6 +27,9 @@ xmlns:converters="clr-namespace:fpdf.Wpf.Converters">
       <converters:Int2VisibilityConverter x:Key="Int2VisibilityConverter" />
       <converters:Int2VisibilityReConverter x:Key="Int2VisibilityReConverter" />
 
+      <!--  Converter Double para GridLength  -->
+      <converters:Double2GridLengthConverter x:Key="Double2GridLengthConverter" />
+
       <!--  Converter Bool inverso  -->
       <hc:Boolean2BooleanReConverter x:Key="Boolean2BooleanReConverter" />
 
