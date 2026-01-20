@@ -19,7 +19,7 @@
     </Grid.RowDefinitions>
 
     <!--  Barra de busca e acoes  -->
-    <Grid Grid.Row="0" Margin="4">
+    <Grid Grid.Row="0" Margin="5">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="Auto" />
