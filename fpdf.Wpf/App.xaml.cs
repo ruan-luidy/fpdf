@@ -47,9 +47,6 @@ public partial class App : Application
     var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
     await settingsService.LoadAsync();
 
-    // Aplica tema
-    ApplyTheme(settingsService.Settings.Theme);
-
     // Cria e exibe a janela principal
     var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
     mainWindow.Show();
@@ -64,31 +61,6 @@ public partial class App : Application
     }
 
     base.OnExit(e);
-  }
-
-  private void ApplyTheme(string themeName)
-  {
-    var skinUri = themeName switch
-    {
-      "Dark" => new Uri("pack://application:,,,/HandyControl;component/Themes/SkinDark.xaml"),
-      "Violet" => new Uri("pack://application:,,,/HandyControl;component/Themes/SkinViolet.xaml"),
-      _ => new Uri("pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml")
-    };
-
-    // Remove skin atual e aplica novo
-    var resources = Application.Current.Resources.MergedDictionaries;
-
-    // Encontra e remove o skin atual
-    var currentSkin = resources.FirstOrDefault(r =>
-        r.Source?.OriginalString.Contains("Skin") == true);
-
-    if (currentSkin != null)
-    {
-      resources.Remove(currentSkin);
-    }
-
-    // Adiciona novo skin
-    resources.Insert(0, new ResourceDictionary { Source = skinUri });
   }
 
   public static T GetService<T>() where T : class
