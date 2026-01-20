@@ -3,7 +3,7 @@ using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using System.IO;
 using System.Windows.Media.Imaging;
-using Windows.Data.Pdf;
+using WinPdf = Windows.Data.Pdf;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
@@ -21,7 +21,7 @@ public class PdfService : IPdfService, IDisposable
       cancellationToken.ThrowIfCancellationRequested();
 
       var file = await StorageFile.GetFileFromPathAsync(filePath);
-      var pdfDocument = await PdfDocument.LoadFromFileAsync(file);
+      var pdfDocument = await WinPdf.PdfDocument.LoadFromFileAsync(file);
 
       if (pdfDocument.PageCount == 0) return null;
 
@@ -35,7 +35,7 @@ public class PdfService : IPdfService, IDisposable
 
       using var stream = new InMemoryRandomAccessStream();
 
-      var options = new PdfPageRenderOptions
+      var options = new Windows.Data.Pdf.PdfPageRenderOptions
       {
         DestinationWidth = renderWidth,
         DestinationHeight = renderHeight,
@@ -63,7 +63,7 @@ public class PdfService : IPdfService, IDisposable
       cancellationToken.ThrowIfCancellationRequested();
 
       var file = await StorageFile.GetFileFromPathAsync(filePath);
-      var pdfDocument = await PdfDocument.LoadFromFileAsync(file);
+      var pdfDocument = await WinPdf.PdfDocument.LoadFromFileAsync(file);
 
       if (pageIndex < 0 || pageIndex >= (int)pdfDocument.PageCount) return null;
 
@@ -75,7 +75,7 @@ public class PdfService : IPdfService, IDisposable
 
       using var stream = new InMemoryRandomAccessStream();
 
-      var options = new PdfPageRenderOptions
+      var options = new Windows.Data.Pdf.PdfPageRenderOptions
       {
         DestinationWidth = renderWidth,
         DestinationHeight = renderHeight,

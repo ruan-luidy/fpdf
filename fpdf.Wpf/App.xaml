@@ -1,8 +1,9 @@
 ﻿<Application
-  x:Class="fpdf.Wpf.App"
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:hc="https://handyorg.github.io/handycontrol">
+x:Class="fpdf.Wpf.App"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:hc="https://handyorg.github.io/handycontrol"
+xmlns:converters="clr-namespace:fpdf.Wpf.Converters">
 
   <Application.Resources>
     <ResourceDictionary>
@@ -23,8 +24,8 @@
       <hc:Object2VisibilityReConverter x:Key="Object2VisibilityReConverter" />
 
       <!--  Converter Int para Visibility  -->
-      <hc:Int2VisibilityConverter x:Key="Int2VisibilityConverter" />
-      <hc:Int2VisibilityReConverter x:Key="Int2VisibilityReConverter" />
+      <converters:Int2VisibilityConverter x:Key="Int2VisibilityConverter" />
+      <converters:Int2VisibilityReConverter x:Key="Int2VisibilityReConverter" />
 
       <!--  Converter Bool inverso  -->
       <hc:Boolean2BooleanReConverter x:Key="Boolean2BooleanReConverter" />

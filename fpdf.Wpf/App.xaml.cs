@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using fpdf.Core.Services;
 using fpdf.Wpf.ViewModels;
+using fpdf.Wpf.Views;
 using fpdf.Wpf.Views.Dialogs;
 
 namespace fpdf.Wpf;

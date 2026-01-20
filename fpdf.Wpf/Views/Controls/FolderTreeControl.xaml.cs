@@ -1,26 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using fpdf.Core.Models;
+using fpdf.Wpf.ViewModels;
 
-namespace fpdf.Wpf.Views.Controls
+namespace fpdf.Wpf.Views.Controls;
+
+public partial class FolderTreeControl : UserControl
 {
-  /// <summary>
-  /// Interaction logic for FolderTreeControl.xaml
-  /// </summary>
-  public partial class FolderTreeControl : UserControl
+  public FolderTreeControl()
   {
-    public FolderTreeControl()
+    InitializeComponent();
+  }
+
+  private FolderTreeViewModel? ViewModel => DataContext as FolderTreeViewModel;
+
+  private async void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
+  {
+    if (e.OriginalSource is TreeViewItem { DataContext: NetworkFolder folder })
     {
-      InitializeComponent();
+      if (ViewModel != null)
+      {
+        await ViewModel.ExpandFolderCommand.ExecuteAsync(folder);
+      }
+    }
+  }
+
+  private void TreeViewItem_Selected(object sender, RoutedEventArgs e)
+  {
+    if (e.OriginalSource is TreeViewItem { DataContext: NetworkFolder folder })
+    {
+      if (ViewModel != null)
+      {
+        ViewModel.SelectedFolder = folder;
+      }
+    }
+  }
+
+  private void FavoriteItem_DoubleClick(object sender, MouseButtonEventArgs e)
+  {
+    if (sender is FrameworkElement { DataContext: NetworkFolder folder })
+    {
+      if (ViewModel != null)
+      {
+        _ = ViewModel.NavigateToPathCommand.ExecuteAsync(folder.FullPath);
+      }
     }
   }
 }

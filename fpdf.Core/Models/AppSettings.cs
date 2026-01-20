@@ -11,6 +11,9 @@ public class AppSettings
 
   public double WindowWith { get; set; } = 1200;
   public double WindowHeight { get; set; } = 800;
+  public double TreeViewWidth { get; set; } = 250;
+  public double FileListWidth { get; set; } = 350;
+  public bool ShowThumbnails { get; set; } = true;
   public int ThumbnailSize { get; set; } = 64;
   public bool RememberLastFolder { get; set; } = true;
   public int DefaultCopies { get; set; } = 1;

@@ -1,6 +1,7 @@
 ﻿using fpdf.Core.Models;
 using System.Diagnostics;
 using System.Printing;
+using CorePrintJobStatus = fpdf.Core.Models.PrintJobStatus;
 
 namespace fpdf.Core.Services;
 
@@ -84,12 +85,12 @@ public class PrintService : IPrintService
 
       try
       {
-        job.Status = PrintJobStatus.Printing;
+        job.Status = CorePrintJobStatus.Printing;
         OnJobStatusChanged(job);
 
         var success = await ExecutePrintAsync(job, cts.Token);
 
-        job.Status = success ? PrintJobStatus.Completed : PrintJobStatus.Failed;
+        job.Status = success ? CorePrintJobStatus.Completed : CorePrintJobStatus.Failed;
         job.CompletedAt = DateTime.Now;
 
         if (!success && string.IsNullOrEmpty(job.ErrorMessage))
@@ -107,7 +108,7 @@ public class PrintService : IPrintService
     }
     catch (OperationCanceledException)
     {
-      job.Status = PrintJobStatus.Cancelled;
+      job.Status = CorePrintJobStatus.Cancelled;
       job.CompletedAt = DateTime.Now;
       OnJobStatusChanged(job);
       return false;
