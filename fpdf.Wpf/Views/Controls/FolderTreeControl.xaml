@@ -98,7 +98,7 @@
       VirtualizingPanel.IsVirtualizing="True"
       VirtualizingPanel.VirtualizationMode="Recycling">
       <TreeView.ItemContainerStyle>
-        <Style BasedOn="{StaticResource TreeViewItemBaseStyle}" TargetType="TreeViewItem">
+        <Style BasedOn="{StaticResource TreeViewItemBaseStyle.Small}" TargetType="TreeViewItem">
           <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
           <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
           <EventSetter Event="Expanded" Handler="TreeViewItem_Expanded" />
