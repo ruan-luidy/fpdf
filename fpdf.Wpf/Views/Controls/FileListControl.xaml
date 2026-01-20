@@ -36,7 +36,7 @@
         Grid.Column="1"
         Margin="4,0,0,0"
         Command="{Binding RefreshCommand}"
-        Style="{StaticResource ButtonIcon}"
+        Style="{StaticResource ButtonIconCustom}"
         ToolTip="Atualizar">
         <icon:PackIconPhosphorIcons Kind="ArrowClockwise" />
       </Button>
@@ -45,7 +45,7 @@
         Grid.Column="2"
         Margin="4,0,0,0"
         Command="{Binding PrintSelectedCommand}"
-        Style="{StaticResource ButtonIcon}"
+        Style="{StaticResource ButtonIconCustom}"
         ToolTip="Imprimir Selecionados">
         <icon:PackIconPhosphorIcons Kind="Printer" />
       </Button>
@@ -54,7 +54,9 @@
     <!--  Lista de arquivos  -->
     <DataGrid
       Grid.Row="1"
+      hc:BorderElement.CornerRadius="4,4,0,0"
       AutoGenerateColumns="False"
+      BorderThickness="1,1,1,0"
       CanUserSortColumns="True"
       EnableRowVirtualization="True"
       GridLinesVisibility="Horizontal"
@@ -168,7 +170,10 @@
     <Border
       Grid.Row="2"
       Padding="8,4"
-      Background="{DynamicResource RegionBrush}">
+      Background="{DynamicResource RegionBrush}"
+      BorderBrush="{DynamicResource BorderBrush}"
+      BorderThickness="1"
+      CornerRadius="0,0,4,4">
       <StackPanel Orientation="Horizontal">
         <TextBlock Text="{Binding FileCount, StringFormat='{}{0} arquivos'}" />
         <TextBlock Text=" | " Visibility="{Binding SelectedCount, Converter={StaticResource Int2VisibilityConverter}}" />

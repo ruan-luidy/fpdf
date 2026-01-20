@@ -19,6 +19,9 @@
 
     <!--  Barra de ferramentas  -->
     <Border
+      BorderThickness="1"
+      BorderBrush="{DynamicResource BorderBrush}"
+      CornerRadius="4,4,0,0"
       Grid.Row="0"
       Padding="4"
       Background="{DynamicResource RegionBrush}">
@@ -114,82 +117,93 @@
     </Border>
 
     <!--  Area de visualizacao do PDF  -->
-    <ScrollViewer
+    <Border
       Grid.Row="1"
-      Background="{DynamicResource SecondaryRegionBrush}"
-      HorizontalScrollBarVisibility="Auto"
-      VerticalScrollBarVisibility="Auto">
-      <Grid>
-        <!--  Imagem da pagina  -->
-        <Border
-          Margin="20"
-          HorizontalAlignment="Center"
-          VerticalAlignment="Center"
-          Background="White"
-          Effect="{DynamicResource EffectShadow2}">
-          <Image
-            RenderTransformOrigin="0.5,0.5"
-            Source="{Binding CurrentPage}"
-            Stretch="None">
-            <Image.RenderTransform>
-              <RotateTransform Angle="{Binding Rotation}" />
-            </Image.RenderTransform>
-          </Image>
-        </Border>
-
-        <!--  Placeholder quando nao ha arquivo  -->
-        <StackPanel
-          HorizontalAlignment="Center"
-          VerticalAlignment="Center"
-          Visibility="{Binding CurrentFile, Converter={StaticResource Object2VisibilityReConverter}}">
-          <icon:PackIconPhosphorIcons
-            Width="64"
-            Height="64"
+      BorderBrush="{DynamicResource BorderBrush}"
+      BorderThickness="1,0,1,0"
+      CornerRadius="0">
+      <ScrollViewer
+        Background="{DynamicResource SecondaryRegionBrush}"
+        HorizontalScrollBarVisibility="Auto"
+        VerticalScrollBarVisibility="Auto">
+        <Grid>
+          <!--  Imagem da pagina  -->
+          <Border
+            Margin="20"
             HorizontalAlignment="Center"
-            Foreground="{DynamicResource SecondaryTextBrush}"
-            Kind="FilePdf" />
-          <TextBlock
-            Margin="0,16,0,0"
-            Foreground="{DynamicResource SecondaryTextBrush}"
-            Text="Selecione um PDF para visualizar" />
-        </StackPanel>
+            VerticalAlignment="Center"
+            Background="White"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            Effect="{DynamicResource EffectShadow2}">
+            <Image
+              RenderTransformOrigin="0.5,0.5"
+              Source="{Binding CurrentPage}"
+              Stretch="None">
+              <Image.RenderTransform>
+                <RotateTransform Angle="{Binding Rotation}" />
+              </Image.RenderTransform>
+            </Image>
+          </Border>
 
-        <!--  Mensagem de erro  -->
-        <Border
-          Padding="16"
-          HorizontalAlignment="Center"
-          VerticalAlignment="Center"
-          Background="{DynamicResource DangerBrush}"
-          CornerRadius="4"
-          Visibility="{Binding ErrorMessage, Converter={StaticResource Object2VisibilityConverter}}">
-          <StackPanel>
+          <!--  Placeholder quando nao ha arquivo  -->
+          <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Visibility="{Binding CurrentFile, Converter={StaticResource Object2VisibilityReConverter}}">
             <icon:PackIconPhosphorIcons
-              Width="32"
-              Height="32"
+              Width="64"
+              Height="64"
               HorizontalAlignment="Center"
-              Foreground="White"
-              Kind="Warning" />
+              Foreground="{DynamicResource SecondaryTextBrush}"
+              Kind="FilePdf" />
             <TextBlock
-              MaxWidth="300"
-              Margin="0,8,0,0"
-              Foreground="White"
-              Text="{Binding ErrorMessage}"
-              TextWrapping="Wrap" />
+              Margin="0,16,0,0"
+              Foreground="{DynamicResource SecondaryTextBrush}"
+              Text="Selecione um PDF para visualizar" />
           </StackPanel>
-        </Border>
 
-        <!--  Loading  -->
-        <Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource Boolean2VisibilityConverter}}">
-          <hc:LoadingCircle />
-        </Border>
-      </Grid>
-    </ScrollViewer>
+          <!--  Mensagem de erro  -->
+          <Border
+            Padding="16"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="{DynamicResource DangerBrush}"
+            CornerRadius="4"
+            Visibility="{Binding ErrorMessage, Converter={StaticResource Object2VisibilityConverter}}">
+            <StackPanel>
+              <icon:PackIconPhosphorIcons
+                Width="32"
+                Height="32"
+                HorizontalAlignment="Center"
+                Foreground="White"
+                Kind="Warning" />
+              <TextBlock
+                MaxWidth="300"
+                Margin="0,8,0,0"
+                Foreground="White"
+                Text="{Binding ErrorMessage}"
+                TextWrapping="Wrap" />
+            </StackPanel>
+          </Border>
+
+          <!--  Loading  -->
+          <Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource Boolean2VisibilityConverter}}">
+            <hc:LoadingCircle />
+          </Border>
+        </Grid>
+      </ScrollViewer>
+    </Border>
+
 
     <!--  Info do arquivo atual  -->
     <Border
       Grid.Row="2"
       Padding="8,4"
-      Background="{DynamicResource RegionBrush}">
+      Background="{DynamicResource RegionBrush}"
+      BorderBrush="{DynamicResource BorderBrush}"
+      BorderThickness="1"
+      CornerRadius="0,0,4,4">
       <TextBlock
         Text="{Binding CurrentFile.FileName, FallbackValue='Nenhum arquivo selecionado'}"
         TextTrimming="CharacterEllipsis"

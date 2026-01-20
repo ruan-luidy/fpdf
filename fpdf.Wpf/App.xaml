@@ -1,9 +1,9 @@
 ﻿<Application
-x:Class="fpdf.Wpf.App"
-xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-xmlns:hc="https://handyorg.github.io/handycontrol"
-xmlns:converters="clr-namespace:fpdf.Wpf.Converters">
+  x:Class="fpdf.Wpf.App"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:converters="clr-namespace:fpdf.Wpf.Converters"
+  xmlns:hc="https://handyorg.github.io/handycontrol">
 
   <Application.Resources>
     <ResourceDictionary>
@@ -11,6 +11,7 @@ xmlns:converters="clr-namespace:fpdf.Wpf.Converters">
         <!--  HandyControl Theme  -->
         <hc:Theme />
         <hc:ThemeResources UsingSystemTheme="True" />
+        <ResourceDictionary Source="/Styles/ButtonStyles.xaml" />
       </ResourceDictionary.MergedDictionaries>
 
       <!--  Converters customizados  -->

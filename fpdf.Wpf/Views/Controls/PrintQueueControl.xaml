@@ -11,7 +11,7 @@
   d:DataContext="{d:DesignInstance Type=vm:PrintQueueViewModel}"
   mc:Ignorable="d">
 
-  <hc:Card Padding="8">
+  <Border Style="{StaticResource BorderRegion}">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -235,5 +235,5 @@
         </Button>
       </Grid>
     </Grid>
-  </hc:Card>
+  </Border>
 </UserControl>

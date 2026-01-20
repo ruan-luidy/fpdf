@@ -143,7 +143,9 @@
     <Border
       Grid.Row="3"
       Padding="8,4"
-      Background="{DynamicResource RegionBrush}">
+      Background="{DynamicResource RegionBrush}"
+      BorderBrush="{DynamicResource BorderBrush}"
+      BorderThickness="0,1,0,0">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*" />

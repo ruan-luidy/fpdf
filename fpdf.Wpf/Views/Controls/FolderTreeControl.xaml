@@ -81,14 +81,11 @@
         Margin="4,0,0,0"
         Command="{Binding NavigateToPathCommand}"
         CommandParameter="{Binding Text, ElementName=PathTextBox}"
-        Style="{StaticResource ButtonIcon}"
+        Style="{StaticResource ButtonIconCustom}"
         ToolTip="Navegar">
         <icon:PackIconPhosphorIcons Kind="ArrowRight" />
       </Button>
     </Grid>
-
-    <!--  Separador  -->
-    <Separator Grid.Row="1" />
 
     <!--  TreeView de pastas  -->
     <TreeView
@@ -127,12 +124,6 @@
         </ContextMenu>
       </TreeView.ContextMenu>
     </TreeView>
-
-    <!--  Separador Favoritos  -->
-    <hc:Divider
-      Grid.Row="3"
-      Margin="4"
-      Content="Favoritos" />
 
     <!--  Lista de Favoritos  -->
     <ListBox
