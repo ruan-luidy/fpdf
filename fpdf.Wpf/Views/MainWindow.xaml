@@ -81,11 +81,14 @@
             <icon:PackIconPhosphorIcons Kind="Printer" />
           </Button>
 
-          <Separator Margin="8,0" Style="{StaticResource VerticalSeparator}" />
+          <hc:Divider
+            MaxHeight="16"
+            LineStrokeThickness="2"
+            Orientation="Vertical" />
 
           <Button
             Command="{Binding OpenSettingsCommand}"
-            Style="{StaticResource ButtonIcon}"
+            Style="{StaticResource ButtonIconCustom}"
             ToolTip="Configuracoes (Ctrl+,)">
             <icon:PackIconPhosphorIcons Kind="Gear" />
           </Button>

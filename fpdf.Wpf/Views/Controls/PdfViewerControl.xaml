@@ -10,7 +10,7 @@
   d:DataContext="{d:DesignInstance Type=vm:PdfViewerViewModel}"
   mc:Ignorable="d">
 
-  <Grid>
+  <Grid Margin="5">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
@@ -19,18 +19,18 @@
 
     <!--  Barra de ferramentas  -->
     <Border
-      BorderThickness="1"
-      BorderBrush="{DynamicResource BorderBrush}"
-      CornerRadius="4,4,0,0"
       Grid.Row="0"
       Padding="4"
-      Background="{DynamicResource RegionBrush}">
+      Background="{DynamicResource RegionBrush}"
+      BorderBrush="{DynamicResource BorderBrush}"
+      BorderThickness="1"
+      CornerRadius="4,4,0,0">
       <StackPanel Orientation="Horizontal">
         <!--  Navegacao de paginas  -->
         <Button
           Command="{Binding FirstPageCommand}"
           IsEnabled="{Binding HasPreviousPage}"
-          Style="{StaticResource ButtonIcon}"
+          Style="{StaticResource ButtonIconCustom}"
           ToolTip="Primeira pagina">
           <icon:PackIconPhosphorIcons Kind="CaretDoubleLeft" />
         </Button>
@@ -38,7 +38,7 @@
         <Button
           Command="{Binding PreviousPageCommand}"
           IsEnabled="{Binding HasPreviousPage}"
-          Style="{StaticResource ButtonIcon}"
+          Style="{StaticResource ButtonIconCustom}"
           ToolTip="Pagina anterior">
           <icon:PackIconPhosphorIcons Kind="CaretLeft" />
         </Button>
@@ -53,7 +53,7 @@
         <Button
           Command="{Binding NextPageCommand}"
           IsEnabled="{Binding HasNextPage}"
-          Style="{StaticResource ButtonIcon}"
+          Style="{StaticResource ButtonIconCustom}"
           ToolTip="Proxima pagina">
           <icon:PackIconPhosphorIcons Kind="CaretRight" />
         </Button>
@@ -61,17 +61,20 @@
         <Button
           Command="{Binding LastPageCommand}"
           IsEnabled="{Binding HasNextPage}"
-          Style="{StaticResource ButtonIcon}"
+          Style="{StaticResource ButtonIconCustom}"
           ToolTip="Ultima pagina">
           <icon:PackIconPhosphorIcons Kind="CaretDoubleRight" />
         </Button>
 
-        <Separator Margin="8,0" Style="{StaticResource VerticalSeparator}" />
+        <hc:Divider
+          MaxHeight="16"
+          LineStrokeThickness="2"
+          Orientation="Vertical" />
 
         <!--  Zoom  -->
         <Button
           Command="{Binding ZoomOutCommand}"
-          Style="{StaticResource ButtonIcon}"
+          Style="{StaticResource ButtonIconCustom}"
           ToolTip="Diminuir zoom">
           <icon:PackIconPhosphorIcons Kind="MagnifyingGlassMinus" />
         </Button>
@@ -85,31 +88,34 @@
 
         <Button
           Command="{Binding ZoomInCommand}"
-          Style="{StaticResource ButtonIcon}"
+          Style="{StaticResource ButtonIconCustom}"
           ToolTip="Aumentar zoom">
           <icon:PackIconPhosphorIcons Kind="MagnifyingGlassPlus" />
         </Button>
 
         <Button
           Command="{Binding ResetZoomCommand}"
-          Style="{StaticResource ButtonIcon}"
+          Style="{StaticResource ButtonIconCustom}"
           ToolTip="Zoom 100%">
           <icon:PackIconPhosphorIcons Kind="Equals" />
         </Button>
 
-        <Separator Margin="8,0" Style="{StaticResource VerticalSeparator}" />
+        <hc:Divider
+          MaxHeight="16"
+          LineStrokeThickness="2"
+          Orientation="Vertical" />
 
         <!--  Rotacao  -->
         <Button
           Command="{Binding RotateCounterClockwiseCommand}"
-          Style="{StaticResource ButtonIcon}"
+          Style="{StaticResource ButtonIconCustom}"
           ToolTip="Girar anti-horario">
           <icon:PackIconPhosphorIcons Kind="ArrowCounterClockwise" />
         </Button>
 
         <Button
           Command="{Binding RotateClockwiseCommand}"
-          Style="{StaticResource ButtonIcon}"
+          Style="{StaticResource ButtonIconCustom}"
           ToolTip="Girar horario">
           <icon:PackIconPhosphorIcons Kind="ArrowClockwise" />
         </Button>
