@@ -18,6 +18,7 @@
       ItemsSource="{Binding SubFolders}">
       <StackPanel Margin="2" Orientation="Horizontal">
         <icon:PackIconPhosphorIcons
+          x:Name="FolderIcon"
           Width="16"
           Height="16"
           Foreground="{DynamicResource PrimaryBrush}"
@@ -39,6 +40,11 @@
           Margin="6,0,0,0"
           Visibility="{Binding IsLoading, Converter={StaticResource Boolean2VisibilityConverter}}" />
       </StackPanel>
+      <HierarchicalDataTemplate.Triggers>
+        <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+          <Setter TargetName="FolderIcon" Property="Kind" Value="FolderOpen" />
+        </DataTrigger>
+      </HierarchicalDataTemplate.Triggers>
     </HierarchicalDataTemplate>
   </UserControl.Resources>
 
