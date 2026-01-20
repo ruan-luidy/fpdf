@@ -32,7 +32,7 @@ public partial class FolderTreeControl : UserControl
     {
       if (ViewModel != null)
       {
-        ViewModel.SelectedFolder = folder;
+        ViewModel.SelectFolderCommand.Execute(folder);
       }
     }
   }

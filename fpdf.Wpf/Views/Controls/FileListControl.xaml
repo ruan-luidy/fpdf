@@ -60,7 +60,6 @@
       BorderThickness="1,1,1,0"
       CanUserSortColumns="True"
       EnableRowVirtualization="True"
-      GridLinesVisibility="Horizontal"
       HeadersVisibility="Column"
       IsReadOnly="True"
       ItemsSource="{Binding FilesView}"

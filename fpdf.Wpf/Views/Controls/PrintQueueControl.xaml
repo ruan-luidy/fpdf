@@ -11,7 +11,7 @@
   d:DataContext="{d:DesignInstance Type=vm:PrintQueueViewModel}"
   mc:Ignorable="d">
 
-  <Border Style="{StaticResource BorderRegion}">
+  <Border Margin="-3,0" Style="{StaticResource BorderRegion}">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
