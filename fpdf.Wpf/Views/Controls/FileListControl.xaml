@@ -29,7 +29,6 @@
       <hc:SearchBar
         Grid.Column="0"
         hc:InfoElement.Placeholder="Buscar PDF..."
-        Style="{StaticResource SearchBarPlus}"
         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
 
       <Button
@@ -95,12 +94,12 @@
         </DataGridTemplateColumn>
 
         <!--  Icone PDF  -->
-        <DataGridTemplateColumn Width="50" Header="">
+        <DataGridTemplateColumn MinWidth="40" MaxWidth="40">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate DataType="{x:Type models:PdfFileInfo}">
               <icon:PackIconPhosphorIcons
-                Width="24"
-                Height="24"
+                Width="18"
+                Height="18"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource DangerBrush}"
