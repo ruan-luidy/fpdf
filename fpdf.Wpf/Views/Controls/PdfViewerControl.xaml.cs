@@ -42,8 +42,10 @@ public partial class PdfViewerControl : UserControl
 
     private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
+        System.Diagnostics.Debug.WriteLine($"PdfViewerControl: PropertyChanged {e.PropertyName}");
         if (e.PropertyName == nameof(PdfViewerViewModel.CurrentFile) && sender is PdfViewerViewModel vm)
         {
+            System.Diagnostics.Debug.WriteLine($"PdfViewerControl: CurrentFile changed to {vm.CurrentFile?.FullPath}");
             vm.ErrorMessage = null;
             PreviewHost.FilePath = vm.CurrentFile?.FullPath;
         }

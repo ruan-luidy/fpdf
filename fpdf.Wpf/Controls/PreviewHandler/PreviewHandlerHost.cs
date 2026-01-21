@@ -45,9 +45,11 @@ public class PreviewHandlerHost : HwndHost
         get => _currentFile;
         set
         {
+            System.Diagnostics.Debug.WriteLine($"PreviewHandlerHost.FilePath = {value}");
             if (_currentFile != value)
             {
                 _currentFile = value;
+                System.Diagnostics.Debug.WriteLine($"PreviewHandlerHost: hwnd={_hwndHost}");
                 if (_hwndHost != IntPtr.Zero)
                 {
                     Dispatcher.BeginInvoke(new Action(LoadPreview));
@@ -58,6 +60,7 @@ public class PreviewHandlerHost : HwndHost
 
     protected override HandleRef BuildWindowCore(HandleRef hwndParent)
     {
+        System.Diagnostics.Debug.WriteLine($"BuildWindowCore: parent={hwndParent.Handle}");
         _hwndHost = CreateWindowEx(
             0, "static", "",
             WS_CHILD | WS_VISIBLE,
@@ -66,9 +69,11 @@ public class PreviewHandlerHost : HwndHost
             (IntPtr)HOST_ID,
             IntPtr.Zero,
             IntPtr.Zero);
+        System.Diagnostics.Debug.WriteLine($"BuildWindowCore: created hwnd={_hwndHost}");
 
         if (!string.IsNullOrEmpty(_currentFile))
         {
+            System.Diagnostics.Debug.WriteLine($"BuildWindowCore: loading pending file {_currentFile}");
             Dispatcher.BeginInvoke(new Action(LoadPreview));
         }
 
@@ -89,18 +94,22 @@ public class PreviewHandlerHost : HwndHost
 
     private void LoadPreview()
     {
+        System.Diagnostics.Debug.WriteLine($"=== LoadPreview START: {_currentFile}");
         UnloadPreview();
 
         if (string.IsNullOrEmpty(_currentFile))
         {
+            System.Diagnostics.Debug.WriteLine("LoadPreview: arquivo vazio");
             return;
         }
 
         if (!File.Exists(_currentFile))
         {
+            System.Diagnostics.Debug.WriteLine($"LoadPreview: arquivo nao existe");
             Error?.Invoke($"Arquivo não encontrado: {_currentFile}");
             return;
         }
+        System.Diagnostics.Debug.WriteLine($"LoadPreview: arquivo existe");
 
         var extension = Path.GetExtension(_currentFile).ToLowerInvariant();
         var handlerGuid = GetPreviewHandlerGuid(extension);
@@ -181,12 +190,16 @@ public class PreviewHandlerHost : HwndHost
             }
 
             var rect = new RECT(0, 0, (int)Math.Max(1, ActualWidth), (int)Math.Max(1, ActualHeight));
+            System.Diagnostics.Debug.WriteLine($"LoadPreview: SetWindow hwnd={_hwndHost}, size={ActualWidth}x{ActualHeight}");
             _previewHandler.SetWindow(_hwndHost, ref rect);
+            System.Diagnostics.Debug.WriteLine("LoadPreview: DoPreview...");
             _previewHandler.DoPreview();
+            System.Diagnostics.Debug.WriteLine("LoadPreview: SUCCESS");
             _isPreviewLoaded = true;
         }
         catch (Exception ex)
         {
+            System.Diagnostics.Debug.WriteLine($"LoadPreview EXCEPTION: {ex}");
             Error?.Invoke($"Erro ao carregar preview: {ex.Message}");
             UnloadPreview();
         }

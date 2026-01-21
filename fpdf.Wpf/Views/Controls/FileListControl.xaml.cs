@@ -16,8 +16,10 @@ public partial class FileListControl : UserControl
 
   private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {
+    System.Diagnostics.Debug.WriteLine($"FileListControl: SelectionChanged, AddedItems={e.AddedItems.Count}");
     if (e.AddedItems.Count > 0 && e.AddedItems[0] is PdfFileInfo file)
     {
+      System.Diagnostics.Debug.WriteLine($"FileListControl: Selected file {file.FileName}");
       if (ViewModel != null)
       {
         ViewModel.SelectFileCommand.Execute(file);
