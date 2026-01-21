@@ -117,7 +117,8 @@
 
       <GridSplitter
         Grid.Column="1"
-        Width="4"
+        Width="6"
+        Margin="-10"
         HorizontalAlignment="Center"
         VerticalAlignment="Stretch"
         Background="Transparent" />
@@ -127,7 +128,8 @@
 
       <GridSplitter
         Grid.Column="3"
-        Width="4"
+        Width="6"
+        Margin="-10"
         HorizontalAlignment="Center"
         VerticalAlignment="Stretch"
         Background="Transparent" />

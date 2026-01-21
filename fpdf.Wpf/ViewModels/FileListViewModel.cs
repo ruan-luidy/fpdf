@@ -206,7 +206,10 @@ public partial class FileListViewModel : ObservableObject
     if (obj is not PdfFileInfo file) return false;
     if (string.IsNullOrWhiteSpace(SearchText)) return true;
 
-    return file.FileName.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+    var fileName = file.FileName.ToLowerInvariant();
+    var searchTerms = SearchText.ToLowerInvariant().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+    return searchTerms.All(term => fileName.Contains(term));
   }
 
   private void UpdateSelectedCount()

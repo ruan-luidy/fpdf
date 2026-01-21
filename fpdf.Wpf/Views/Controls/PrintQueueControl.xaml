@@ -132,7 +132,7 @@
                 Grid.Column="3"
                 Command="{Binding DataContext.CancelJobCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 CommandParameter="{Binding}"
-                Style="{StaticResource ButtonIcon}"
+                Style="{StaticResource ButtonIconCustom}"
                 ToolTip="Remover">
                 <icon:PackIconPhosphorIcons
                   Width="12"
