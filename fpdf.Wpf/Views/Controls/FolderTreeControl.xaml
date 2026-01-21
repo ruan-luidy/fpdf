@@ -74,6 +74,8 @@
       x:Key="CustomTreeViewItemStyle"
       BasedOn="{StaticResource TreeViewItemBaseStyle.Small}"
       TargetType="TreeViewItem">
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="Transparent" />
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="TreeViewItem">
@@ -87,7 +89,7 @@
                 Padding="{TemplateBinding Padding}"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="1"
+                BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
                 SnapsToDevicePixels="true">
                 <DockPanel Margin="{Binding Converter={StaticResource TreeViewItemMarginConverter}, RelativeSource={RelativeSource TemplatedParent}}" LastChildFill="True">
@@ -118,7 +120,7 @@
               <Trigger Property="IsSelected" Value="true">
                 <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
                 <Setter Property="Foreground" Value="{DynamicResource TextIconBrush}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
               </Trigger>
               <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -127,6 +129,7 @@
                 </MultiTrigger.Conditions>
                 <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
                 <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
               </MultiTrigger>
               <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="Opacity" Value=".4" />

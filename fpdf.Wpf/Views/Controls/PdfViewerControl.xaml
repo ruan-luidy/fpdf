@@ -22,7 +22,6 @@
     <Border
       Grid.Row="0"
       Margin="5,5,5,0"
-      Padding="4,4,4,0"
       Background="{DynamicResource RegionBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
       BorderThickness="1"
