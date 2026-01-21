@@ -36,6 +36,8 @@ public partial class MainViewModel : ObservableObject
   [ObservableProperty]
   private double _fileListWidth = 350;
 
+  public event EventHandler? OpenSettingsRequested;
+
   public MainViewModel(
       FolderTreeViewModel folderTree,
       FileListViewModel fileList,
@@ -83,8 +85,7 @@ public partial class MainViewModel : ObservableObject
   [RelayCommand]
   private void OpenSettings()
   {
-    IsSettingsOpen = true;
-    _ = Settings.LoadCommand.ExecuteAsync(null);
+    OpenSettingsRequested?.Invoke(this, EventArgs.Empty);
   }
 
   [RelayCommand]

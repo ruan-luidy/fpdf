@@ -120,7 +120,7 @@
       </TreeView.ItemContainerStyle>
 
       <TreeView.ContextMenu>
-        <ContextMenu>
+        <ContextMenu Style="{StaticResource ContextMenu.Small}">
           <MenuItem
             Command="{Binding RefreshFolderCommand}"
             CommandParameter="{Binding SelectedFolder}"

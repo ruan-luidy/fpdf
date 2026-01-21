@@ -1,32 +1,54 @@
-﻿using System.Windows;
+using System.Windows;
 using fpdf.Wpf.ViewModels;
+using fpdf.Wpf.Views.Dialogs;
 
 namespace fpdf.Wpf.Views;
 
 public partial class MainWindow : HandyControl.Controls.Window
 {
-  public MainWindow(MainViewModel viewModel)
-  {
-    InitializeComponent();
-    DataContext = viewModel;
-  }
-
-  private async void Window_Loaded(object sender, RoutedEventArgs e)
-  {
-    if (DataContext is MainViewModel vm)
+    public MainWindow(MainViewModel viewModel)
     {
-      await vm.InitializeCommand.ExecuteAsync(null);
+        InitializeComponent();
+        DataContext = viewModel;
+
+        viewModel.OpenSettingsRequested += OnOpenSettingsRequested;
     }
-  }
 
-  protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-  {
-    base.OnClosing(e);
-
-    // Salva layout ao fechar
-    if (DataContext is MainViewModel vm)
+    private async void Window_Loaded(object sender, RoutedEventArgs e)
     {
-      _ = vm.SaveLayoutCommand.ExecuteAsync(null);
+        if (DataContext is MainViewModel vm)
+        {
+            await vm.InitializeCommand.ExecuteAsync(null);
+        }
     }
-  }
+
+    private async void OnOpenSettingsRequested(object? sender, EventArgs e)
+    {
+        if (DataContext is MainViewModel vm)
+        {
+            var dialog = new SettingsDialog(vm.Settings)
+            {
+                Owner = this
+            };
+
+            await vm.Settings.LoadCommand.ExecuteAsync(null);
+
+            if (dialog.ShowDialog() == true)
+            {
+                // Configurações salvas - recarrega impressoras se necessário
+                await vm.PrintQueue.LoadPrintersCommand.ExecuteAsync(null);
+            }
+        }
+    }
+
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        base.OnClosing(e);
+
+        if (DataContext is MainViewModel vm)
+        {
+            vm.OpenSettingsRequested -= OnOpenSettingsRequested;
+            _ = vm.SaveLayoutCommand.ExecuteAsync(null);
+        }
+    }
 }

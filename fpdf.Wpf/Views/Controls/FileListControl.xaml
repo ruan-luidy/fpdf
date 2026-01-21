@@ -28,7 +28,6 @@
 
       <hc:SearchBar
         Grid.Column="0"
-        Margin="-5,0"
         hc:InfoElement.Placeholder="Buscar PDF..."
         Style="{StaticResource SearchBarPlus}"
         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
