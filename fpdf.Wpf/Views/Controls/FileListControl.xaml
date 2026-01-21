@@ -19,36 +19,63 @@
     </Grid.RowDefinitions>
 
     <!--  Barra de busca e acoes  -->
-    <Grid Grid.Row="0" Margin="5">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="Auto" />
-        <ColumnDefinition Width="Auto" />
-      </Grid.ColumnDefinitions>
+    <Border
+      Grid.Row="0"
+      Margin="5"
+      Padding="0">
+      <Border.Style>
+        <Style BasedOn="{StaticResource BorderRegion}" TargetType="Border">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=IsFocused}" Value="True">
+              <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Border.Style>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-      <hc:SearchBar
-        Grid.Column="0"
-        hc:InfoElement.Placeholder="Buscar PDF..."
-        Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
+        <Border />
+        <hc:TextBox
+          x:Name="SearchTextBox"
+          Grid.Column="0"
+          hc:InfoElement.Placeholder="Buscar PDF..."
+          Background="Transparent"
+          BorderThickness="0"
+          Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
 
-      <Button
-        Grid.Column="1"
-        Margin="4,0,0,0"
-        Command="{Binding RefreshCommand}"
-        Style="{StaticResource ButtonIconCustom}"
-        ToolTip="Atualizar">
-        <icon:PackIconPhosphorIcons Kind="ArrowClockwise" />
-      </Button>
+        <Button
+          Grid.Column="1"
+          Margin="4,0,0,0"
+          Style="{StaticResource ButtonIconCustom}">
+          <icon:PackIconPhosphorIcons Kind="MagnifyingGlass" />
+        </Button>
 
-      <Button
-        Grid.Column="2"
-        Margin="4,0,0,0"
-        Command="{Binding PrintSelectedCommand}"
-        Style="{StaticResource ButtonIconCustom}"
-        ToolTip="Imprimir Selecionados">
-        <icon:PackIconPhosphorIcons Kind="Printer" />
-      </Button>
-    </Grid>
+        <Button
+          Grid.Column="2"
+          Margin="4,0,0,0"
+          Command="{Binding RefreshCommand}"
+          Style="{StaticResource ButtonIconCustom}"
+          ToolTip="Atualizar">
+          <icon:PackIconPhosphorIcons Kind="ArrowClockwise" />
+        </Button>
+
+        <Button
+          Grid.Column="3"
+          Margin="4,0,0,0"
+          Command="{Binding PrintSelectedCommand}"
+          Style="{StaticResource ButtonIconCustom}"
+          ToolTip="Imprimir Selecionados">
+          <icon:PackIconPhosphorIcons Kind="Printer" />
+        </Button>
+      </Grid>
+    </Border>
+
 
     <!--  Lista de arquivos  -->
     <DataGrid

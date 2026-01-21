@@ -73,34 +73,50 @@
     </Grid.RowDefinitions>
 
     <!--  Barra de navegacao  -->
-    <Grid Grid.Row="0" Margin="5">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="Auto" />
-      </Grid.ColumnDefinitions>
+    <Border
+      Grid.Row="0"
+      Margin="5"
+      Padding="0">
+      <Border.Style>
+        <Style BasedOn="{StaticResource BorderRegion}" TargetType="Border">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding ElementName=PathTextBox, Path=IsFocused}" Value="True">
+              <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Border.Style>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-      <hc:TextBox
-        x:Name="PathTextBox"
-        hc:InfoElement.Placeholder="Digite o caminho..."
-        Text="{Binding RootPath, UpdateSourceTrigger=PropertyChanged}">
-        <hc:TextBox.InputBindings>
-          <KeyBinding
-            Key="Enter"
-            Command="{Binding NavigateToPathCommand}"
-            CommandParameter="{Binding Text, ElementName=PathTextBox}" />
-        </hc:TextBox.InputBindings>
-      </hc:TextBox>
+        <hc:TextBox
+          x:Name="PathTextBox"
+          hc:InfoElement.Placeholder="Digite o caminho..."
+          Background="Transparent"
+          BorderThickness="0"
+          Text="{Binding RootPath, UpdateSourceTrigger=PropertyChanged}">
+          <hc:TextBox.InputBindings>
+            <KeyBinding
+              Key="Enter"
+              Command="{Binding NavigateToPathCommand}"
+              CommandParameter="{Binding Text, ElementName=PathTextBox}" />
+          </hc:TextBox.InputBindings>
+        </hc:TextBox>
 
-      <Button
-        Grid.Column="1"
-        Margin="4,0,0,0"
-        Command="{Binding NavigateToPathCommand}"
-        CommandParameter="{Binding Text, ElementName=PathTextBox}"
-        Style="{StaticResource ButtonIconCustom}"
-        ToolTip="Navegar">
-        <icon:PackIconPhosphorIcons Kind="ArrowRight" />
-      </Button>
-    </Grid>
+        <Button
+          Grid.Column="1"
+          Margin="4,0,0,0"
+          Command="{Binding NavigateToPathCommand}"
+          CommandParameter="{Binding Text, ElementName=PathTextBox}"
+          Style="{StaticResource ButtonIconCustom}"
+          ToolTip="Navegar">
+          <icon:PackIconPhosphorIcons Kind="ArrowRight" />
+        </Button>
+      </Grid>
+    </Border>
 
     <!--  TreeView unificada  -->
     <TreeView
