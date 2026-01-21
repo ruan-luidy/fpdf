@@ -136,7 +136,7 @@
       </DataGrid.Columns>
 
       <DataGrid.ContextMenu>
-        <ContextMenu>
+        <ContextMenu Style="{StaticResource ContextMenu.Small}">
           <MenuItem Command="{Binding PrintSelectedCommand}" Header="Imprimir">
             <MenuItem.Icon>
               <icon:PackIconPhosphorIcons Kind="Printer" />

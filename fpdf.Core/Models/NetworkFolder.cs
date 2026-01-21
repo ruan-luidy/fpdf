@@ -26,6 +26,12 @@ public partial class NetworkFolder : ObservableObject
   [ObservableProperty]
   private bool _hasLoadedChildren;
 
+  [ObservableProperty]
+  private bool _isCategory;
+
+  [ObservableProperty]
+  private string _iconKind = "Folder";
+
   public ObservableCollection<NetworkFolder> SubFolders { get; } = new();
 
   public NetworkFolder? Parent { get; set; }
