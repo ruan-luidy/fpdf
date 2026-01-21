@@ -5,6 +5,12 @@ namespace fpdf.Core.Services;
 
 public class NetworkService : INetworkService
 {
+  private readonly ISettingsService _settingsService;
+
+  public NetworkService(ISettingsService settingsService)
+  {
+    _settingsService = settingsService;
+  }
   public async Task<List<NetworkFolder>> GetSubfoldersAsync(string path, CancellationToken cancellationToken = default)
   {
     return await Task.Run(() =>
@@ -149,29 +155,32 @@ public class NetworkService : INetworkService
     {
       var roots = new List<NetworkFolder>();
 
-      // Adiciona caminho de rede customizado - GERENCIAMENTO DE PROJETOS
-      try
+      // Adiciona caminhos de rede customizados das configuracoes
+      foreach (var customNetworkPath in _settingsService.Settings.CustomNetworkPaths)
       {
-        var customNetworkPath = @"\\clbrfs\Operational\GERENCIAMENTO DE PROJETOS\";
-        if (Directory.Exists(customNetworkPath))
+        try
         {
-          var customFolder = new NetworkFolder
+          if (Directory.Exists(customNetworkPath))
           {
-            Name = "GERENCIAMENTO DE PROJETOS (clbrfs)",
-            FullPath = customNetworkPath
-          };
+            var dirInfo = new DirectoryInfo(customNetworkPath);
+            var customFolder = new NetworkFolder
+            {
+              Name = $"{dirInfo.Name} ({GetServerName(customNetworkPath)})",
+              FullPath = customNetworkPath
+            };
 
-          if (Directory.GetDirectories(customNetworkPath).Any())
-          {
-            customFolder.AddDummyChild();
+            if (Directory.GetDirectories(customNetworkPath).Any())
+            {
+              customFolder.AddDummyChild();
+            }
+
+            roots.Add(customFolder);
           }
-
-          roots.Add(customFolder);
         }
-      }
-      catch
-      {
-        // Caminho nao disponivel - ignora
+        catch
+        {
+          // Caminho nao disponivel - ignora
+        }
       }
 
       // Adiciona drives locais
@@ -206,5 +215,16 @@ public class NetworkService : INetworkService
 
       return roots;
     }, cancellationToken);
+  }
+
+  private static string GetServerName(string path)
+  {
+    if (path.StartsWith(@"\\"))
+    {
+      var parts = path.TrimStart('\\').Split('\\');
+      if (parts.Length > 0)
+        return parts[0];
+    }
+    return "Rede";
   }
 }

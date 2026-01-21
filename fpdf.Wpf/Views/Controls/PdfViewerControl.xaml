@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
   x:Class="fpdf.Wpf.Views.Controls.PdfViewerControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,64 +6,32 @@
   xmlns:hc="https://handyorg.github.io/handycontrol"
   xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:preview="clr-namespace:fpdf.Wpf.Controls.PreviewHandler"
   xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
   d:DataContext="{d:DesignInstance Type=vm:PdfViewerViewModel}"
   mc:Ignorable="d">
 
   <Grid Margin="5">
     <Grid.RowDefinitions>
-      <RowDefinition Height="33" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <!--  Barra de ferramentas  -->
+    <!--  Barra de ferramentas simplificada  -->
     <Border
       Grid.Row="0"
-      Padding="0"
+      Padding="4"
       Background="{DynamicResource RegionBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
       BorderThickness="1"
       CornerRadius="4,4,0,0">
       <StackPanel Orientation="Horizontal">
-        <!--  Navegacao de paginas  -->
         <Button
-          Command="{Binding FirstPageCommand}"
-          IsEnabled="{Binding HasPreviousPage}"
+          Click="OnOpenExternalClick"
           Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Primeira pagina">
-          <icon:PackIconPhosphorIcons Kind="CaretDoubleLeft" />
-        </Button>
-
-        <Button
-          Command="{Binding PreviousPageCommand}"
-          IsEnabled="{Binding HasPreviousPage}"
-          Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Pagina anterior">
-          <icon:PackIconPhosphorIcons Kind="CaretLeft" />
-        </Button>
-
-        <TextBlock
-          MinWidth="60"
-          Margin="8,0"
-          VerticalAlignment="Center"
-          Text="{Binding PageInfo}"
-          TextAlignment="Center" />
-
-        <Button
-          Command="{Binding NextPageCommand}"
-          IsEnabled="{Binding HasNextPage}"
-          Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Proxima pagina">
-          <icon:PackIconPhosphorIcons Kind="CaretRight" />
-        </Button>
-
-        <Button
-          Command="{Binding LastPageCommand}"
-          IsEnabled="{Binding HasNextPage}"
-          Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Ultima pagina">
-          <icon:PackIconPhosphorIcons Kind="CaretDoubleRight" />
+          ToolTip="Abrir no aplicativo padrão">
+          <icon:PackIconPhosphorIcons Kind="ArrowSquareOut" />
         </Button>
 
         <hc:Divider
@@ -71,143 +39,73 @@
           LineStrokeThickness="2"
           Orientation="Vertical" />
 
-        <!--  Zoom  -->
-        <Button
-          Command="{Binding ZoomOutCommand}"
-          Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Diminuir zoom">
-          <icon:PackIconPhosphorIcons Kind="MagnifyingGlassMinus" />
-        </Button>
-
         <TextBlock
-          MinWidth="50"
           Margin="8,0"
           VerticalAlignment="Center"
-          Text="{Binding Zoom, StringFormat='{}{0:P0}'}"
-          TextAlignment="Center" />
-
-        <Button
-          Command="{Binding ZoomInCommand}"
-          Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Aumentar zoom">
-          <icon:PackIconPhosphorIcons Kind="MagnifyingGlassPlus" />
-        </Button>
-
-        <Button
-          Command="{Binding ResetZoomCommand}"
-          Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Zoom 100%">
-          <icon:PackIconPhosphorIcons Kind="Equals" />
-        </Button>
-
-        <Button
-          Command="{Binding ToggleFitToWindowCommand}"
-          Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Ajustar à janela">
-          <icon:PackIconPhosphorIcons Kind="FrameCorners" />
-        </Button>
-
-        <hc:Divider
-          MaxHeight="16"
-          LineStrokeThickness="2"
-          Orientation="Vertical" />
-
-        <!--  Rotacao  -->
-        <Button
-          Command="{Binding RotateCounterClockwiseCommand}"
-          Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Girar anti-horario">
-          <icon:PackIconPhosphorIcons Kind="ArrowCounterClockwise" />
-        </Button>
-
-        <Button
-          Command="{Binding RotateClockwiseCommand}"
-          Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Girar horario">
-          <icon:PackIconPhosphorIcons Kind="ArrowClockwise" />
-        </Button>
+          Foreground="{DynamicResource SecondaryTextBrush}"
+          Text="Visualização usando o aplicativo padrão do sistema" />
       </StackPanel>
     </Border>
 
-    <!--  Area de visualizacao do PDF  -->
+    <!--  Area de visualizacao do PDF via Preview Handler  -->
     <Border
       Grid.Row="1"
+      Background="{DynamicResource SecondaryRegionBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
-      BorderThickness="1,0,1,0"
-      CornerRadius="0">
-      <ScrollViewer
-        Background="{DynamicResource SecondaryRegionBrush}"
-        HorizontalScrollBarVisibility="Auto"
-        VerticalScrollBarVisibility="Auto">
-        <Grid>
-          <!--  Imagem da pagina  -->
-          <Border
-            Margin="20"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Background="White"
-            BorderBrush="{DynamicResource BorderBrush}"
-            BorderThickness="1"
-            Effect="{DynamicResource EffectShadow2}">
-            <Image
-              RenderTransformOrigin="0.5,0.5"
-              Source="{Binding CurrentPage}"
-              Stretch="None">
-              <Image.RenderTransform>
-                <RotateTransform Angle="{Binding Rotation}" />
-              </Image.RenderTransform>
-            </Image>
-          </Border>
+      BorderThickness="1,0,1,0">
+      <Grid>
+        <!--  Preview Handler Host  -->
+        <preview:PreviewHandlerHost
+          x:Name="PreviewHost"
+          Visibility="{Binding CurrentFile, Converter={StaticResource Object2VisibilityConverter}}" />
 
-          <!--  Placeholder quando nao ha arquivo  -->
-          <StackPanel
+        <!--  Placeholder quando nao ha arquivo  -->
+        <StackPanel
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          Visibility="{Binding CurrentFile, Converter={StaticResource Object2VisibilityReConverter}}">
+          <icon:PackIconPhosphorIcons
+            Width="64"
+            Height="64"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Visibility="{Binding CurrentFile, Converter={StaticResource Object2VisibilityReConverter}}">
+            Foreground="{DynamicResource SecondaryTextBrush}"
+            Kind="FilePdf" />
+          <TextBlock
+            Margin="0,16,0,0"
+            Foreground="{DynamicResource SecondaryTextBrush}"
+            Text="Selecione um PDF para visualizar" />
+        </StackPanel>
+
+        <!--  Mensagem de erro  -->
+        <Border
+          Padding="16"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          Background="{DynamicResource DangerBrush}"
+          CornerRadius="4"
+          Visibility="{Binding ErrorMessage, Converter={StaticResource Object2VisibilityConverter}}">
+          <StackPanel>
             <icon:PackIconPhosphorIcons
-              Width="64"
-              Height="64"
+              Width="32"
+              Height="32"
               HorizontalAlignment="Center"
-              Foreground="{DynamicResource SecondaryTextBrush}"
-              Kind="FilePdf" />
+              Foreground="White"
+              Kind="Warning" />
             <TextBlock
-              Margin="0,16,0,0"
-              Foreground="{DynamicResource SecondaryTextBrush}"
-              Text="Selecione um PDF para visualizar" />
+              MaxWidth="300"
+              Margin="0,8,0,0"
+              Foreground="White"
+              Text="{Binding ErrorMessage}"
+              TextWrapping="Wrap" />
           </StackPanel>
+        </Border>
 
-          <!--  Mensagem de erro  -->
-          <Border
-            Padding="16"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Background="{DynamicResource DangerBrush}"
-            CornerRadius="4"
-            Visibility="{Binding ErrorMessage, Converter={StaticResource Object2VisibilityConverter}}">
-            <StackPanel>
-              <icon:PackIconPhosphorIcons
-                Width="32"
-                Height="32"
-                HorizontalAlignment="Center"
-                Foreground="White"
-                Kind="Warning" />
-              <TextBlock
-                MaxWidth="300"
-                Margin="0,8,0,0"
-                Foreground="White"
-                Text="{Binding ErrorMessage}"
-                TextWrapping="Wrap" />
-            </StackPanel>
-          </Border>
-
-          <!--  Loading  -->
-          <Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource Boolean2VisibilityConverter}}">
-            <hc:LoadingCircle />
-          </Border>
-        </Grid>
-      </ScrollViewer>
+        <!--  Loading  -->
+        <Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource Boolean2VisibilityConverter}}">
+          <hc:LoadingCircle />
+        </Border>
+      </Grid>
     </Border>
-
 
     <!--  Info do arquivo atual  -->
     <Border

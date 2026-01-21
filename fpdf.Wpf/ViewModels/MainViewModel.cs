@@ -154,8 +154,8 @@ public partial class MainViewModel : ObservableObject
 
   private void OnFileSelected(object? sender, PdfFileInfo file)
   {
-    _ = PdfViewer.LoadFileCommand.ExecuteAsync(file);
-    StatusMessage = $"{file.FileName} - {file.PageCount} paginas";
+    PdfViewer.LoadFileCommand.Execute(file);
+    StatusMessage = file.FileName;
   }
 
   private void OnFilesSelectedForPrint(object? sender, IEnumerable<PdfFileInfo> files)
