@@ -124,13 +124,25 @@
         <DataGridTemplateColumn MinWidth="40" MaxWidth="40">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate DataType="{x:Type models:PdfFileInfo}">
-              <icon:PackIconPhosphorIcons
-                Width="18"
-                Height="18"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Foreground="{DynamicResource DangerBrush}"
-                Kind="FilePdf" />
+              <Grid>
+                <icon:PackIconPhosphorIcons
+                  Width="18"
+                  Height="18"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Foreground="{DynamicResource DangerBrush}"
+                  Kind="FilePdf"
+                  Visibility="{Binding IsLoadingThumbnail, Converter={StaticResource Boolean2VisibilityReConverter}}" />
+                <hc:CircleProgressBar
+                  Width="16"
+                  Height="16"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  ArcThickness="2"
+                  Background="Transparent"
+                  IsIndeterminate="True"
+                  Visibility="{Binding IsLoadingThumbnail, Converter={StaticResource Boolean2VisibilityConverter}}" />
+              </Grid>
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
@@ -210,20 +222,6 @@
         <TextBlock Text="{Binding FileCount, StringFormat='{}{0} arquivos'}" />
         <TextBlock Text=" | " Visibility="{Binding SelectedCount, Converter={StaticResource Int2VisibilityConverter}}" />
         <TextBlock Text="{Binding SelectedCount, StringFormat='{}{0} selecionados'}" Visibility="{Binding SelectedCount, Converter={StaticResource Int2VisibilityConverter}}" />
-      </StackPanel>
-    </Border>
-
-    <!--  Loading overlay  -->
-    <Border
-      Grid.RowSpan="3"
-      Background="#80000000"
-      Visibility="{Binding IsLoading, Converter={StaticResource Boolean2VisibilityConverter}}">
-      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <hc:LoadingCircle />
-        <TextBlock
-          Margin="0,8,0,0"
-          Foreground="White"
-          Text="Carregando arquivos..." />
       </StackPanel>
     </Border>
   </Grid>
