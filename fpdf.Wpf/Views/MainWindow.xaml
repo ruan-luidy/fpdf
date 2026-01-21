@@ -145,19 +145,7 @@
       Background="{DynamicResource RegionBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
       BorderThickness="0,1,0,0">
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-
-        <TextBlock
-          Grid.Column="0"
-          VerticalAlignment="Center"
-          Text="{Binding StatusMessage}" />
-
-        <controls:PrintQueueControl Grid.Column="1" DataContext="{Binding PrintQueue}" />
-      </Grid>
+      <controls:PrintQueueControl DataContext="{Binding PrintQueue}" />
     </Border>
   </Grid>
 </hc:Window>

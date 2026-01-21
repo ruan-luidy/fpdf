@@ -10,35 +10,24 @@
   d:DataContext="{d:DesignInstance Type=vm:PrintQueueViewModel}"
   mc:Ignorable="d">
 
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="*" />
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="Auto" />
-    </Grid.ColumnDefinitions>
-
+  <StackPanel Orientation="Horizontal">
     <!--  Impressora  -->
-    <StackPanel Grid.Column="0" Orientation="Horizontal">
-      <icon:PackIconPhosphorIcons
-        Width="16"
-        Height="16"
-        Margin="0,0,8,0"
-        VerticalAlignment="Center"
-        Foreground="{DynamicResource PrimaryBrush}"
-        Kind="Printer" />
-      <TextBlock
-        MaxWidth="200"
-        VerticalAlignment="Center"
-        Text="{Binding SelectedPrinter.DisplayName, FallbackValue='Nenhuma impressora'}"
-        TextTrimming="CharacterEllipsis" />
-    </StackPanel>
+    <icon:PackIconPhosphorIcons
+      Width="16"
+      Height="16"
+      Margin="0,0,8,0"
+      VerticalAlignment="Center"
+      Foreground="{DynamicResource PrimaryBrush}"
+      Kind="Printer" />
+    <TextBlock
+      MaxWidth="200"
+      VerticalAlignment="Center"
+      Text="{Binding SelectedPrinter.DisplayName, FallbackValue='Nenhuma impressora'}"
+      TextTrimming="CharacterEllipsis" />
 
     <!--  Contador da fila  -->
     <Button
-      Grid.Column="1"
       Margin="16,0"
-      HorizontalAlignment="Left"
       Click="OpenQueueDialog_Click"
       Style="{StaticResource ButtonIconCustom}"
       ToolTip="Ver fila de impressão">
@@ -51,21 +40,8 @@
       </StackPanel>
     </Button>
 
-    <!--  Copias  -->
-    <hc:NumericUpDown
-      Grid.Column="2"
-      Width="70"
-      Margin="0,0,8,0"
-      hc:TitleElement.Title="Cópias"
-      hc:TitleElement.TitlePlacement="Left"
-      Maximum="100"
-      Minimum="1"
-      Style="{StaticResource NumericUpDownPlus}"
-      Value="{Binding Copies}" />
-
     <!--  Botao Imprimir  -->
     <Button
-      Grid.Column="3"
       Command="{Binding PrintQueueCommand}"
       IsEnabled="{Binding IsPrinting, Converter={StaticResource Boolean2BooleanReConverter}}"
       Style="{StaticResource ButtonPrimary}">
@@ -77,5 +53,5 @@
         <TextBlock Margin="8,0,0,0" Text="Imprimir" />
       </StackPanel>
     </Button>
-  </Grid>
+  </StackPanel>
 </UserControl>
