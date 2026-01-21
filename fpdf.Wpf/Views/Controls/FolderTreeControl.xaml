@@ -151,7 +151,8 @@
     <Border
       Grid.Row="0"
       Margin="5"
-      Padding="0">
+      Padding="0"
+      Background="{DynamicResource DarkOpacityBrush}">
       <Border.Style>
         <Style BasedOn="{StaticResource BorderRegion}" TargetType="Border">
           <Style.Triggers>
@@ -197,6 +198,7 @@
     <TreeView
       Grid.Row="1"
       Margin="5,0"
+      Background="{DynamicResource DarkOpacityBrush}"
       ItemTemplate="{StaticResource FolderTemplate}"
       ItemsSource="{Binding RootFolders}"
       VirtualizingPanel.IsVirtualizing="True"

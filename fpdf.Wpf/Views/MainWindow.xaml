@@ -15,7 +15,7 @@
   d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
   Loaded="Window_Loaded"
   Style="{StaticResource WindowWin10}"
-  SystemBackdropType="Auto"
+  SystemBackdropType="Acrylic"
   WindowStartupLocation="CenterScreen"
   mc:Ignorable="d">
 
@@ -142,7 +142,7 @@
     <Border
       Grid.Row="1"
       Margin="0,5,0,0"
-      Background="{DynamicResource RegionBrush}"
+      Background="{DynamicResource DarkMaskBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
       BorderThickness="0,1,0,0">
       <controls:PrintQueueControl DataContext="{Binding PrintQueue}" />

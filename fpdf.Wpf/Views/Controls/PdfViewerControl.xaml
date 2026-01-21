@@ -22,7 +22,7 @@
     <Border
       Grid.Row="0"
       Margin="5,5,5,0"
-      Background="{DynamicResource RegionBrush}"
+      Background="{DynamicResource DarkOpacityBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
       BorderThickness="1"
       CornerRadius="4,4,0,0">
@@ -111,7 +111,7 @@
       Grid.Row="2"
       Margin="5,0"
       Padding="8,4"
-      Background="{DynamicResource RegionBrush}"
+      Background="{DynamicResource DarkOpacityBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
       BorderThickness="1"
       CornerRadius="0,0,4,4">
