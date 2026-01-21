@@ -8,7 +8,6 @@
   xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
-  Title="Network PDF Manager"
   Width="1200"
   Height="800"
   MinWidth="800"
@@ -19,6 +18,62 @@
   SystemBackdropType="Auto"
   WindowStartupLocation="CenterScreen"
   mc:Ignorable="d">
+
+  <hc:Window.NonClientAreaContent>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+      <!--  Logo/Titulo  -->
+      <StackPanel Grid.Column="0" Orientation="Horizontal">
+        <icon:PackIconPhosphorIcons
+          Width="18"
+          Height="18"
+          VerticalAlignment="Center"
+          Foreground="{DynamicResource PrimaryBrush}"
+          Kind="FilePdf" />
+        <TextBlock
+          Margin="8,8,0,0"
+          VerticalAlignment="Center"
+          FontWeight="SemiBold"
+          Style="{StaticResource TextBlockDefaultBold}"
+          Text="Network PDF Manager" />
+      </StackPanel>
+
+      <!--  Acoes rapidas  -->
+      <StackPanel Grid.Column="2" Orientation="Horizontal">
+        <Button
+          Command="{Binding RefreshCommand}"
+          Style="{StaticResource ButtonIconCustom}"
+          ToolTip="Atualizar (Ctrl+R)">
+          <icon:PackIconPhosphorIcons Kind="ArrowClockwise" />
+        </Button>
+
+        <Button
+          Command="{Binding PrintSelectedFilesCommand}"
+          Style="{StaticResource ButtonIconCustom}"
+          ToolTip="Imprimir (Ctrl+P)">
+          <icon:PackIconPhosphorIcons Kind="Printer" />
+        </Button>
+
+        <hc:Divider
+          MaxHeight="16"
+          Margin="4,0"
+          LineStrokeThickness="2"
+          Orientation="Vertical" />
+
+        <Button
+          Command="{Binding OpenSettingsCommand}"
+          Style="{StaticResource ButtonIconCustom}"
+          ToolTip="Configuracoes (Ctrl+,)">
+          <icon:PackIconPhosphorIcons Kind="Gear" />
+        </Button>
+      </StackPanel>
+    </Grid>
+  </hc:Window.NonClientAreaContent>
 
   <hc:Window.InputBindings>
     <KeyBinding
@@ -37,69 +92,13 @@
 
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <!--  Menu Bar  -->
-    <Border Grid.Row="0" Background="{DynamicResource RegionBrush}">
-      <Grid Margin="8,4">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-
-        <!--  Logo/Titulo  -->
-        <StackPanel Grid.Column="0" Orientation="Horizontal">
-          <icon:PackIconPhosphorIcons
-            Width="24"
-            Height="24"
-            Foreground="{DynamicResource PrimaryBrush}"
-            Kind="FilePdf" />
-          <TextBlock
-            Margin="8,0,0,0"
-            VerticalAlignment="Center"
-            FontSize="16"
-            FontWeight="SemiBold"
-            Text="Network PDF Manager" />
-        </StackPanel>
-
-        <!--  Acoes rapidas  -->
-        <StackPanel Grid.Column="2" Orientation="Horizontal">
-          <Button
-            Command="{Binding RefreshCommand}"
-            Style="{StaticResource ButtonIconCustom}"
-            ToolTip="Atualizar (Ctrl+R)">
-            <icon:PackIconPhosphorIcons Kind="ArrowClockwise" />
-          </Button>
-
-          <Button
-            Command="{Binding PrintSelectedFilesCommand}"
-            Style="{StaticResource ButtonIconCustom}"
-            ToolTip="Imprimir (Ctrl+P)">
-            <icon:PackIconPhosphorIcons Kind="Printer" />
-          </Button>
-
-          <hc:Divider
-            MaxHeight="16"
-            LineStrokeThickness="2"
-            Orientation="Vertical" />
-
-          <Button
-            Command="{Binding OpenSettingsCommand}"
-            Style="{StaticResource ButtonIconCustom}"
-            ToolTip="Configuracoes (Ctrl+,)">
-            <icon:PackIconPhosphorIcons Kind="Gear" />
-          </Button>
-        </StackPanel>
-      </Grid>
-    </Border>
-
     <!--  Conteudo Principal  -->
-    <Grid Grid.Row="1">
+    <Grid Grid.Row="0">
       <Grid.ColumnDefinitions>
         <ColumnDefinition
           Width="{Binding TreeViewWidth, Mode=TwoWay, Converter={StaticResource Double2GridLengthConverter}}"
@@ -142,13 +141,13 @@
 
     <!--  Painel de Impressao  -->
     <controls:PrintQueueControl
-      Grid.Row="2"
+      Grid.Row="1"
       Margin="8"
       DataContext="{Binding PrintQueue}" />
 
     <!--  Barra de Status  -->
     <Border
-      Grid.Row="3"
+      Grid.Row="2"
       Padding="8,4"
       Background="{DynamicResource RegionBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
