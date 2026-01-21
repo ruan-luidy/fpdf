@@ -29,10 +29,13 @@
           Margin="6,0,0,0"
           VerticalAlignment="Center"
           Text="{Binding Name}" />
-        <hc:LoadingCircle
-          Width="14"
-          Height="14"
+        <hc:CircleProgressBar
+          Width="16"
+          Height="16"
           Margin="6,0,0,0"
+          ArcThickness="2"
+          Background="Transparent"
+          IsIndeterminate="True"
           Visibility="{Binding IsLoading, Converter={StaticResource Boolean2VisibilityConverter}}" />
       </StackPanel>
       <HierarchicalDataTemplate.Triggers>
@@ -57,6 +60,7 @@
             <Condition Binding="{Binding IconKind}" Value="Folder" />
           </MultiDataTrigger.Conditions>
           <Setter TargetName="ItemIcon" Property="Kind" Value="FolderOpen" />
+
         </MultiDataTrigger>
         <!--  Categoria em negrito  -->
         <DataTrigger Binding="{Binding IsCategory}" Value="True">
@@ -64,6 +68,74 @@
         </DataTrigger>
       </HierarchicalDataTemplate.Triggers>
     </HierarchicalDataTemplate>
+
+    <!--  Estilo customizado do TreeViewItem com cor de selecao alterada  -->
+    <Style
+      x:Key="CustomTreeViewItemStyle"
+      BasedOn="{StaticResource TreeViewItemBaseStyle.Small}"
+      TargetType="TreeViewItem">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="TreeViewItem">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition MinHeight="{TemplateBinding MinHeight}" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              <Border
+                x:Name="Bd"
+                Padding="{TemplateBinding Padding}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
+                SnapsToDevicePixels="true">
+                <DockPanel Margin="{Binding Converter={StaticResource TreeViewItemMarginConverter}, RelativeSource={RelativeSource TemplatedParent}}" LastChildFill="True">
+                  <ToggleButton
+                    x:Name="Expander"
+                    ClickMode="Press"
+                    IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                    Style="{StaticResource ExpandCollapseToggleStyle}" />
+                  <ContentPresenter
+                    x:Name="PART_Header"
+                    VerticalAlignment="Center"
+                    ContentSource="Header"
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                </DockPanel>
+              </Border>
+              <ItemsPresenter x:Name="ItemsHost" Grid.Row="1" />
+            </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger SourceName="Bd" Property="IsMouseOver" Value="true">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+              </Trigger>
+              <Trigger Property="IsExpanded" Value="false">
+                <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed" />
+              </Trigger>
+              <Trigger Property="HasItems" Value="false">
+                <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+              </Trigger>
+              <Trigger Property="IsSelected" Value="true">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource TextIconBrush}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
+              </Trigger>
+              <MultiTrigger>
+                <MultiTrigger.Conditions>
+                  <Condition Property="IsSelected" Value="true" />
+                  <Condition Property="IsSelectionActive" Value="false" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+              </MultiTrigger>
+              <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Opacity" Value=".4" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
   </UserControl.Resources>
 
   <Grid>
@@ -127,7 +199,7 @@
       VirtualizingPanel.IsVirtualizing="True"
       VirtualizingPanel.VirtualizationMode="Recycling">
       <TreeView.ItemContainerStyle>
-        <Style BasedOn="{StaticResource TreeViewItemBaseStyle.Small}" TargetType="TreeViewItem">
+        <Style BasedOn="{StaticResource CustomTreeViewItemStyle}" TargetType="TreeViewItem">
           <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
           <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
           <EventSetter Event="Expanded" Handler="TreeViewItem_Expanded" />
