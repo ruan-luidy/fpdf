@@ -16,16 +16,16 @@
   WindowStartupLocation="CenterOwner"
   mc:Ignorable="d">
 
-  <Grid Margin="16">
+  <Grid Margin="0">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
     <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-      <StackPanel>
+      <StackPanel Margin="10">
         <!--  Impressao  -->
-        <hc:Card Margin="0,0,0,16" Header="Impressao">
+        <Border Margin="0,0,0,16" Style="{StaticResource BorderRegion}">
           <StackPanel Margin="16">
             <TextBlock Margin="0,0,0,4" Text="Impressora padrao:" />
             <ComboBox
@@ -45,7 +45,7 @@
               Content="Duplex por padrao"
               IsChecked="{Binding DefaultDuplex}" />
           </StackPanel>
-        </hc:Card>
+        </Border>
 
         <!--  Aparencia  -->
         <hc:Card Margin="0,0,0,16" Header="Aparencia">
