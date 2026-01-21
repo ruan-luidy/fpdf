@@ -6,223 +6,76 @@
   xmlns:hc="https://handyorg.github.io/handycontrol"
   xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:models="clr-namespace:fpdf.Core.Models;assembly=fpdf.Core"
   xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
   d:DataContext="{d:DesignInstance Type=vm:PrintQueueViewModel}"
   mc:Ignorable="d">
 
-  <Border Margin="-3,0" Style="{StaticResource BorderRegion}">
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="Auto" />
-      </Grid.RowDefinitions>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
 
-      <!--  Cabecalho com impressora atual  -->
-      <Grid Grid.Row="0">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+    <!--  Impressora  -->
+    <StackPanel Grid.Column="0" Orientation="Horizontal">
+      <icon:PackIconPhosphorIcons
+        Width="16"
+        Height="16"
+        Margin="0,0,8,0"
+        VerticalAlignment="Center"
+        Foreground="{DynamicResource PrimaryBrush}"
+        Kind="Printer" />
+      <TextBlock
+        MaxWidth="200"
+        VerticalAlignment="Center"
+        Text="{Binding SelectedPrinter.DisplayName, FallbackValue='Nenhuma impressora'}"
+        TextTrimming="CharacterEllipsis" />
+    </StackPanel>
 
+    <!--  Contador da fila  -->
+    <Button
+      Grid.Column="1"
+      Margin="16,0"
+      HorizontalAlignment="Left"
+      Click="OpenQueueDialog_Click"
+      Style="{StaticResource ButtonIconCustom}"
+      ToolTip="Ver fila de impressão">
+      <StackPanel Orientation="Horizontal">
         <icon:PackIconPhosphorIcons
-          Grid.Column="0"
+          Width="14"
+          Height="14"
+          Kind="Queue" />
+        <TextBlock Margin="6,0,0,0" Text="{Binding PendingCount, StringFormat='{}{0} na fila'}" />
+      </StackPanel>
+    </Button>
+
+    <!--  Copias  -->
+    <hc:NumericUpDown
+      Grid.Column="2"
+      Width="70"
+      Margin="0,0,8,0"
+      hc:TitleElement.Title="Cópias"
+      hc:TitleElement.TitlePlacement="Left"
+      Maximum="100"
+      Minimum="1"
+      Style="{StaticResource NumericUpDownPlus}"
+      Value="{Binding Copies}" />
+
+    <!--  Botao Imprimir  -->
+    <Button
+      Grid.Column="3"
+      Command="{Binding PrintQueueCommand}"
+      IsEnabled="{Binding IsPrinting, Converter={StaticResource Boolean2BooleanReConverter}}"
+      Style="{StaticResource ButtonPrimary}">
+      <StackPanel Orientation="Horizontal">
+        <icon:PackIconPhosphorIcons
           Width="16"
           Height="16"
-          Margin="0,0,8,0"
-          VerticalAlignment="Center"
-          Foreground="{DynamicResource PrimaryBrush}"
           Kind="Printer" />
-
-        <TextBlock
-          Grid.Column="1"
-          VerticalAlignment="Center"
-          Text="{Binding SelectedPrinter.DisplayName, FallbackValue='Nenhuma impressora selecionada'}"
-          TextTrimming="CharacterEllipsis" />
-
-        <hc:NumericUpDown
-          Grid.Column="2"
-          Width="70"
-          Margin="8,0,0,0"
-          hc:TitleElement.Title="Cópias"
-          hc:TitleElement.TitlePlacement="Left"
-          Maximum="100"
-          Minimum="1"
-          Style="{StaticResource NumericUpDownPlus}"
-          Value="{Binding Copies}" />
-
-        <CheckBox
-          Grid.Column="3"
-          Margin="12,0,0,0"
-          VerticalAlignment="Center"
-          Content="Duplex"
-          IsChecked="{Binding Duplex}" />
-      </Grid>
-
-      <!--  Lista de jobs  -->
-      <ListBox
-        Grid.Row="1"
-        MaxHeight="150"
-        Margin="0,8,0,0"
-        HorizontalContentAlignment="Stretch"
-        ItemsSource="{Binding Jobs}"
-        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-        Visibility="{Binding Jobs.Count, Converter={StaticResource Int2VisibilityConverter}}">
-        <ListBox.ItemTemplate>
-          <DataTemplate DataType="{x:Type models:PrintJob}">
-            <Grid Margin="2">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-              </Grid.ColumnDefinitions>
-
-              <!--  Icone de status  -->
-              <icon:PackIconPhosphorIcons
-                Grid.Column="0"
-                Width="14"
-                Height="14"
-                Margin="0,0,8,0"
-                VerticalAlignment="Center">
-                <icon:PackIconPhosphorIcons.Style>
-                  <Style TargetType="icon:PackIconPhosphorIcons">
-                    <Setter Property="Kind" Value="Clock" />
-                    <Setter Property="Foreground" Value="{DynamicResource WarningBrush}" />
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding Status}" Value="Printing">
-                        <Setter Property="Kind" Value="Printer" />
-                        <Setter Property="Foreground" Value="{DynamicResource InfoBrush}" />
-                      </DataTrigger>
-                      <DataTrigger Binding="{Binding Status}" Value="Completed">
-                        <Setter Property="Kind" Value="Check" />
-                        <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
-                      </DataTrigger>
-                      <DataTrigger Binding="{Binding Status}" Value="Failed">
-                        <Setter Property="Kind" Value="X" />
-                        <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
-                      </DataTrigger>
-                      <DataTrigger Binding="{Binding Status}" Value="Cancelled">
-                        <Setter Property="Kind" Value="Prohibit" />
-                        <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </icon:PackIconPhosphorIcons.Style>
-              </icon:PackIconPhosphorIcons>
-
-              <!--  Nome do arquivo  -->
-              <TextBlock
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                Text="{Binding FileName}"
-                TextTrimming="CharacterEllipsis" />
-
-              <!--  Copias  -->
-              <TextBlock
-                Grid.Column="2"
-                Margin="8,0"
-                VerticalAlignment="Center"
-                Foreground="{DynamicResource PrimaryTextBrush}"
-                Text="{Binding Copies, StringFormat='x{0}'}" />
-
-              <!--  Botao cancelar  -->
-              <Button
-                Grid.Column="3"
-                Command="{Binding DataContext.CancelJobCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                CommandParameter="{Binding}"
-                Style="{StaticResource ButtonIconCustom}"
-                ToolTip="Remover">
-                <icon:PackIconPhosphorIcons
-                  Width="12"
-                  Height="12"
-                  Kind="XBold">
-                  <icon:PackIconPhosphorIcons.Style>
-                    <Style TargetType="icon:PackIconPhosphorIcons">
-                      <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
-                          <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
-                        </DataTrigger>
-                      </Style.Triggers>
-                    </Style>
-                  </icon:PackIconPhosphorIcons.Style>
-                </icon:PackIconPhosphorIcons>
-              </Button>
-            </Grid>
-          </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
-
-      <!--  Placeholder quando vazio  -->
-      <TextBlock
-        Grid.Row="1"
-        Margin="0,8,0,0"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
-        Foreground="{DynamicResource SecondaryTextBrush}"
-        Text="Fila de impressão vazia"
-        Visibility="{Binding Jobs.Count, Converter={StaticResource Int2VisibilityReConverter}}" />
-
-      <!--  Barra de acoes  -->
-      <Grid Grid.Row="2" Margin="0,8,0,0">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-
-        <!--  Contadores  -->
-        <StackPanel
-          Grid.Column="0"
-          VerticalAlignment="Center"
-          Orientation="Horizontal">
-          <TextBlock Foreground="{DynamicResource SecondaryTextBrush}">
-            <Run Text="{Binding PendingCount, Mode=OneWay}" />
-            <Run Text="na fila" />
-          </TextBlock>
-          <TextBlock
-            Margin="12,0,0,0"
-            Foreground="{DynamicResource SuccessBrush}"
-            Visibility="{Binding CompletedCount, Converter={StaticResource Int2VisibilityConverter}}">
-            <Run Text="{Binding CompletedCount, Mode=OneWay}" />
-            <Run Text="ok" />
-          </TextBlock>
-          <TextBlock
-            Margin="12,0,0,0"
-            Foreground="{DynamicResource DangerBrush}"
-            Visibility="{Binding FailedCount, Converter={StaticResource Int2VisibilityConverter}}">
-            <Run Text="{Binding FailedCount, Mode=OneWay}" />
-            <Run Text="erro(s)" />
-          </TextBlock>
-        </StackPanel>
-
-        <!--  Botoes de acao  -->
-        <Button
-          Grid.Column="1"
-          Margin="4,0"
-          Command="{Binding ClearCompletedCommand}"
-          Style="{StaticResource ButtonIcon}"
-          ToolTip="Limpar concluídos">
-          <icon:PackIconPhosphorIcons Kind="Broom" />
-        </Button>
-
-        <Button
-          Grid.Column="2"
-          Command="{Binding PrintQueueCommand}"
-          IsEnabled="{Binding IsPrinting, Converter={StaticResource Boolean2BooleanReConverter}}"
-          Style="{StaticResource ButtonPrimary}">
-          <StackPanel Orientation="Horizontal">
-            <icon:PackIconPhosphorIcons
-              Width="16"
-              Height="16"
-              Kind="Printer" />
-            <TextBlock Margin="8,0,0,0" Text="Imprimir" />
-          </StackPanel>
-        </Button>
-      </Grid>
-    </Grid>
-  </Border>
+        <TextBlock Margin="8,0,0,0" Text="Imprimir" />
+      </StackPanel>
+    </Button>
+  </Grid>
 </UserControl>

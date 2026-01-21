@@ -1,23 +1,26 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using fpdf.Wpf.ViewModels;
+using fpdf.Wpf.Views.Dialogs;
 
 namespace fpdf.Wpf.Views.Controls;
 
 public partial class PrintQueueControl : UserControl
 {
-  public PrintQueueControl()
-  {
-    InitializeComponent();
-  }
-
-  private PrintQueueViewModel? ViewModel => DataContext as PrintQueueViewModel;
-
-  private void AllPages_Checked(object sender, RoutedEventArgs e)
-  {
-    if (ViewModel != null)
+    public PrintQueueControl()
     {
-      ViewModel.PageRange = "all";
+        InitializeComponent();
     }
-  }
+
+    private void OpenQueueDialog_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is PrintQueueViewModel vm)
+        {
+            var dialog = new PrintQueueDialog(vm)
+            {
+                Owner = Window.GetWindow(this)
+            };
+            dialog.ShowDialog();
+        }
+    }
 }

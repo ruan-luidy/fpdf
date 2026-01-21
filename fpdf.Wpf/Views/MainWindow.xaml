@@ -94,7 +94,6 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
     <!--  Conteudo Principal  -->
@@ -139,16 +138,10 @@
       <controls:PdfViewerControl Grid.Column="4" DataContext="{Binding PdfViewer}" />
     </Grid>
 
-    <!--  Painel de Impressao  -->
-    <controls:PrintQueueControl
-      Grid.Row="1"
-      Margin="8"
-      DataContext="{Binding PrintQueue}" />
-
-    <!--  Barra de Status  -->
+    <!--  Barra de Status com Impressao  -->
     <Border
-      Grid.Row="2"
-      Padding="8,4"
+      Grid.Row="1"
+      Margin="0,5,0,0"
       Background="{DynamicResource RegionBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
       BorderThickness="0,1,0,0">
@@ -163,12 +156,7 @@
           VerticalAlignment="Center"
           Text="{Binding StatusMessage}" />
 
-        <StackPanel Grid.Column="1" Orientation="Horizontal">
-          <TextBlock
-            Margin="0,0,16,0"
-            VerticalAlignment="Center"
-            Text="{Binding PrintQueue.PendingCount, StringFormat='Fila: {0}'}" />
-        </StackPanel>
+        <controls:PrintQueueControl Grid.Column="1" DataContext="{Binding PrintQueue}" />
       </Grid>
     </Border>
   </Grid>
