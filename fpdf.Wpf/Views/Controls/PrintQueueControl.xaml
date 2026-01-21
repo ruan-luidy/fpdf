@@ -44,7 +44,7 @@
     <Button
       Command="{Binding PrintQueueCommand}"
       IsEnabled="{Binding IsPrinting, Converter={StaticResource Boolean2BooleanReConverter}}"
-      Style="{StaticResource ButtonPrimary}">
+      Style="{StaticResource ButtonPrimary.Small}">
       <StackPanel Orientation="Horizontal">
         <icon:PackIconPhosphorIcons
           Width="16"

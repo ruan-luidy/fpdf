@@ -173,7 +173,7 @@
                   <icon:PackIconPhosphorIcons
                     Width="14"
                     Height="14"
-                    Kind="XBold">
+                    Kind="X">
                     <icon:PackIconPhosphorIcons.Style>
                       <Style TargetType="icon:PackIconPhosphorIcons">
                         <Style.Triggers>

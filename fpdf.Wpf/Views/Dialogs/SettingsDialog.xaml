@@ -110,6 +110,108 @@
           </control:SettingsSection.SectionContent>
         </control:SettingsSection>
 
+        <!--  Diretorios de Rede  -->
+        <control:SettingsSection Title="Diretórios de Rede">
+          <control:SettingsSection.SectionContent>
+            <StackPanel>
+              <!--  Campo para adicionar  -->
+              <Grid Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <hc:TextBox
+                  hc:InfoElement.Placeholder="\\servidor\pasta ou \\clbrfs\projetos"
+                  Text="{Binding NewNetworkPath, UpdateSourceTrigger=PropertyChanged}">
+                  <hc:TextBox.InputBindings>
+                    <KeyBinding Key="Return" Command="{Binding AddNetworkPathCommand}" />
+                  </hc:TextBox.InputBindings>
+                </hc:TextBox>
+
+                <Button
+                  Grid.Column="1"
+                  Margin="8,0,0,0"
+                  Command="{Binding AddNetworkPathCommand}"
+                  Style="{StaticResource ButtonPrimary}"
+                  ToolTip="Adicionar diretório">
+                  <icon:PackIconPhosphorIcons
+                    Width="14"
+                    Height="14"
+                    Kind="Plus" />
+                </Button>
+              </Grid>
+
+              <!--  Lista de diretorios  -->
+              <Grid>
+                <ListBox
+                  MaxHeight="150"
+                  HorizontalContentAlignment="Stretch"
+                  Background="Transparent"
+                  BorderThickness="0"
+                  ItemsSource="{Binding CustomNetworkPaths}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Style="{StaticResource ListBox.Small}">
+                  <ListBox.ItemTemplate>
+                    <DataTemplate>
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="Auto" />
+                          <ColumnDefinition Width="*" />
+                          <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <icon:PackIconPhosphorIcons
+                          Width="16"
+                          Height="16"
+                          Margin="0,0,8,0"
+                          VerticalAlignment="Center"
+                          Foreground="{DynamicResource PrimaryBrush}"
+                          Kind="Network" />
+
+                        <TextBlock
+                          Grid.Column="1"
+                          VerticalAlignment="Center"
+                          Text="{Binding}"
+                          TextTrimming="CharacterEllipsis" />
+
+                        <Button
+                          Grid.Column="2"
+                          Command="{Binding DataContext.RemoveNetworkPathCommand, RelativeSource={RelativeSource AncestorType=hc:Window}}"
+                          CommandParameter="{Binding}"
+                          Style="{StaticResource ButtonIconCustom}"
+                          ToolTip="Remover">
+                          <icon:PackIconPhosphorIcons
+                            Width="12"
+                            Height="12"
+                            Kind="X">
+                            <icon:PackIconPhosphorIcons.Style>
+                              <Style TargetType="icon:PackIconPhosphorIcons">
+                                <Style.Triggers>
+                                  <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+                                  </DataTrigger>
+                                </Style.Triggers>
+                              </Style>
+                            </icon:PackIconPhosphorIcons.Style>
+                          </icon:PackIconPhosphorIcons>
+                        </Button>
+                      </Grid>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+
+                <TextBlock
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Foreground="{DynamicResource SecondaryTextBrush}"
+                  Text="Nenhum diretório de rede configurado"
+                  Visibility="{Binding CustomNetworkPaths.Count, Converter={StaticResource Int2VisibilityReConverter}}" />
+              </Grid>
+            </StackPanel>
+          </control:SettingsSection.SectionContent>
+        </control:SettingsSection>
+
         <!--  Pastas favoritas  -->
         <control:SettingsSection Title="Pastas Favoritas">
           <control:SettingsSection.SectionContent>

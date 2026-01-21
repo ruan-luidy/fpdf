@@ -10,6 +10,7 @@ public partial class SettingsViewModel : ObservableObject
 {
   private readonly ISettingsService _settingsService;
   private readonly IPrintService _printService;
+  private readonly INetworkService _networkService;
 
   [ObservableProperty]
   private string? _defaultPrinter;
@@ -32,15 +33,20 @@ public partial class SettingsViewModel : ObservableObject
   [ObservableProperty]
   private bool _defaultDuplex;
 
+  [ObservableProperty]
+  private string _newNetworkPath = string.Empty;
+
   public ObservableCollection<string> FavoriteFolders { get; } = new();
   public ObservableCollection<string> RecentFolders { get; } = new();
+  public ObservableCollection<string> CustomNetworkPaths { get; } = new();
   public ObservableCollection<PrinterInfo> Printers { get; } = new();
   public ObservableCollection<string> AvailableThemes { get; } = new() { "Light", "Dark", "Violet" };
 
-  public SettingsViewModel(ISettingsService settingsService, IPrintService printService)
+  public SettingsViewModel(ISettingsService settingsService, IPrintService printService, INetworkService networkService)
   {
     _settingsService = settingsService;
     _printService = printService;
+    _networkService = networkService;
   }
 
   [RelayCommand]
@@ -68,6 +74,12 @@ public partial class SettingsViewModel : ObservableObject
       RecentFolders.Add(folder);
     }
 
+    CustomNetworkPaths.Clear();
+    foreach (var path in settings.CustomNetworkPaths)
+    {
+      CustomNetworkPaths.Add(path);
+    }
+
     Printers.Clear();
     var printers = await _printService.GetPrintersAsync();
     foreach (var printer in printers)
@@ -89,6 +101,12 @@ public partial class SettingsViewModel : ObservableObject
     settings.DefaultCopies = DefaultCopies;
     settings.DefaultDuplex = DefaultDuplex;
 
+    settings.CustomNetworkPaths.Clear();
+    foreach (var path in CustomNetworkPaths)
+    {
+      settings.CustomNetworkPaths.Add(path);
+    }
+
     await _settingsService.SaveAsync();
   }
 
@@ -106,6 +124,36 @@ public partial class SettingsViewModel : ObservableObject
     _settingsService.Settings.RecentFolders.Clear();
     RecentFolders.Clear();
     _ = _settingsService.SaveAsync();
+  }
+
+  [RelayCommand]
+  private async Task AddNetworkPathAsync()
+  {
+    if (string.IsNullOrWhiteSpace(NewNetworkPath)) return;
+
+    var path = NewNetworkPath.Trim();
+
+    if (!await _networkService.FolderExistsAsync(path))
+    {
+      return;
+    }
+
+    if (!CustomNetworkPaths.Contains(path))
+    {
+      CustomNetworkPaths.Add(path);
+      _settingsService.Settings.CustomNetworkPaths.Add(path);
+      await _settingsService.SaveAsync();
+    }
+
+    NewNetworkPath = string.Empty;
+  }
+
+  [RelayCommand]
+  private async Task RemoveNetworkPathAsync(string path)
+  {
+    CustomNetworkPaths.Remove(path);
+    _settingsService.Settings.CustomNetworkPaths.Remove(path);
+    await _settingsService.SaveAsync();
   }
 
   partial void OnThemeChanged(string value)

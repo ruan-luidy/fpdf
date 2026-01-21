@@ -14,6 +14,7 @@ public partial class FolderTreeViewModel : ObservableObject
 
     private NetworkFolder? _favoritesCategory;
     private NetworkFolder? _thisPcCategory;
+    private NetworkFolder? _networkPathsCategory;
 
     [ObservableProperty]
     private bool _isLoading;
@@ -53,6 +54,20 @@ public partial class FolderTreeViewModel : ObservableObject
             };
             await LoadFavoritesIntoCategory();
             RootFolders.Add(_favoritesCategory);
+
+            // Categoria: Diretórios de Rede
+            if (_settingsService.Settings.CustomNetworkPaths.Count > 0)
+            {
+                _networkPathsCategory = new NetworkFolder
+                {
+                    Name = "Diretórios de Rede",
+                    IsCategory = true,
+                    IconKind = "Network",
+                    IsExpanded = true
+                };
+                await LoadNetworkPathsIntoCategory();
+                RootFolders.Add(_networkPathsCategory);
+            }
 
             // Categoria: Este PC
             _thisPcCategory = new NetworkFolder
@@ -203,6 +218,34 @@ public partial class FolderTreeViewModel : ObservableObject
         folder.AddDummyChild();
     }
 
+    public async Task RefreshNetworkPathsCategoryAsync()
+    {
+        if (_settingsService.Settings.CustomNetworkPaths.Count > 0)
+        {
+            if (_networkPathsCategory == null)
+            {
+                _networkPathsCategory = new NetworkFolder
+                {
+                    Name = "Diretórios de Rede",
+                    IsCategory = true,
+                    IconKind = "Network",
+                    IsExpanded = true
+                };
+                var index = RootFolders.IndexOf(_thisPcCategory!);
+                if (index >= 0)
+                {
+                    RootFolders.Insert(index, _networkPathsCategory);
+                }
+            }
+            await LoadNetworkPathsIntoCategory();
+        }
+        else if (_networkPathsCategory != null)
+        {
+            RootFolders.Remove(_networkPathsCategory);
+            _networkPathsCategory = null;
+        }
+    }
+
     private async Task LoadFavoritesIntoCategory()
     {
         if (_favoritesCategory == null) return;
@@ -231,6 +274,35 @@ public partial class FolderTreeViewModel : ObservableObject
         }
 
         _favoritesCategory.HasLoadedChildren = true;
+    }
+
+    private async Task LoadNetworkPathsIntoCategory()
+    {
+        if (_networkPathsCategory == null) return;
+
+        _networkPathsCategory.SubFolders.Clear();
+
+        foreach (var path in _settingsService.Settings.CustomNetworkPaths)
+        {
+            if (await _networkService.FolderExistsAsync(path))
+            {
+                var folder = new NetworkFolder
+                {
+                    Name = Path.GetFileName(path.TrimEnd('\\')) ?? path,
+                    FullPath = path,
+                    IconKind = "Network"
+                };
+
+                if (await _networkService.HasSubfoldersAsync(path))
+                {
+                    folder.AddDummyChild();
+                }
+
+                _networkPathsCategory.SubFolders.Add(folder);
+            }
+        }
+
+        _networkPathsCategory.HasLoadedChildren = true;
     }
 
     protected virtual void OnFolderSelected(NetworkFolder folder)

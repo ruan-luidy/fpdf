@@ -37,6 +37,9 @@ public partial class MainWindow : HandyControl.Controls.Window
             {
                 // Configurações salvas - recarrega impressoras se necessário
                 await vm.PrintQueue.LoadPrintersCommand.ExecuteAsync(null);
+                
+                // Atualiza os diretórios de rede na TreeView
+                await vm.FolderTree.RefreshNetworkPathsCategoryAsync();
             }
         }
     }
