@@ -1,0 +1,33 @@
+<UserControl
+  x:Class="fpdf.Wpf.Views.Controls.SettingsItem"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <Border Padding="12,10">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+      <StackPanel Grid.Column="0" VerticalAlignment="Center">
+        <TextBlock
+          HorizontalAlignment="Left"
+          Style="{StaticResource TextBlockDefault}"
+          Text="{Binding Label, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        <TextBlock
+          Margin="0,4,0,0"
+          Foreground="{DynamicResource SecondaryTextBrush}"
+          Style="{StaticResource TextBlockDefault}"
+          Text="{Binding Description, RelativeSource={RelativeSource AncestorType=UserControl}}"
+          TextWrapping="Wrap"
+          Visibility="{Binding Description, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource String2VisibilityConverter}}" />
+      </StackPanel>
+
+      <ContentPresenter
+        Grid.Column="1"
+        VerticalAlignment="Center"
+        Content="{Binding ItemContent, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+    </Grid>
+  </Border>
+</UserControl>

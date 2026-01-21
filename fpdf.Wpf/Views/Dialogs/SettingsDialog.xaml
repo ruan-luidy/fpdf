@@ -2,6 +2,7 @@
   x:Class="fpdf.Wpf.Views.Dialogs.SettingsDialog"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:control="clr-namespace:fpdf.Wpf.Views.Controls"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:hc="https://handyorg.github.io/handycontrol"
   xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -25,127 +26,180 @@
     <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
       <StackPanel Margin="10">
         <!--  Impressao  -->
-        <Border Margin="0,0,0,16" Style="{StaticResource BorderRegion}">
-          <StackPanel Margin="16">
-            <TextBlock Margin="0,0,0,4" Text="Impressora padrao:" />
-            <ComboBox
-              DisplayMemberPath="DisplayName"
-              ItemsSource="{Binding Printers}"
-              SelectedValue="{Binding DefaultPrinter}"
-              SelectedValuePath="Name" />
+        <control:SettingsSection Title="Impressão">
+          <control:SettingsSection.SectionContent>
+            <StackPanel>
+              <control:SettingsItem Label="Impressora padrão">
+                <control:SettingsItem.ItemContent>
+                  <ComboBox
+                    Width="300"
+                    DisplayMemberPath="DisplayName"
+                    ItemsSource="{Binding Printers}"
+                    SelectedValue="{Binding DefaultPrinter}"
+                    SelectedValuePath="Name"
+                    Style="{StaticResource ComboBox.Small}" />
+                </control:SettingsItem.ItemContent>
+              </control:SettingsItem>
 
-            <TextBlock Margin="0,16,0,4" Text="Copias padrao:" />
-            <hc:NumericUpDown
-              Maximum="100"
-              Minimum="1"
-              Value="{Binding DefaultCopies}" />
+              <Border Height="1" Background="{DynamicResource BorderBrush}" />
 
-            <CheckBox
-              Margin="0,16,0,0"
-              Content="Duplex por padrao"
-              IsChecked="{Binding DefaultDuplex}" />
-          </StackPanel>
-        </Border>
+              <control:SettingsItem Label="Cópias padrão">
+                <control:SettingsItem.ItemContent>
+                  <hc:NumericUpDown
+                    Width="100"
+                    Maximum="100"
+                    Minimum="1"
+                    Style="{StaticResource NumericUpDown.Small}"
+                    Value="{Binding DefaultCopies}" />
+                </control:SettingsItem.ItemContent>
+              </control:SettingsItem>
+
+              <Border Height="1" Background="{DynamicResource BorderBrush}" />
+
+              <control:SettingsToggleItem IsChecked="{Binding DefaultDuplex}" Label="Duplex por padrão" />
+            </StackPanel>
+          </control:SettingsSection.SectionContent>
+        </control:SettingsSection>
 
         <!--  Aparencia  -->
-        <hc:Card Margin="0,0,0,16" Header="Aparencia">
-          <StackPanel Margin="16">
-            <TextBlock Margin="0,0,0,4" Text="Tema:" />
-            <ComboBox ItemsSource="{Binding AvailableThemes}" SelectedItem="{Binding Theme}" />
+        <control:SettingsSection Title="Aparência">
+          <control:SettingsSection.SectionContent>
+            <StackPanel>
+              <control:SettingsItem Label="Tema">
+                <control:SettingsItem.ItemContent>
+                  <ComboBox
+                    Width="150"
+                    ItemsSource="{Binding AvailableThemes}"
+                    SelectedItem="{Binding Theme}"
+                    Style="{StaticResource ComboBox.Small}" />
+                </control:SettingsItem.ItemContent>
+              </control:SettingsItem>
 
-            <CheckBox
-              Margin="0,16,0,0"
-              Content="Mostrar miniaturas"
-              IsChecked="{Binding ShowThumbnails}" />
+              <Border Height="1" Background="{DynamicResource BorderBrush}" />
 
-            <TextBlock Margin="0,16,0,4" Text="Tamanho da miniatura:" />
-            <Slider
-              IsSnapToTickEnabled="True"
-              Maximum="128"
-              Minimum="32"
-              TickFrequency="16"
-              Value="{Binding ThumbnailSize}" />
-            <TextBlock HorizontalAlignment="Right" Text="{Binding ThumbnailSize, StringFormat='{}{0}px'}" />
-          </StackPanel>
-        </hc:Card>
+              <control:SettingsToggleItem IsChecked="{Binding ShowThumbnails}" Label="Mostrar miniaturas" />
+
+              <Border Height="1" Background="{DynamicResource BorderBrush}" />
+
+              <control:SettingsItem Label="Tamanho da miniatura">
+                <control:SettingsItem.ItemContent>
+                  <StackPanel Width="200">
+                    <Slider
+                      IsSnapToTickEnabled="True"
+                      Maximum="128"
+                      Minimum="32"
+                      TickFrequency="16"
+                      Value="{Binding ThumbnailSize}" />
+                    <TextBlock
+                      HorizontalAlignment="Right"
+                      Foreground="{DynamicResource SecondaryTextBrush}"
+                      Text="{Binding ThumbnailSize, StringFormat='{}{0}px'}" />
+                  </StackPanel>
+                </control:SettingsItem.ItemContent>
+              </control:SettingsItem>
+            </StackPanel>
+          </control:SettingsSection.SectionContent>
+        </control:SettingsSection>
 
         <!--  Navegacao  -->
-        <hc:Card Margin="0,0,0,16" Header="Navegacao">
-          <StackPanel Margin="16">
-            <CheckBox Content="Lembrar ultima pasta aberta" IsChecked="{Binding RememberLastFolder}" />
-          </StackPanel>
-        </hc:Card>
+        <control:SettingsSection Title="Navegação">
+          <control:SettingsSection.SectionContent>
+            <control:SettingsToggleItem IsChecked="{Binding RememberLastFolder}" Label="Lembrar última pasta aberta" />
+          </control:SettingsSection.SectionContent>
+        </control:SettingsSection>
 
         <!--  Pastas favoritas  -->
-        <hc:Card Margin="0,0,0,16" Header="Pastas Favoritas">
-          <Grid Margin="16">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <control:SettingsSection Title="Pastas Favoritas">
+          <control:SettingsSection.SectionContent>
+            <Grid>
+              <ListBox
+                MaxHeight="150"
+                HorizontalContentAlignment="Stretch"
+                Background="Transparent"
+                BorderThickness="0"
+                ItemsSource="{Binding FavoriteFolders}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                Style="{StaticResource ListBox.Small}">
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                      </Grid.ColumnDefinitions>
 
-            <ListBox MaxHeight="150" ItemsSource="{Binding FavoriteFolders}">
-              <ListBox.ItemTemplate>
-                <DataTemplate>
-                  <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="*" />
-                      <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                      <TextBlock
+                        VerticalAlignment="Center"
+                        Text="{Binding}"
+                        TextTrimming="CharacterEllipsis" />
 
-                    <TextBlock
-                      VerticalAlignment="Center"
-                      Text="{Binding}"
-                      TextTrimming="CharacterEllipsis" />
+                      <Button
+                        Grid.Column="1"
+                        Command="{Binding DataContext.RemoveFavoriteFolderCommand, RelativeSource={RelativeSource AncestorType=hc:Window}}"
+                        CommandParameter="{Binding}"
+                        Style="{StaticResource ButtonIconCustom}"
+                        ToolTip="Remover">
+                        <icon:PackIconPhosphorIcons
+                          Width="12"
+                          Height="12"
+                          Kind="X">
+                          <icon:PackIconPhosphorIcons.Style>
+                            <Style TargetType="icon:PackIconPhosphorIcons">
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                  <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </icon:PackIconPhosphorIcons.Style>
+                        </icon:PackIconPhosphorIcons>
+                      </Button>
+                    </Grid>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
 
-                    <Button
-                      Grid.Column="1"
-                      Command="{Binding DataContext.RemoveFavoriteFolderCommand, RelativeSource={RelativeSource AncestorType=hc:Window}}"
-                      CommandParameter="{Binding}"
-                      Style="{StaticResource ButtonIcon}"
-                      ToolTip="Remover">
-                      <icon:PackIconPhosphorIcons
-                        Width="12"
-                        Height="12"
-                        Kind="X" />
-                    </Button>
-                  </Grid>
-                </DataTemplate>
-              </ListBox.ItemTemplate>
-            </ListBox>
-
-            <TextBlock
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              Foreground="{DynamicResource SecondaryTextBrush}"
-              Text="Nenhuma pasta favorita"
-              Visibility="{Binding FavoriteFolders.Count, Converter={StaticResource Int2VisibilityReConverter}}" />
-          </Grid>
-        </hc:Card>
+              <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource SecondaryTextBrush}"
+                Text="Nenhuma pasta favorita"
+                Visibility="{Binding FavoriteFolders.Count, Converter={StaticResource Int2VisibilityReConverter}}" />
+            </Grid>
+          </control:SettingsSection.SectionContent>
+        </control:SettingsSection>
 
         <!--  Pastas recentes  -->
-        <hc:Card Header="Pastas Recentes">
-          <Grid Margin="16">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="*" />
-              <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+        <control:SettingsSection Title="Pastas Recentes">
+          <control:SettingsSection.SectionContent>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
 
-            <ListBox MaxHeight="100" ItemsSource="{Binding RecentFolders}">
-              <ListBox.ItemTemplate>
-                <DataTemplate>
-                  <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
-                </DataTemplate>
-              </ListBox.ItemTemplate>
-            </ListBox>
+              <ListBox
+                MaxHeight="100"
+                Background="Transparent"
+                BorderThickness="0"
+                ItemsSource="{Binding RecentFolders}"
+                Style="{StaticResource ListBox.Small}">
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
 
-            <Button
-              Grid.Row="1"
-              Margin="0,8,0,0"
-              HorizontalAlignment="Right"
-              Command="{Binding ClearRecentFoldersCommand}"
-              Content="Limpar Historico" />
-          </Grid>
-        </hc:Card>
+              <Button
+                Grid.Row="1"
+                Margin="0,8,0,8"
+                HorizontalAlignment="Right"
+                Command="{Binding ClearRecentFoldersCommand}"
+                Content="Limpar Historico" />
+            </Grid>
+          </control:SettingsSection.SectionContent>
+        </control:SettingsSection>
       </StackPanel>
     </ScrollViewer>
 
