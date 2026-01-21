@@ -40,7 +40,7 @@
           VerticalAlignment="Center"
           FontWeight="SemiBold"
           Style="{StaticResource TextBlockDefaultBold}"
-          Text="Network PDF Manager" />
+          Text="Fucking Portable Document Files" />
       </StackPanel>
 
       <!--  Acoes rapidas  -->
