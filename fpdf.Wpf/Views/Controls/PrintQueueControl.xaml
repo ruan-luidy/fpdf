@@ -67,7 +67,9 @@
         Grid.Row="1"
         MaxHeight="150"
         Margin="0,8,0,0"
+        HorizontalContentAlignment="Stretch"
         ItemsSource="{Binding Jobs}"
+        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
         Visibility="{Binding Jobs.Count, Converter={StaticResource Int2VisibilityConverter}}">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="{x:Type models:PrintJob}">
@@ -124,7 +126,7 @@
                 Grid.Column="2"
                 Margin="8,0"
                 VerticalAlignment="Center"
-                Foreground="{DynamicResource SecondaryTextBrush}"
+                Foreground="{DynamicResource PrimaryTextBrush}"
                 Text="{Binding Copies, StringFormat='x{0}'}" />
 
               <!--  Botao cancelar  -->
@@ -137,7 +139,17 @@
                 <icon:PackIconPhosphorIcons
                   Width="12"
                   Height="12"
-                  Kind="X" />
+                  Kind="XBold">
+                  <icon:PackIconPhosphorIcons.Style>
+                    <Style TargetType="icon:PackIconPhosphorIcons">
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                          <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </icon:PackIconPhosphorIcons.Style>
+                </icon:PackIconPhosphorIcons>
               </Button>
             </Grid>
           </DataTemplate>
@@ -199,7 +211,6 @@
 
         <Button
           Grid.Column="2"
-          Padding="12,6"
           Command="{Binding PrintQueueCommand}"
           IsEnabled="{Binding IsPrinting, Converter={StaticResource Boolean2BooleanReConverter}}"
           Style="{StaticResource ButtonPrimary}">
