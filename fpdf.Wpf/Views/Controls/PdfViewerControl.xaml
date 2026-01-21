@@ -11,7 +11,7 @@
   d:DataContext="{d:DesignInstance Type=vm:PdfViewerViewModel}"
   mc:Ignorable="d">
 
-  <Grid Margin="5">
+  <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
@@ -21,7 +21,8 @@
     <!--  Barra de ferramentas simplificada  -->
     <Border
       Grid.Row="0"
-      Padding="4"
+      Margin="5,5,5,0"
+      Padding="4,4,4,0"
       Background="{DynamicResource RegionBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
       BorderThickness="1"
@@ -50,14 +51,13 @@
     <!--  Area de visualizacao do PDF via Preview Handler  -->
     <Border
       Grid.Row="1"
+      Margin="5,0"
       Background="{DynamicResource SecondaryRegionBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
       BorderThickness="1,0,1,0">
       <Grid>
         <!--  Preview Handler Host  -->
-        <preview:PreviewHandlerHost
-          x:Name="PreviewHost"
-          Visibility="{Binding CurrentFile, Converter={StaticResource Object2VisibilityConverter}}" />
+        <preview:PreviewHandlerHost x:Name="PreviewHost" Visibility="{Binding CurrentFile, Converter={StaticResource Object2VisibilityConverter}}" />
 
         <!--  Placeholder quando nao ha arquivo  -->
         <StackPanel
@@ -110,6 +110,7 @@
     <!--  Info do arquivo atual  -->
     <Border
       Grid.Row="2"
+      Margin="5,0"
       Padding="8,4"
       Background="{DynamicResource RegionBrush}"
       BorderBrush="{DynamicResource BorderBrush}"

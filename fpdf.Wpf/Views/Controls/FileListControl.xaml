@@ -55,6 +55,7 @@
     <!--  Lista de arquivos  -->
     <DataGrid
       Grid.Row="1"
+      Margin="5,0"
       hc:BorderElement.CornerRadius="4,4,0,0"
       AutoGenerateColumns="False"
       BorderThickness="1,1,1,0"
@@ -171,6 +172,7 @@
     <!--  Barra de status  -->
     <Border
       Grid.Row="2"
+      Margin="5,0"
       Padding="8,4"
       Background="{DynamicResource RegionBrush}"
       BorderBrush="{DynamicResource BorderBrush}"
