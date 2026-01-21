@@ -14,6 +14,8 @@
   d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
   ResizeMode="NoResize"
   ShowInTaskbar="False"
+  Style="{StaticResource WindowWin10}"
+  SystemBackdropType="Auto"
   WindowStartupLocation="CenterOwner"
   mc:Ignorable="d">
 
@@ -193,7 +195,7 @@
 
               <Button
                 Grid.Row="1"
-                Margin="0,8,0,8"
+                Margin="0,8,8,8"
                 HorizontalAlignment="Right"
                 Command="{Binding ClearRecentFoldersCommand}"
                 Content="Limpar Historico" />
