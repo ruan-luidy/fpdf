@@ -24,4 +24,19 @@ public partial class FileListControl : UserControl
       }
     }
   }
+
+  private void DataGrid_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+  {
+    e.Handled = true;
+  }
+
+  private void DataGridCell_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+  {
+    e.Handled = true;
+  }
+
+  private void DataGridRow_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+  {
+    e.Handled = true;
+  }
 }

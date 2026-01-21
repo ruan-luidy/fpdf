@@ -53,6 +53,7 @@
 
     <!--  Lista de arquivos  -->
     <DataGrid
+      x:Name="FilesDataGrid"
       Grid.Row="1"
       Margin="5,0"
       hc:BorderElement.CornerRadius="4,4,0,0"
@@ -63,12 +64,25 @@
       HeadersVisibility="Column"
       IsReadOnly="True"
       ItemsSource="{Binding FilesView}"
+      RequestBringIntoView="DataGrid_RequestBringIntoView"
       SelectedItem="{Binding SelectedFile}"
       SelectionChanged="DataGrid_SelectionChanged"
       SelectionMode="Extended"
       Style="{StaticResource DataGrid.Small}"
       VirtualizingPanel.IsVirtualizing="True"
       VirtualizingPanel.VirtualizationMode="Recycling">
+
+      <DataGrid.CellStyle>
+        <Style BasedOn="{StaticResource DataGridCellStyle.Small}" TargetType="DataGridCell">
+          <EventSetter Event="RequestBringIntoView" Handler="DataGridCell_RequestBringIntoView" />
+        </Style>
+      </DataGrid.CellStyle>
+
+      <DataGrid.RowStyle>
+        <Style BasedOn="{StaticResource DataGridRowStyle.Small}" TargetType="DataGridRow">
+          <EventSetter Event="RequestBringIntoView" Handler="DataGridRow_RequestBringIntoView" />
+        </Style>
+      </DataGrid.RowStyle>
 
       <DataGrid.Columns>
         <!--  Checkbox de selecao  -->
@@ -80,28 +94,17 @@
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
 
-        <!--  Thumbnail  -->
+        <!--  Icone PDF  -->
         <DataGridTemplateColumn Width="50" Header="">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate DataType="{x:Type models:PdfFileInfo}">
-              <Grid Width="40" Height="40">
-                <Image
-                  Source="{Binding Thumbnail}"
-                  Stretch="Uniform"
-                  Visibility="{Binding Thumbnail, Converter={StaticResource Object2VisibilityConverter}}" />
-                <icon:PackIconPhosphorIcons
-                  Width="24"
-                  Height="24"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  Foreground="{DynamicResource DangerBrush}"
-                  Kind="FilePdf"
-                  Visibility="{Binding Thumbnail, Converter={StaticResource Object2VisibilityReConverter}}" />
-                <hc:LoadingCircle
-                  Width="20"
-                  Height="20"
-                  Visibility="{Binding IsLoadingThumbnail, Converter={StaticResource Boolean2VisibilityConverter}}" />
-              </Grid>
+              <icon:PackIconPhosphorIcons
+                Width="24"
+                Height="24"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource DangerBrush}"
+                Kind="FilePdf" />
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
