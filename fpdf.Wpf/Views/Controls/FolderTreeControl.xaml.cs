@@ -35,4 +35,14 @@ public partial class FolderTreeControl : UserControl
             }
         }
     }
+
+    private void TreeViewItem_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (sender is TreeViewItem item)
+        {
+            item.IsSelected = true;
+            item.Focus();
+            e.Handled = false; // Permite que o ContextMenu seja aberto
+        }
+    }
 }
