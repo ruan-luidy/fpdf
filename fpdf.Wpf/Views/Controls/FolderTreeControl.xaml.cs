@@ -45,4 +45,15 @@ public partial class FolderTreeControl : UserControl
             e.Handled = false; // Permite que o ContextMenu seja aberto
         }
     }
+
+    private void TreeView_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+    {
+        e.Handled = true;
+    }
+
+    private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+    {
+        e.Handled = true;
+    }
 }
+

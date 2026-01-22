@@ -74,6 +74,7 @@
       x:Key="CustomTreeViewItemStyle"
       BasedOn="{StaticResource TreeViewItemBaseStyle.Small}"
       TargetType="TreeViewItem">
+      <Setter Property="Padding" Value="2" />
       <Setter Property="BorderThickness" Value="1" />
       <Setter Property="BorderBrush" Value="Transparent" />
       <Setter Property="Template">
@@ -95,6 +96,8 @@
                 <DockPanel Margin="{Binding Converter={StaticResource TreeViewItemMarginConverter}, RelativeSource={RelativeSource TemplatedParent}}" LastChildFill="True">
                   <ToggleButton
                     x:Name="Expander"
+                    Width="12"
+                    Margin="0,0,2,0"
                     ClickMode="Press"
                     IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                     Style="{StaticResource ExpandCollapseToggleStyle}" />
@@ -201,6 +204,7 @@
       Background="{DynamicResource DarkOpacityBrush}"
       ItemTemplate="{StaticResource FolderTemplate}"
       ItemsSource="{Binding RootFolders}"
+      RequestBringIntoView="TreeView_RequestBringIntoView"
       VirtualizingPanel.IsVirtualizing="True"
       VirtualizingPanel.VirtualizationMode="Recycling">
       <TreeView.ItemContainerStyle>
@@ -210,6 +214,7 @@
           <EventSetter Event="Expanded" Handler="TreeViewItem_Expanded" />
           <EventSetter Event="Selected" Handler="TreeViewItem_Selected" />
           <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown" />
+          <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView" />
         </Style>
       </TreeView.ItemContainerStyle>
 
