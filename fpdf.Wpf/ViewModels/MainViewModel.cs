@@ -36,6 +36,9 @@ public partial class MainViewModel : ObservableObject
   [ObservableProperty]
   private double _fileListWidth = 350;
 
+  [ObservableProperty]
+  private bool _isTreeViewVisible = true;
+
   public event EventHandler? OpenSettingsRequested;
 
   public MainViewModel(
@@ -136,6 +139,12 @@ public partial class MainViewModel : ObservableObject
   {
     await FileList.RefreshCommand.ExecuteAsync(null);
     StatusMessage = $"Atualizado - {FileList.FileCount} arquivos";
+  }
+
+  [RelayCommand]
+  private void ToggleTreeView()
+  {
+    IsTreeViewVisible = !IsTreeViewVisible;
   }
 
   [RelayCommand]

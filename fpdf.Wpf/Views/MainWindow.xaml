@@ -46,6 +46,24 @@
       <!--  Acoes rapidas  -->
       <StackPanel Grid.Column="2" Orientation="Horizontal">
         <Button
+          Command="{Binding ToggleTreeViewCommand}"
+          Style="{StaticResource ButtonIconCustom}"
+          ToolTip="Mostrar/Ocultar Pastas (Ctrl+B)">
+          <icon:PackIconPhosphorIcons>
+            <icon:PackIconPhosphorIcons.Style>
+              <Style TargetType="icon:PackIconPhosphorIcons">
+                <Setter Property="Kind" Value="SidebarSimple" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding IsTreeViewVisible}" Value="False">
+                    <Setter Property="Kind" Value="Sidebar" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </icon:PackIconPhosphorIcons.Style>
+          </icon:PackIconPhosphorIcons>
+        </Button>
+
+        <Button
           Command="{Binding RefreshCommand}"
           Style="{StaticResource ButtonIconCustom}"
           ToolTip="Atualizar (Ctrl+R)">
@@ -85,6 +103,10 @@
       Command="{Binding RefreshCommand}"
       Modifiers="Ctrl" />
     <KeyBinding
+      Key="B"
+      Command="{Binding ToggleTreeViewCommand}"
+      Modifiers="Ctrl" />
+    <KeyBinding
       Key="Comma"
       Command="{Binding OpenSettingsCommand}"
       Modifiers="Ctrl" />
@@ -99,10 +121,21 @@
     <!--  Conteudo Principal  -->
     <Grid Grid.Row="0">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition
-          Width="{Binding TreeViewWidth, Mode=TwoWay, Converter={StaticResource Double2GridLengthConverter}}"
-          MinWidth="150"
-          MaxWidth="400" />
+        <ColumnDefinition Width="{Binding TreeViewWidth, Mode=TwoWay, Converter={StaticResource Double2GridLengthConverter}}">
+          <ColumnDefinition.Style>
+            <Style TargetType="ColumnDefinition">
+              <Setter Property="MinWidth" Value="150" />
+              <Setter Property="MaxWidth" Value="400" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsTreeViewVisible}" Value="False">
+                  <Setter Property="Width" Value="0" />
+                  <Setter Property="MinWidth" Value="0" />
+                  <Setter Property="MaxWidth" Value="0" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </ColumnDefinition.Style>
+        </ColumnDefinition>
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition
           Width="{Binding FileListWidth, Mode=TwoWay, Converter={StaticResource Double2GridLengthConverter}}"
@@ -113,7 +146,10 @@
       </Grid.ColumnDefinitions>
 
       <!--  Painel de Pastas  -->
-      <controls:FolderTreeControl Grid.Column="0" DataContext="{Binding FolderTree}" />
+      <controls:FolderTreeControl 
+        Grid.Column="0" 
+        DataContext="{Binding FolderTree}" 
+        Visibility="{Binding DataContext.IsTreeViewVisible, RelativeSource={RelativeSource AncestorType=hc:Window}, Converter={StaticResource Boolean2VisibilityConverter}}" />
 
       <GridSplitter
         Grid.Column="1"
@@ -121,7 +157,8 @@
         Margin="-10"
         HorizontalAlignment="Center"
         VerticalAlignment="Stretch"
-        Background="Transparent" />
+        Background="Transparent"
+        Visibility="{Binding DataContext.IsTreeViewVisible, RelativeSource={RelativeSource AncestorType=hc:Window}, Converter={StaticResource Boolean2VisibilityConverter}}" />
 
       <!--  Lista de Arquivos  -->
       <controls:FileListControl Grid.Column="2" DataContext="{Binding FileList}" />
