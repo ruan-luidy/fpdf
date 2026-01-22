@@ -228,7 +228,7 @@
                       Value="{Binding Copies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                   </StackPanel>
 
-                  <!--  Paginas  -->
+                  <!--  Paginas (desabilitado para PDFs com apenas 1 pagina)  -->
                   <StackPanel Orientation="Horizontal">
                     <TextBlock
                       Margin="0,0,6,0"
@@ -238,6 +238,7 @@
                     <hc:TextBox
                       Width="120"
                       hc:InfoElement.Placeholder="all ou 1-3,5"
+                      IsEnabled="{Binding PageCount, Converter={StaticResource IntGreaterThan1BoolConverter}}"
                       Style="{StaticResource TextBox.Small}"
                       Text="{Binding PageRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                   </StackPanel>

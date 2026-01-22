@@ -32,6 +32,9 @@ public partial class PrintJob : ObservableObject
   private string _pageRange = "all";
 
   [ObservableProperty]
+  private int _pageCount = 1;
+
+  [ObservableProperty]
   private bool _duplex;
 
   [ObservableProperty]

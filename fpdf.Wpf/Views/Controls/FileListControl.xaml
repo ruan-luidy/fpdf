@@ -140,7 +140,7 @@
       RequestBringIntoView="DataGrid_RequestBringIntoView"
       SelectedItem="{Binding SelectedFile}"
       SelectionChanged="DataGrid_SelectionChanged"
-      SelectionMode="Extended"
+      SelectionMode="Single"
       Style="{StaticResource DataGrid.Small}"
       VirtualizingPanel.IsVirtualizing="True"
       VirtualizingPanel.VirtualizationMode="Recycling">

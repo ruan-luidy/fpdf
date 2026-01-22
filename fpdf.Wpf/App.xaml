@@ -27,6 +27,8 @@
       <!--  Converter Int para Visibility  -->
       <converters:Int2VisibilityConverter x:Key="Int2VisibilityConverter" />
       <converters:Int2VisibilityReConverter x:Key="Int2VisibilityReConverter" />
+      <converters:IntGreaterThan1VisibilityConverter x:Key="IntGreaterThan1VisibilityConverter" />
+      <converters:IntGreaterThan1BoolConverter x:Key="IntGreaterThan1BoolConverter" />
 
       <!--  Converter Enum para Visibility  -->
       <converters:Enum2VisibilityConverter x:Key="Enum2VisibilityConverter" />

@@ -80,6 +80,7 @@ public partial class PrintQueueViewModel : ObservableObject
         PrinterName = SelectedPrinter.Name,
         Copies = Copies,
         PageRange = PageRange,
+        PageCount = file.PageCount,
         Duplex = Duplex
       };
 
