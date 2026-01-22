@@ -12,8 +12,12 @@
   Width="500"
   Height="450"
   d:DataContext="{d:DesignInstance Type=vm:PrintQueueViewModel}"
+  BorderBrush="{DynamicResource BorderBrush}"
+  BorderThickness="1"
   ResizeMode="CanResizeWithGrip"
   ShowInTaskbar="False"
+  Style="{StaticResource WindowWin10}"
+  SystemBackdropType="Acrylic"
   WindowStartupLocation="CenterOwner"
   mc:Ignorable="d">
 

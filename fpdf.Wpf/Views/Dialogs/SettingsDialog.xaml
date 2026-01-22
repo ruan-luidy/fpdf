@@ -15,7 +15,7 @@
   ResizeMode="NoResize"
   ShowInTaskbar="False"
   Style="{StaticResource WindowWin10}"
-  SystemBackdropType="Auto"
+  SystemBackdropType="Acrylic"
   WindowStartupLocation="CenterOwner"
   mc:Ignorable="d">
 
@@ -85,8 +85,10 @@
 
               <control:SettingsItem Label="Tamanho da miniatura">
                 <control:SettingsItem.ItemContent>
-                  <StackPanel Width="200">
+                  <StackPanel Width="200" Orientation="Horizontal">
                     <Slider
+                      Width="158"
+                      Margin="0,0,10,0"
                       IsSnapToTickEnabled="True"
                       Maximum="128"
                       Minimum="32"
@@ -115,32 +117,42 @@
           <control:SettingsSection.SectionContent>
             <StackPanel>
               <!--  Campo para adicionar  -->
-              <Grid Margin="0,0,0,8">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="*" />
-                  <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+              <Border
+                Margin="0,0,0,8"
+                Padding="0"
+                BorderThickness="0,0,0,1"
+                CornerRadius="4,4,0,0"
+                Style="{StaticResource BorderRegion}">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
 
-                <hc:TextBox
-                  hc:InfoElement.Placeholder="\\servidor\pasta ou \\clbrfs\projetos"
-                  Text="{Binding NewNetworkPath, UpdateSourceTrigger=PropertyChanged}">
-                  <hc:TextBox.InputBindings>
-                    <KeyBinding Key="Return" Command="{Binding AddNetworkPathCommand}" />
-                  </hc:TextBox.InputBindings>
-                </hc:TextBox>
+                  <hc:TextBox
+                    hc:InfoElement.Placeholder="\\servidor\pasta"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Text="{Binding NewNetworkPath, UpdateSourceTrigger=PropertyChanged}">
+                    <hc:TextBox.InputBindings>
+                      <KeyBinding Key="Return" Command="{Binding AddNetworkPathCommand}" />
+                    </hc:TextBox.InputBindings>
+                  </hc:TextBox>
 
-                <Button
-                  Grid.Column="1"
-                  Margin="8,0,0,0"
-                  Command="{Binding AddNetworkPathCommand}"
-                  Style="{StaticResource ButtonPrimary}"
-                  ToolTip="Adicionar diretório">
-                  <icon:PackIconPhosphorIcons
-                    Width="14"
-                    Height="14"
-                    Kind="Plus" />
-                </Button>
-              </Grid>
+                  <Button
+                    Grid.Column="1"
+                    Margin="0,0,7,0"
+                    Command="{Binding AddNetworkPathCommand}"
+                    Style="{StaticResource ButtonIconCustom}"
+                    ToolTip="Adicionar diretório">
+                    <icon:PackIconPhosphorIcons
+                      Width="14"
+                      Height="14"
+                      Kind="Plus" />
+                  </Button>
+                </Grid>
+
+              </Border>
 
               <!--  Lista de diretorios  -->
               <Grid>
@@ -310,7 +322,7 @@
     <!--  Botoes  -->
     <StackPanel
       Grid.Row="1"
-      Margin="0,16,0,0"
+      Margin="0,16,10,10"
       HorizontalAlignment="Right"
       Orientation="Horizontal">
       <Button
