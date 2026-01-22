@@ -34,10 +34,7 @@
           <icon:PackIconPhosphorIcons Kind="ArrowSquareOut" />
         </Button>
 
-        <hc:Divider
-          MaxHeight="16"
-          LineStrokeThickness="2"
-          Orientation="Vertical" />
+        <hc:Divider Height="20" Orientation="Vertical" />
 
         <TextBlock
           Margin="8,0"

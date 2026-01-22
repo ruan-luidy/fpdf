@@ -36,6 +36,9 @@
       <!--  Converter String para Visibility  -->
       <converters:String2VisibilityConverter x:Key="String2VisibilityConverter" />
 
+      <!--  Converter para Text Highlight  -->
+      <converters:TextHighlightConverter x:Key="TextHighlightConverter" />
+
       <!--  Converter Double para GridLength  -->
       <converters:Double2GridLengthConverter x:Key="Double2GridLengthConverter" />
 

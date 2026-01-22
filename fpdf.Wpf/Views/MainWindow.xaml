@@ -146,9 +146,9 @@
       </Grid.ColumnDefinitions>
 
       <!--  Painel de Pastas  -->
-      <controls:FolderTreeControl 
-        Grid.Column="0" 
-        DataContext="{Binding FolderTree}" 
+      <controls:FolderTreeControl
+        Grid.Column="0"
+        DataContext="{Binding FolderTree}"
         Visibility="{Binding DataContext.IsTreeViewVisible, RelativeSource={RelativeSource AncestorType=hc:Window}, Converter={StaticResource Boolean2VisibilityConverter}}" />
 
       <GridSplitter

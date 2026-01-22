@@ -2,6 +2,7 @@
   x:Class="fpdf.Wpf.Views.Controls.FileListControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:behaviors="clr-namespace:fpdf.Wpf.Behaviors"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:hc="https://handyorg.github.io/handycontrol"
   xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -196,11 +197,23 @@
         </DataGridTemplateColumn>
 
         <!--  Nome do arquivo  -->
-        <DataGridTextColumn
+        <DataGridTemplateColumn
           Width="*"
-          Binding="{Binding FileName}"
           Header="Nome"
-          SortMemberPath="FileName" />
+          SortMemberPath="FileName">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate DataType="{x:Type models:PdfFileInfo}">
+              <TextBlock VerticalAlignment="Center">
+                <behaviors:TextBlockHighlightBehavior.HighlightedInlines>
+                  <MultiBinding Converter="{StaticResource TextHighlightConverter}">
+                    <Binding Path="FileName" />
+                    <Binding Path="DataContext.SearchText" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                  </MultiBinding>
+                </behaviors:TextBlockHighlightBehavior.HighlightedInlines>
+              </TextBlock>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
 
         <!--  Paginas  -->
         <DataGridTextColumn
@@ -268,7 +281,7 @@
       CornerRadius="0,0,4,4">
       <StackPanel Orientation="Horizontal">
         <TextBlock Text="{Binding FileCount, StringFormat='{}{0} arquivos'}" />
-        <TextBlock Text=" | " Visibility="{Binding SelectedCount, Converter={StaticResource Int2VisibilityConverter}}" />
+        <hc:Divider Orientation="Vertical" Visibility="{Binding SelectedCount, Converter={StaticResource Int2VisibilityConverter}}" />
         <TextBlock Text="{Binding SelectedCount, StringFormat='{}{0} selecionados'}" Visibility="{Binding SelectedCount, Converter={StaticResource Int2VisibilityConverter}}" />
       </StackPanel>
     </Border>
