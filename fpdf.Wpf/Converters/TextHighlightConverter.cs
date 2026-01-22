@@ -31,9 +31,6 @@ public class TextHighlightConverter : IMultiValueConverter
 
     var currentIndex = 0;
 
-    // Busca o PrimaryTextBrush dos recursos dinâmicos
-    var foregroundBrush = Application.Current.TryFindResource("PrimaryTextBrush") as Brush ?? Brushes.Black;
-
     while (index >= 0)
     {
       // Adiciona texto antes do match
@@ -46,8 +43,8 @@ public class TextHighlightConverter : IMultiValueConverter
       var matchedText = text.Substring(index, searchText.Length);
       var highlightRun = new Run(matchedText)
       {
-        Background = new SolidColorBrush(Color.FromArgb(180, 255, 253, 0)), // Amarelo semi-transparente
-        Foreground = foregroundBrush,
+        Background = new SolidColorBrush(Color.FromRgb(255, 241, 0)), // Amarelo semi-transparente
+        Foreground = Brushes.Black,
       };
       inlines.Add(highlightRun);
 
