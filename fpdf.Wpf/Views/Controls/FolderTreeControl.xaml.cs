@@ -48,12 +48,23 @@ public partial class FolderTreeControl : UserControl
 
     private void TreeView_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
     {
-        e.Handled = true;
+        // Cancela apenas se for um TreeViewItem (scroll automático)
+        // Permite scroll manual (ScrollViewer)
+        if (e.TargetObject is TreeViewItem)
+        {
+            e.Handled = true;
+        }
     }
 
     private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
     {
-        e.Handled = true;
+        // Cancela apenas scroll automático de seleção/expansão
+        // Permite scroll manual
+        if (e.TargetObject is TreeViewItem)
+        {
+            e.Handled = true;
+        }
     }
 }
+
 
