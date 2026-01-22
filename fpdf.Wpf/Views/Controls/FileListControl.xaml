@@ -11,6 +11,37 @@
   d:DataContext="{d:DesignInstance Type=vm:FileListViewModel}"
   mc:Ignorable="d">
 
+  <UserControl.Resources>
+    <!--  Estilo customizado do DataGridRow com efeitos visuais  -->
+    <Style
+      x:Key="CustomDataGridRowStyle"
+      BasedOn="{StaticResource DataGridRowStyle.Small}"
+      TargetType="DataGridRow">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+        </Trigger>
+        <Trigger Property="IsSelected" Value="True">
+          <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+          <Setter Property="Foreground" Value="{DynamicResource TextIconBrush}" />
+          <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
+        </Trigger>
+        <MultiTrigger>
+          <MultiTrigger.Conditions>
+            <Condition Property="IsSelected" Value="True" />
+            <Condition Property="IsMouseOver" Value="False" />
+          </MultiTrigger.Conditions>
+          <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+          <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+          <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
+        </MultiTrigger>
+      </Style.Triggers>
+    </Style>
+  </UserControl.Resources>
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
@@ -107,7 +138,7 @@
       </DataGrid.CellStyle>
 
       <DataGrid.RowStyle>
-        <Style BasedOn="{StaticResource DataGridRowStyle.Small}" TargetType="DataGridRow">
+        <Style BasedOn="{StaticResource CustomDataGridRowStyle}" TargetType="DataGridRow">
           <EventSetter Event="RequestBringIntoView" Handler="DataGridRow_RequestBringIntoView" />
         </Style>
       </DataGrid.RowStyle>
