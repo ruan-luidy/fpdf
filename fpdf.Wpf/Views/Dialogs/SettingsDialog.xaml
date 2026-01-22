@@ -52,7 +52,7 @@
       Grid.Row="0"
       IsInertiaEnabled="True"
       VerticalScrollBarVisibility="Auto">
-      <StackPanel Margin="10">
+      <StackPanel Margin="20">
         <!--  Impressao  -->
         <control:SettingsSection Title="Impressão">
           <control:SettingsSection.SectionContent>
