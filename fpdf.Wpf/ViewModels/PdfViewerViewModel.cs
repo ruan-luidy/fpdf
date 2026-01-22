@@ -6,25 +6,25 @@ namespace fpdf.Wpf.ViewModels;
 
 public partial class PdfViewerViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private PdfFileInfo? _currentFile;
+  [ObservableProperty]
+  private PdfFileInfo? _currentFile;
 
-    [ObservableProperty]
-    private bool _isLoading;
+  [ObservableProperty]
+  private bool _isLoading;
 
-    [ObservableProperty]
-    private string? _errorMessage;
+  [ObservableProperty]
+  private string? _errorMessage;
 
-    [RelayCommand]
-    private void LoadFile(PdfFileInfo? file)
-    {
-        ErrorMessage = null;
-        CurrentFile = file;
-    }
+  [RelayCommand]
+  private void LoadFile(PdfFileInfo? file)
+  {
+    ErrorMessage = null;
+    CurrentFile = file;
+  }
 
-    public void Clear()
-    {
-        CurrentFile = null;
-        ErrorMessage = null;
-    }
+  public void Clear()
+  {
+    CurrentFile = null;
+    ErrorMessage = null;
+  }
 }

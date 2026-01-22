@@ -7,20 +7,20 @@ namespace fpdf.Wpf.Views.Controls;
 
 public partial class PrintQueueControl : UserControl
 {
-    public PrintQueueControl()
-    {
-        InitializeComponent();
-    }
+  public PrintQueueControl()
+  {
+    InitializeComponent();
+  }
 
-    private void OpenQueueDialog_Click(object sender, RoutedEventArgs e)
+  private void OpenQueueDialog_Click(object sender, RoutedEventArgs e)
+  {
+    if (DataContext is PrintQueueViewModel vm)
     {
-        if (DataContext is PrintQueueViewModel vm)
-        {
-            var dialog = new PrintQueueDialog(vm)
-            {
-                Owner = Window.GetWindow(this)
-            };
-            dialog.ShowDialog();
-        }
+      var dialog = new PrintQueueDialog(vm)
+      {
+        Owner = Window.GetWindow(this)
+      };
+      dialog.Show();
     }
+  }
 }

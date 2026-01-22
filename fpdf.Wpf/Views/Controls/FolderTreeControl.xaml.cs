@@ -7,64 +7,64 @@ namespace fpdf.Wpf.Views.Controls;
 
 public partial class FolderTreeControl : UserControl
 {
-    public FolderTreeControl()
-    {
-        InitializeComponent();
-    }
+  public FolderTreeControl()
+  {
+    InitializeComponent();
+  }
 
-    private FolderTreeViewModel? ViewModel => DataContext as FolderTreeViewModel;
+  private FolderTreeViewModel? ViewModel => DataContext as FolderTreeViewModel;
 
-    private async void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
+  private async void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
+  {
+    if (e.OriginalSource is TreeViewItem { DataContext: NetworkFolder folder })
     {
-        if (e.OriginalSource is TreeViewItem { DataContext: NetworkFolder folder })
-        {
-            if (ViewModel != null)
-            {
-                await ViewModel.ExpandFolderCommand.ExecuteAsync(folder);
-            }
-        }
+      if (ViewModel != null)
+      {
+        await ViewModel.ExpandFolderCommand.ExecuteAsync(folder);
+      }
     }
+  }
 
-    private void TreeViewItem_Selected(object sender, RoutedEventArgs e)
+  private void TreeViewItem_Selected(object sender, RoutedEventArgs e)
+  {
+    if (e.OriginalSource is TreeViewItem { DataContext: NetworkFolder folder })
     {
-        if (e.OriginalSource is TreeViewItem { DataContext: NetworkFolder folder })
-        {
-            if (ViewModel != null)
-            {
-                ViewModel.SelectFolderCommand.Execute(folder);
-            }
-        }
+      if (ViewModel != null)
+      {
+        ViewModel.SelectFolderCommand.Execute(folder);
+      }
     }
+  }
 
-    private void TreeViewItem_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+  private void TreeViewItem_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+  {
+    if (sender is TreeViewItem item)
     {
-        if (sender is TreeViewItem item)
-        {
-            item.IsSelected = true;
-            item.Focus();
-            e.Handled = false; // Permite que o ContextMenu seja aberto
-        }
+      item.IsSelected = true;
+      item.Focus();
+      e.Handled = false; // Permite que o ContextMenu seja aberto
     }
+  }
 
-    private void TreeView_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+  private void TreeView_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+  {
+    // Cancela apenas se for um TreeViewItem (scroll automático)
+    // Permite scroll manual (ScrollViewer)
+    if (e.TargetObject is TreeViewItem)
     {
-        // Cancela apenas se for um TreeViewItem (scroll automático)
-        // Permite scroll manual (ScrollViewer)
-        if (e.TargetObject is TreeViewItem)
-        {
-            e.Handled = true;
-        }
+      e.Handled = true;
     }
+  }
 
-    private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+  private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+  {
+    // Cancela apenas scroll automático de seleção/expansão
+    // Permite scroll manual
+    if (e.TargetObject is TreeViewItem)
     {
-        // Cancela apenas scroll automático de seleção/expansão
-        // Permite scroll manual
-        if (e.TargetObject is TreeViewItem)
-        {
-            e.Handled = true;
-        }
+      e.Handled = true;
     }
+  }
 }
 
 
