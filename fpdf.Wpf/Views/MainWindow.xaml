@@ -121,21 +121,7 @@
     <!--  Conteudo Principal  -->
     <Grid Grid.Row="0">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="{Binding TreeViewWidth, Mode=TwoWay, Converter={StaticResource Double2GridLengthConverter}}">
-          <ColumnDefinition.Style>
-            <Style TargetType="ColumnDefinition">
-              <Setter Property="MinWidth" Value="150" />
-              <Setter Property="MaxWidth" Value="400" />
-              <Style.Triggers>
-                <DataTrigger Binding="{Binding IsTreeViewVisible}" Value="False">
-                  <Setter Property="Width" Value="0" />
-                  <Setter Property="MinWidth" Value="0" />
-                  <Setter Property="MaxWidth" Value="0" />
-                </DataTrigger>
-              </Style.Triggers>
-            </Style>
-          </ColumnDefinition.Style>
-        </ColumnDefinition>
+        <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition
           Width="{Binding FileListWidth, Mode=TwoWay, Converter={StaticResource Double2GridLengthConverter}}"
@@ -145,20 +131,94 @@
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
 
-      <!--  Painel de Pastas  -->
-      <controls:FolderTreeControl
-        Grid.Column="0"
-        DataContext="{Binding FolderTree}"
-        Visibility="{Binding DataContext.IsTreeViewVisible, RelativeSource={RelativeSource AncestorType=hc:Window}, Converter={StaticResource Boolean2VisibilityConverter}}" />
+      <!--  Painel de Pastas com animacao  -->
+      <Border Grid.Column="0" ClipToBounds="True">
+        <Border.Style>
+          <Style TargetType="Border">
+            <Setter Property="Width" Value="{Binding TreeViewWidth}" />
+            <Setter Property="Opacity" Value="1" />
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsTreeViewVisible}" Value="False">
+                <DataTrigger.EnterActions>
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation
+                        Storyboard.TargetProperty="Width"
+                        To="0"
+                        Duration="0:0:0.3">
+                        <DoubleAnimation.EasingFunction>
+                          <CubicEase EasingMode="EaseInOut" />
+                        </DoubleAnimation.EasingFunction>
+                      </DoubleAnimation>
+                      <DoubleAnimation
+                        Storyboard.TargetProperty="Opacity"
+                        To="0"
+                        Duration="0:0:0.2" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation
+                        Storyboard.TargetProperty="Width"
+                        To="250"
+                        Duration="0:0:0.3">
+                        <DoubleAnimation.EasingFunction>
+                          <CubicEase EasingMode="EaseInOut" />
+                        </DoubleAnimation.EasingFunction>
+                      </DoubleAnimation>
+                      <DoubleAnimation
+                        Storyboard.TargetProperty="Opacity"
+                        To="1"
+                        Duration="0:0:0.2" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </DataTrigger.ExitActions>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+        <controls:FolderTreeControl DataContext="{Binding FolderTree}" />
+      </Border>
 
-      <GridSplitter
-        Grid.Column="1"
-        Width="6"
-        Margin="-10"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Stretch"
-        Background="Transparent"
-        Visibility="{Binding DataContext.IsTreeViewVisible, RelativeSource={RelativeSource AncestorType=hc:Window}, Converter={StaticResource Boolean2VisibilityConverter}}" />
+      <!--  GridSplitter com animacao  -->
+      <GridSplitter Grid.Column="1">
+        <GridSplitter.Style>
+          <Style TargetType="GridSplitter">
+            <Setter Property="Width" Value="6" />
+            <Setter Property="Margin" Value="-10,0,-10,0" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Opacity" Value="1" />
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsTreeViewVisible}" Value="False">
+                <DataTrigger.EnterActions>
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation
+                        Storyboard.TargetProperty="Opacity"
+                        To="0"
+                        Duration="0:0:0.2" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation
+                        Storyboard.TargetProperty="Opacity"
+                        To="1"
+                        Duration="0:0:0.2" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </DataTrigger.ExitActions>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </GridSplitter.Style>
+      </GridSplitter>
 
       <!--  Lista de Arquivos  -->
       <controls:FileListControl Grid.Column="2" DataContext="{Binding FileList}" />
