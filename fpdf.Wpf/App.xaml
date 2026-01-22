@@ -28,6 +28,12 @@
       <converters:Int2VisibilityConverter x:Key="Int2VisibilityConverter" />
       <converters:Int2VisibilityReConverter x:Key="Int2VisibilityReConverter" />
 
+      <!--  Converter Enum para Visibility  -->
+      <converters:Enum2VisibilityConverter x:Key="Enum2VisibilityConverter" />
+
+      <!--  Converter String para Visibility  -->
+      <converters:String2VisibilityConverter x:Key="String2VisibilityConverter" />
+
       <!--  Converter Double para GridLength  -->
       <converters:Double2GridLengthConverter x:Key="Double2GridLengthConverter" />
 
