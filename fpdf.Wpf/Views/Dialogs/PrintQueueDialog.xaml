@@ -21,6 +21,28 @@
   WindowStartupLocation="CenterOwner"
   mc:Ignorable="d">
 
+  <hc:Window.Resources>
+    <!--  Estilo customizado do ListBoxItem com efeitos visuais  -->
+    <Style
+      x:Key="CustomListBoxItemStyle"
+      BasedOn="{StaticResource ListBoxItemBaseStyle}"
+      TargetType="ListBoxItem">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+        </Trigger>
+        <Trigger Property="IsSelected" Value="True">
+          <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+          <Setter Property="Foreground" Value="{DynamicResource TextIconBrush}" />
+          <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+  </hc:Window.Resources>
+
   <Grid Margin="16">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
@@ -99,16 +121,19 @@
     <Border
       Grid.Row="2"
       Margin="0,12,0,0"
-      BorderBrush="{DynamicResource BorderBrush}"
-      BorderThickness="1"
-      CornerRadius="4">
+      Padding="0"
+      Style="{StaticResource BorderRegion}">
       <Grid>
         <ListBox
           HorizontalContentAlignment="Stretch"
+          BorderThickness="0"
           ItemsSource="{Binding Jobs}"
           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
           Style="{StaticResource ListBox.Small}"
           Visibility="{Binding Jobs.Count, Converter={StaticResource Int2VisibilityConverter}}">
+          <ListBox.ItemContainerStyle>
+            <Style BasedOn="{StaticResource CustomListBoxItemStyle}" TargetType="ListBoxItem" />
+          </ListBox.ItemContainerStyle>
           <ListBox.ItemTemplate>
             <DataTemplate DataType="{x:Type models:PrintJob}">
               <Grid Margin="4">

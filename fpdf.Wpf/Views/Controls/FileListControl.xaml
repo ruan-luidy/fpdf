@@ -12,6 +12,22 @@
   mc:Ignorable="d">
 
   <UserControl.Resources>
+    <!--  Estilo customizado do DataGridCell  -->
+    <Style
+      x:Key="CustomDataGridCellStyle"
+      BasedOn="{StaticResource DataGridCellStyle.Small}"
+      TargetType="DataGridCell">
+      <Style.Triggers>
+        <MultiTrigger>
+          <MultiTrigger.Conditions>
+            <Condition Property="IsSelected" Value="True" />
+            <Condition Property="Selector.IsSelectionActive" Value="False" />
+          </MultiTrigger.Conditions>
+          <Setter Property="Background" Value="Transparent" />
+        </MultiTrigger>
+      </Style.Triggers>
+    </Style>
+
     <!--  Estilo customizado do DataGridRow com efeitos visuais  -->
     <Style
       x:Key="CustomDataGridRowStyle"
@@ -26,16 +42,14 @@
         </Trigger>
         <Trigger Property="IsSelected" Value="True">
           <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
-          <Setter Property="Foreground" Value="{DynamicResource TextIconBrush}" />
           <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
         </Trigger>
         <MultiTrigger>
           <MultiTrigger.Conditions>
             <Condition Property="IsSelected" Value="True" />
-            <Condition Property="IsMouseOver" Value="False" />
+            <Condition Property="Selector.IsSelectionActive" Value="False" />
           </MultiTrigger.Conditions>
           <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
-          <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
           <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
         </MultiTrigger>
       </Style.Triggers>
@@ -132,13 +146,14 @@
       VirtualizingPanel.VirtualizationMode="Recycling">
 
       <DataGrid.CellStyle>
-        <Style BasedOn="{StaticResource DataGridCellStyle.Small}" TargetType="DataGridCell">
+        <Style BasedOn="{StaticResource CustomDataGridCellStyle}" TargetType="DataGridCell">
           <EventSetter Event="RequestBringIntoView" Handler="DataGridCell_RequestBringIntoView" />
         </Style>
       </DataGrid.CellStyle>
 
       <DataGrid.RowStyle>
         <Style BasedOn="{StaticResource CustomDataGridRowStyle}" TargetType="DataGridRow">
+          <Setter Property="FocusVisualStyle" Value="{x:Null}" />
           <EventSetter Event="RequestBringIntoView" Handler="DataGridRow_RequestBringIntoView" />
         </Style>
       </DataGrid.RowStyle>
