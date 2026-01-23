@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using fpdf.Core.Models;
 using fpdf.Core.Services;
+using fpdf.Wpf.Services;
 
 namespace fpdf.Wpf.ViewModels;
 
@@ -41,6 +42,9 @@ public partial class FileListViewModel : ObservableObject
 
   public ObservableCollection<PdfFileInfo> Files { get; } = new();
   public ICollectionView FilesView { get; }
+
+  public string FileCountText => GetLocalizedText("FileList_FilesCount", FileCount);
+  public string SelectedCountText => GetLocalizedText("FileList_SelectedCount", SelectedCount);
 
   public event EventHandler<PdfFileInfo>? FileSelected;
   public event EventHandler<IEnumerable<PdfFileInfo>>? FilesSelectedForPrint;
@@ -215,10 +219,28 @@ public partial class FileListViewModel : ObservableObject
   private void UpdateSelectedCount()
   {
     SelectedCount = Files.Count(f => f.IsSelected);
+    OnPropertyChanged(nameof(FileCountText));
+    OnPropertyChanged(nameof(SelectedCountText));
   }
 
   public IEnumerable<PdfFileInfo> GetSelectedFiles()
   {
     return Files.Where(f => f.IsSelected);
+  }
+
+  private string GetLocalizedText(string key, int value)
+  {
+    var format = LocalizationManager.Instance.GetString(key);
+    return string.Format(format, value);
+  }
+
+  partial void OnFileCountChanged(int value)
+  {
+    OnPropertyChanged(nameof(FileCountText));
+  }
+
+  partial void OnSelectedCountChanged(int value)
+  {
+    OnPropertyChanged(nameof(SelectedCountText));
   }
 }

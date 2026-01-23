@@ -6,10 +6,12 @@ namespace fpdf.Core.Services;
 public class NetworkService : INetworkService
 {
   private readonly ISettingsService _settingsService;
+  private readonly ILocalizationService _localizationService;
 
-  public NetworkService(ISettingsService settingsService)
+  public NetworkService(ISettingsService settingsService, ILocalizationService localizationService)
   {
     _settingsService = settingsService;
+    _localizationService = localizationService;
   }
   public async Task<List<NetworkFolder>> GetSubfoldersAsync(string path, CancellationToken cancellationToken = default)
   {
@@ -189,7 +191,7 @@ public class NetworkService : INetworkService
         cancellationToken.ThrowIfCancellationRequested();
 
         var volumeLabel = string.IsNullOrEmpty(drive.VolumeLabel) 
-          ? "Disco Local" 
+          ? _localizationService.GetString("Network_LocalDisk")
           : drive.VolumeLabel;
 
         var folder = new NetworkFolder

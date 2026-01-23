@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using fpdf.Core.Models;
 using fpdf.Core.Services;
+using fpdf.Wpf.Services;
 
 namespace fpdf.Wpf.ViewModels;
 
@@ -11,6 +12,7 @@ public partial class SettingsViewModel : ObservableObject
   private readonly ISettingsService _settingsService;
   private readonly IPrintService _printService;
   private readonly INetworkService _networkService;
+  private readonly LocalizationManager _localizationManager;
 
   [ObservableProperty]
   private string? _defaultPrinter;
@@ -36,17 +38,24 @@ public partial class SettingsViewModel : ObservableObject
   [ObservableProperty]
   private string _newNetworkPath = string.Empty;
 
+  [ObservableProperty]
+  private LanguageInfo? _selectedLanguage;
+
   public ObservableCollection<string> FavoriteFolders { get; } = new();
   public ObservableCollection<string> RecentFolders { get; } = new();
   public ObservableCollection<string> CustomNetworkPaths { get; } = new();
   public ObservableCollection<PrinterInfo> Printers { get; } = new();
   public ObservableCollection<string> AvailableThemes { get; } = new() { "Light", "Dark", "Violet" };
+  public ObservableCollection<LanguageInfo> AvailableLanguages { get; } = new();
 
-  public SettingsViewModel(ISettingsService settingsService, IPrintService printService, INetworkService networkService)
+  public SettingsViewModel(ISettingsService settingsService, IPrintService printService, INetworkService networkService, LocalizationManager localizationManager)
   {
     _settingsService = settingsService;
     _printService = printService;
     _networkService = networkService;
+    _localizationManager = localizationManager;
+
+    LoadAvailableLanguages();
   }
 
   [RelayCommand]
@@ -61,6 +70,9 @@ public partial class SettingsViewModel : ObservableObject
     RememberLastFolder = settings.RememberLastFolder;
     DefaultCopies = settings.DefaultCopies;
     DefaultDuplex = settings.DefaultDuplex;
+
+    var currentLang = _localizationManager.GetCurrentLanguage();
+    SelectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == currentLang);
 
     FavoriteFolders.Clear();
     foreach (var folder in settings.FavoriteFolders)
@@ -166,5 +178,22 @@ public partial class SettingsViewModel : ObservableObject
   {
     // Implementar mudanca de tema do HandyControl
     // ResourceDictionary theme = themeName switch...
+  }
+
+  private void LoadAvailableLanguages()
+  {
+    var languages = _localizationManager.GetAvailableLanguages();
+    foreach (var lang in languages)
+    {
+      AvailableLanguages.Add(lang);
+    }
+  }
+
+  partial void OnSelectedLanguageChanged(LanguageInfo? oldValue, LanguageInfo? newValue)
+  {
+    if (newValue != null)
+    {
+      _localizationManager.SetLanguage(newValue.Code);
+    }
   }
 }

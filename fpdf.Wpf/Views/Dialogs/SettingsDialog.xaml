@@ -1,24 +1,25 @@
 ﻿<hc:Window
-  x:Class="fpdf.Wpf.Views.Dialogs.SettingsDialog"
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:behaviors="clr-namespace:fpdf.Wpf.Behaviors"
-  xmlns:control="clr-namespace:fpdf.Wpf.Views.Controls"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:hc="https://handyorg.github.io/handycontrol"
-  xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
-  Title="Configuracoes"
-  Width="500"
-  Height="600"
-  d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
-  ResizeMode="NoResize"
-  ShowInTaskbar="False"
-  Style="{StaticResource WindowWin10}"
-  SystemBackdropType="Acrylic"
-  WindowStartupLocation="CenterOwner"
-  mc:Ignorable="d">
+x:Class="fpdf.Wpf.Views.Dialogs.SettingsDialog"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:behaviors="clr-namespace:fpdf.Wpf.Behaviors"
+xmlns:control="clr-namespace:fpdf.Wpf.Views.Controls"
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+xmlns:hc="https://handyorg.github.io/handycontrol"
+xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+xmlns:ext="clr-namespace:fpdf.Wpf.Extensions"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
+Title="{ext:Loc Settings_Title}"
+Width="500"
+Height="600"
+d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
+ResizeMode="NoResize"
+ShowInTaskbar="False"
+Style="{StaticResource WindowWin10}"
+SystemBackdropType="Acrylic"
+WindowStartupLocation="CenterOwner"
+mc:Ignorable="d">
 
   <hc:Window.Resources>
     <!--  Estilo customizado do ListBoxItem com efeitos visuais  -->
@@ -93,6 +94,19 @@
         <control:SettingsSection Title="Aparência">
           <control:SettingsSection.SectionContent>
             <StackPanel>
+              <control:SettingsItem Label="Idioma">
+                <control:SettingsItem.ItemContent>
+                  <ComboBox
+                    Width="200"
+                    DisplayMemberPath="NativeName"
+                    ItemsSource="{Binding AvailableLanguages}"
+                    SelectedItem="{Binding SelectedLanguage}"
+                    Style="{StaticResource ComboBox.Small}" />
+                </control:SettingsItem.ItemContent>
+              </control:SettingsItem>
+
+              <Border Height="1" Background="{DynamicResource BorderBrush}" />
+
               <control:SettingsItem Label="Tema">
                 <control:SettingsItem.ItemContent>
                   <ComboBox

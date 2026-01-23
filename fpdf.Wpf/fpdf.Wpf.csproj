@@ -7,6 +7,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<RootNamespace>fpdf.Wpf</RootNamespace>
 	</PropertyGroup>
 
 	<!-- Pacotes de UI (Wpf-specific) -->
@@ -15,6 +16,7 @@
 		<PackageReference Include="HandyControl.Lang.pt-BR" Version="3.5.1" />
 		<PackageReference Include="MahApps.Metro.IconPacks.PhosphorIcons" Version="6.2.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+		<PackageReference Include="WpfLocalizeExtension" Version="3.10.0" />
 	</ItemGroup>
 
 	<!-- Pacotes opcionais (Dapper/Sqlite para cache local, MediatR para mensageria) -->

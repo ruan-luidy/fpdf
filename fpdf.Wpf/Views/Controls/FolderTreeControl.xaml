@@ -1,15 +1,16 @@
 <UserControl
-  x:Class="fpdf.Wpf.Views.Controls.FolderTreeControl"
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:hc="https://handyorg.github.io/handycontrol"
-  xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:models="clr-namespace:fpdf.Core.Models;assembly=fpdf.Core"
-  xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
-  d:DataContext="{d:DesignInstance Type=vm:FolderTreeViewModel}"
-  mc:Ignorable="d">
+x:Class="fpdf.Wpf.Views.Controls.FolderTreeControl"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+xmlns:hc="https://handyorg.github.io/handycontrol"
+xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+xmlns:ext="clr-namespace:fpdf.Wpf.Extensions"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+xmlns:models="clr-namespace:fpdf.Core.Models;assembly=fpdf.Core"
+xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
+d:DataContext="{d:DesignInstance Type=vm:FolderTreeViewModel}"
+mc:Ignorable="d">
 
   <UserControl.Resources>
     <!--  Estilo customizado para a seta com animacao de rotacao  -->
@@ -270,7 +271,7 @@
 
         <hc:TextBox
           x:Name="PathTextBox"
-          hc:InfoElement.Placeholder="Digite o caminho..."
+          hc:InfoElement.Placeholder="{ext:Loc FolderTree_PathPlaceholder}"
           Background="Transparent"
           BorderThickness="0"
           Text="{Binding RootPath, UpdateSourceTrigger=PropertyChanged}">
@@ -288,7 +289,7 @@
           Command="{Binding NavigateToPathCommand}"
           CommandParameter="{Binding Text, ElementName=PathTextBox}"
           Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Navegar">
+          ToolTip="{ext:Loc FolderTree_NavigateTooltip}">
           <icon:PackIconPhosphorIcons Kind="ArrowRight" />
         </Button>
       </Grid>
@@ -316,19 +317,19 @@
       </TreeView.ItemContainerStyle>
 
       <TreeView.ContextMenu>
-        <ContextMenu Style="{StaticResource ContextMenu.Small}">
+        <ContextMenu>
           <MenuItem
-            Command="{Binding RefreshFolderCommand}"
-            CommandParameter="{Binding SelectedFolder}"
-            Header="Atualizar">
+            Command="{Binding PlacementTarget.DataContext.RefreshFolderCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            CommandParameter="{Binding PlacementTarget.DataContext.SelectedFolder, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            Header="{ext:Loc FolderTree_RefreshTooltip}">
             <MenuItem.Icon>
               <icon:PackIconPhosphorIcons Kind="ArrowClockwise" />
             </MenuItem.Icon>
           </MenuItem>
           <MenuItem
-            Command="{Binding ToggleFavoriteCommand}"
-            CommandParameter="{Binding SelectedFolder}"
-            Header="Favorito">
+            Command="{Binding PlacementTarget.DataContext.ToggleFavoriteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            CommandParameter="{Binding PlacementTarget.DataContext.SelectedFolder, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            Header="{ext:Loc FolderTree_FavoriteMenu}">
             <MenuItem.Icon>
               <icon:PackIconPhosphorIcons Kind="Star" />
             </MenuItem.Icon>

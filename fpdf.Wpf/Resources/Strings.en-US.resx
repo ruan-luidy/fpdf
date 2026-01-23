@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="FileList_SearchPlaceholder" xml:space="preserve"><value>Search PDF...</value></data>
+  <data name="FileList_RefreshTooltip" xml:space="preserve"><value>Refresh</value></data>
+  <data name="FileList_PrintSelectedTooltip" xml:space="preserve"><value>Print Selected</value></data>
+  <data name="FileList_ColumnName" xml:space="preserve"><value>Name</value></data>
+  <data name="FileList_ColumnPages" xml:space="preserve"><value>Pages</value></data>
+  <data name="FileList_ColumnSize" xml:space="preserve"><value>Size</value></data>
+  <data name="FileList_ColumnModified" xml:space="preserve"><value>Modified</value></data>
+  <data name="FileList_MenuPrint" xml:space="preserve"><value>Print</value></data>
+  <data name="FileList_MenuSelectAll" xml:space="preserve"><value>Select All</value></data>
+  <data name="FileList_MenuClearSelection" xml:space="preserve"><value>Clear Selection</value></data>
+  <data name="FileList_FilesCount" xml:space="preserve"><value>{0} files</value></data>
+  <data name="FileList_SelectedCount" xml:space="preserve"><value>{0} selected</value></data>
+  <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
+  <data name="FolderTree_PathPlaceholder" xml:space="preserve"><value>Enter path...</value></data>
+  <data name="FolderTree_NavigateTooltip" xml:space="preserve"><value>Navigate</value></data>
+  <data name="FolderTree_RefreshTooltip" xml:space="preserve"><value>Refresh</value></data>
+  <data name="FolderTree_FavoriteMenu" xml:space="preserve"><value>Favorite</value></data>
+  <data name="Main_AppTitle" xml:space="preserve"><value>Fucking Portable Document Files</value></data>
+  <data name="Main_ToggleTreeTooltip" xml:space="preserve"><value>Show/Hide Folders (Ctrl+B)</value></data>
+  <data name="Main_RefreshTooltip" xml:space="preserve"><value>Refresh (Ctrl+R)</value></data>
+  <data name="Main_PrintTooltip" xml:space="preserve"><value>Print (Ctrl+P)</value></data>
+  <data name="Main_SettingsTooltip" xml:space="preserve"><value>Settings (Ctrl+,)</value></data>
+  <data name="Network_LocalDisk" xml:space="preserve"><value>Local Disk</value></data>
+  <data name="Network_Favorites" xml:space="preserve"><value>Favorites</value></data>
+  <data name="Network_NetworkPaths" xml:space="preserve"><value>Network Paths</value></data>
+  <data name="Network_ThisPC" xml:space="preserve"><value>This PC</value></data>
+</root>

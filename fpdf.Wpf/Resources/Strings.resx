@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="FileList_SearchPlaceholder" xml:space="preserve"><value>Buscar PDF...</value></data>
+  <data name="FileList_RefreshTooltip" xml:space="preserve"><value>Atualizar</value></data>
+  <data name="FileList_PrintSelectedTooltip" xml:space="preserve"><value>Imprimir Selecionados</value></data>
+  <data name="FileList_ColumnName" xml:space="preserve"><value>Nome</value></data>
+  <data name="FileList_ColumnPages" xml:space="preserve"><value>Pag.</value></data>
+  <data name="FileList_ColumnSize" xml:space="preserve"><value>Tamanho</value></data>
+  <data name="FileList_ColumnModified" xml:space="preserve"><value>Modificado</value></data>
+  <data name="FileList_MenuPrint" xml:space="preserve"><value>Imprimir</value></data>
+  <data name="FileList_MenuSelectAll" xml:space="preserve"><value>Selecionar Todos</value></data>
+  <data name="FileList_MenuClearSelection" xml:space="preserve"><value>Limpar Selecao</value></data>
+  <data name="FileList_FilesCount" xml:space="preserve"><value>{0} arquivos</value></data>
+  <data name="FileList_SelectedCount" xml:space="preserve"><value>{0} selecionados</value></data>
+  <data name="Settings_Title" xml:space="preserve"><value>Configuracoes</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Idioma</value></data>
+  <data name="FolderTree_PathPlaceholder" xml:space="preserve"><value>Digite o caminho...</value></data>
+  <data name="FolderTree_NavigateTooltip" xml:space="preserve"><value>Navegar</value></data>
+  <data name="FolderTree_RefreshTooltip" xml:space="preserve"><value>Atualizar</value></data>
+  <data name="FolderTree_FavoriteMenu" xml:space="preserve"><value>Favorito</value></data>
+  <data name="Main_AppTitle" xml:space="preserve"><value>Fucking Portable Document Files</value></data>
+  <data name="Main_ToggleTreeTooltip" xml:space="preserve"><value>Mostrar/Ocultar Pastas (Ctrl+B)</value></data>
+  <data name="Main_RefreshTooltip" xml:space="preserve"><value>Atualizar (Ctrl+R)</value></data>
+  <data name="Main_PrintTooltip" xml:space="preserve"><value>Imprimir (Ctrl+P)</value></data>
+  <data name="Main_SettingsTooltip" xml:space="preserve"><value>Configuracoes (Ctrl+,)</value></data>
+  <data name="Network_LocalDisk" xml:space="preserve"><value>Disco Local</value></data>
+  <data name="Network_Favorites" xml:space="preserve"><value>Favoritos</value></data>
+  <data name="Network_NetworkPaths" xml:space="preserve"><value>Diretorios de Rede</value></data>
+  <data name="Network_ThisPC" xml:space="preserve"><value>Este PC</value></data>
+</root>

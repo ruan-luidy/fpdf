@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using fpdf.Core.Services;
+using fpdf.Wpf.Services;
 using fpdf.Wpf.ViewModels;
 using fpdf.Wpf.Views;
 using fpdf.Wpf.Views.Dialogs;
@@ -13,6 +14,9 @@ public partial class App : Application
 
   public App()
   {
+    // Inicializa o LocalizationManager ANTES de criar as views
+    _ = LocalizationManager.Instance;
+    
     var services = new ServiceCollection();
     ConfigureServices(services);
     _serviceProvider = services.BuildServiceProvider();
@@ -25,6 +29,8 @@ public partial class App : Application
     services.AddSingleton<IPdfService, PdfService>();
     services.AddSingleton<IPrintService, PrintService>();
     services.AddSingleton<ISettingsService, SettingsService>();
+    services.AddSingleton<ILocalizationService>(_ => LocalizationManager.Instance);
+    services.AddSingleton<LocalizationManager>(_ => LocalizationManager.Instance);
 
     // ViewModels (Transient)
     services.AddTransient<MainViewModel>();
@@ -46,6 +52,10 @@ public partial class App : Application
     // Carrega configuracoes
     var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
     await settingsService.LoadAsync();
+
+    // Inicializa idioma (pode carregar de configurações depois)
+    var localizationManager = _serviceProvider.GetRequiredService<LocalizationManager>();
+    localizationManager.SetLanguage("pt-BR");
 
     // Cria e exibe a janela principal
     var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
