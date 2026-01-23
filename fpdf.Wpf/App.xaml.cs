@@ -49,17 +49,25 @@ public partial class App : Application
   {
     base.OnStartup(e);
 
+    System.Diagnostics.Debug.WriteLine("[App] OnStartup started");
+
     // Carrega configuracoes
     var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
     await settingsService.LoadAsync();
+
+    System.Diagnostics.Debug.WriteLine($"[App] Settings loaded. Language from file: {settingsService.Settings.Language}");
 
     // Inicializa idioma a partir das configuracoes salvas
     var localizationManager = _serviceProvider.GetRequiredService<LocalizationManager>();
     localizationManager.SetLanguage(settingsService.Settings.Language);
 
+    System.Diagnostics.Debug.WriteLine($"[App] Language set to: {localizationManager.GetCurrentLanguage()}");
+
     // Cria e exibe a janela principal
     var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
     mainWindow.Show();
+
+    System.Diagnostics.Debug.WriteLine("[App] OnStartup completed");
   }
 
   protected override void OnExit(ExitEventArgs e)

@@ -27,6 +27,8 @@ public class LocalizationManager : ILocalizationService, INotifyPropertyChanged
 
     public void SetLanguage(string cultureName)
     {
+        System.Diagnostics.Debug.WriteLine($"[LocalizationManager] SetLanguage called with: {cultureName}");
+
         var culture = new CultureInfo(cultureName);
 
         CultureInfo.CurrentCulture = culture;
@@ -35,8 +37,12 @@ public class LocalizationManager : ILocalizationService, INotifyPropertyChanged
         Thread.CurrentThread.CurrentCulture = culture;
         Thread.CurrentThread.CurrentUICulture = culture;
 
+        System.Diagnostics.Debug.WriteLine($"[LocalizationManager] Culture set to: {CultureInfo.CurrentUICulture.Name}");
+
         // Notifica que TODAS as strings mudaram (o indexador mudou)
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
+
+        System.Diagnostics.Debug.WriteLine($"[LocalizationManager] PropertyChanged fired for Item[]");
     }
 
     public string GetCurrentLanguage()

@@ -65,13 +65,16 @@ public partial class SettingsViewModel : ObservableObject
   private async Task LoadAsync()
   {
     _isLoading = true;
+    System.Diagnostics.Debug.WriteLine("[SettingsViewModel] LoadAsync started");
 
     try
     {
       var settings = _settingsService.Settings;
 
-      // Guarda o idioma original para restaurar se cancelar
-      _originalLanguage = settings.Language;
+      // Guarda o idioma ATUAL (do LocalizationManager) para restaurar se cancelar
+      // Nao usa settings.Language porque pode estar desatualizado se houve mudanca sem salvar
+      _originalLanguage = _localizationManager.GetCurrentLanguage();
+      System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Original language set to: {_originalLanguage}");
 
       Theme = settings.Theme;
       ShowThumbnails = settings.ShowThumbnails;
@@ -82,8 +85,10 @@ public partial class SettingsViewModel : ObservableObject
 
       // Carrega o idioma atual do LocalizationManager (nao das configuracoes salvas)
       var currentLang = _localizationManager.GetCurrentLanguage();
+      System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Current language from LocalizationManager: {currentLang}");
       SelectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == currentLang)
                          ?? AvailableLanguages.FirstOrDefault(l => l.Code == "pt-BR");
+      System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] SelectedLanguage set to: {SelectedLanguage?.Code}");
 
       FavoriteFolders.Clear();
       foreach (var folder in settings.FavoriteFolders)
@@ -106,23 +111,30 @@ public partial class SettingsViewModel : ObservableObject
       // Carrega impressoras PRIMEIRO, depois define a selecionada
       Printers.Clear();
       var printers = await _printService.GetPrintersAsync();
+      System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Loaded {printers.Count} printers");
       foreach (var printer in printers)
       {
         Printers.Add(printer);
+        System.Diagnostics.Debug.WriteLine($"[SettingsViewModel]   - {printer.Name}");
       }
 
       // Define a impressora padrao DEPOIS de carregar a lista
+      System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Setting DefaultPrinter to: {settings.DefaultPrinter}");
       DefaultPrinter = settings.DefaultPrinter;
+      System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] DefaultPrinter is now: {DefaultPrinter}");
     }
     finally
     {
       _isLoading = false;
+      System.Diagnostics.Debug.WriteLine("[SettingsViewModel] LoadAsync completed");
     }
   }
 
   [RelayCommand]
   private async Task SaveAsync()
   {
+    System.Diagnostics.Debug.WriteLine("[SettingsViewModel] SaveAsync started");
+
     var settings = _settingsService.Settings;
 
     settings.DefaultPrinter = DefaultPrinter;
@@ -134,6 +146,8 @@ public partial class SettingsViewModel : ObservableObject
     settings.DefaultCopies = DefaultCopies;
     settings.DefaultDuplex = DefaultDuplex;
 
+    System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Saving - Language: {settings.Language}, Printer: {settings.DefaultPrinter}");
+
     settings.CustomNetworkPaths.Clear();
     foreach (var path in CustomNetworkPaths)
     {
@@ -144,6 +158,7 @@ public partial class SettingsViewModel : ObservableObject
 
     // Atualiza o idioma original para o novo valor salvo
     _originalLanguage = settings.Language;
+    System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] SaveAsync completed. Original language updated to: {_originalLanguage}");
   }
 
   [RelayCommand]
@@ -215,11 +230,18 @@ public partial class SettingsViewModel : ObservableObject
 
   partial void OnSelectedLanguageChanged(LanguageInfo? oldValue, LanguageInfo? newValue)
   {
+    System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] OnSelectedLanguageChanged: {oldValue?.Code} -> {newValue?.Code}, isLoading={_isLoading}");
+
     // Nao aplica idioma durante carregamento inicial
-    if (_isLoading) return;
+    if (_isLoading)
+    {
+      System.Diagnostics.Debug.WriteLine("[SettingsViewModel] Skipping SetLanguage because isLoading=true");
+      return;
+    }
 
     if (newValue != null)
     {
+      System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Calling SetLanguage({newValue.Code})");
       _localizationManager.SetLanguage(newValue.Code);
     }
   }
@@ -229,6 +251,7 @@ public partial class SettingsViewModel : ObservableObject
   /// </summary>
   public void RestoreOriginalLanguage()
   {
+    System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] RestoreOriginalLanguage called. Original: {_originalLanguage}");
     if (!string.IsNullOrEmpty(_originalLanguage))
     {
       _localizationManager.SetLanguage(_originalLanguage);

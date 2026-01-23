@@ -31,10 +31,18 @@ public class SettingsService : ISettingsService
           {
             var json = File.ReadAllText(_settingsPath);
             Settings = JsonConvert.DeserializeObject<AppSettings>(json) ?? new AppSettings();
+            System.Diagnostics.Debug.WriteLine($"[SettingsService] Loaded from {_settingsPath}");
+            System.Diagnostics.Debug.WriteLine($"[SettingsService] Language: {Settings.Language}, Printer: {Settings.DefaultPrinter}");
+          }
+          else
+          {
+            System.Diagnostics.Debug.WriteLine($"[SettingsService] No settings file found at {_settingsPath}, using defaults");
+            Settings = new AppSettings();
           }
         }
-        catch
+        catch (Exception ex)
         {
+          System.Diagnostics.Debug.WriteLine($"[SettingsService] Load FAILED: {ex.Message}");
           Settings = new AppSettings();
         }
       }
@@ -49,12 +57,22 @@ public class SettingsService : ISettingsService
       {
         try
         {
+          // Garante que o diretorio existe
+          var directory = Path.GetDirectoryName(_settingsPath);
+          if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+          {
+            Directory.CreateDirectory(directory);
+          }
+
           var json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
           File.WriteAllText(_settingsPath, json);
+
+          System.Diagnostics.Debug.WriteLine($"[SettingsService] Saved to {_settingsPath}");
+          System.Diagnostics.Debug.WriteLine($"[SettingsService] Language: {Settings.Language}, Printer: {Settings.DefaultPrinter}");
         }
-        catch
+        catch (Exception ex)
         {
-          // Falha silenciosa no save
+          System.Diagnostics.Debug.WriteLine($"[SettingsService] Save FAILED: {ex.Message}");
         }
       }
     }, cancellationToken);
