@@ -183,14 +183,14 @@
                     Grid.Column="1"
                     Width="24"
                     Height="24"
-                    Margin="0,0,7,0"
+                    Margin="0,0,13,0"
                     Command="{Binding AddNetworkPathCommand}"
                     Style="{StaticResource ButtonIconCustom}"
                     ToolTip="{ext:Loc Settings_AddDirectory}">
                     <icon:PackIconPhosphorIcons
                       Width="12"
                       Height="12"
-                      Kind="Plus" />
+                      Kind="PlusBold" />
                   </Button>
                 </Grid>
 

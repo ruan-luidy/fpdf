@@ -24,6 +24,12 @@ public partial class SettingsDialog : HandyControl.Controls.Window
 
   private void Cancel_Click(object sender, RoutedEventArgs e)
   {
+    // Restaura o idioma original se o usuario mudou mas nao salvou
+    if (DataContext is SettingsViewModel vm)
+    {
+      vm.RestoreOriginalLanguage();
+    }
+
     DialogResult = false;
     Close();
   }
