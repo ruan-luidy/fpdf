@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using fpdf.Core.Models;
 using fpdf.Core.Services;
+using System.Windows;
+using System.Windows.Media.Animation;
 
 namespace fpdf.Wpf.ViewModels;
 
@@ -39,7 +41,70 @@ public partial class MainViewModel : ObservableObject
   [ObservableProperty]
   private bool _isTreeViewVisible = true;
 
+  private double _savedTreeViewWidth = 250;
+  private CancellationTokenSource? _animationCts;
+
   public event EventHandler? OpenSettingsRequested;
+
+  partial void OnIsTreeViewVisibleChanged(bool value)
+  {
+    // Cancela animação anterior se existir
+    _animationCts?.Cancel();
+    _animationCts = new CancellationTokenSource();
+
+    _ = AnimateTreeViewWidthAsync(value, _animationCts.Token);
+  }
+
+  private async Task AnimateTreeViewWidthAsync(bool show, CancellationToken cancellationToken)
+  {
+    double from = TreeViewWidth;
+    double to;
+
+    if (!show)
+    {
+      // Salvando o tamanho atual antes de ocultar
+      if (TreeViewWidth > 0)
+      {
+        _savedTreeViewWidth = TreeViewWidth;
+      }
+      to = 0;
+    }
+    else
+    {
+      // Restaurando o tamanho salvo ao mostrar
+      to = _savedTreeViewWidth > 0 ? _savedTreeViewWidth : 250;
+    }
+
+    // Animação suave com easing
+    const int durationMs = 300;
+    const int frameMs = 16; // ~60 FPS
+    int frames = durationMs / frameMs;
+    double step = (to - from) / frames;
+
+    try
+    {
+      for (int i = 0; i < frames; i++)
+      {
+        if (cancellationToken.IsCancellationRequested) return;
+
+        // Easing CubicInOut
+        double t = (double)i / frames;
+        double easedT = t < 0.5
+          ? 4 * t * t * t
+          : 1 - Math.Pow(-2 * t + 2, 3) / 2;
+
+        TreeViewWidth = from + (to - from) * easedT;
+
+        await Task.Delay(frameMs, cancellationToken);
+      }
+
+      TreeViewWidth = to; // Garante valor final
+    }
+    catch (TaskCanceledException)
+    {
+      // Animação cancelada
+    }
+  }
 
   public MainViewModel(
       FolderTreeViewModel folderTree,
@@ -69,6 +134,7 @@ public partial class MainViewModel : ObservableObject
 
     // Aplica configuracoes salvas
     TreeViewWidth = _settingsService.Settings.TreeViewWidth;
+    _savedTreeViewWidth = TreeViewWidth > 0 ? TreeViewWidth : 250;
     FileListWidth = _settingsService.Settings.FileListWidth;
 
     // Carrega dados iniciais

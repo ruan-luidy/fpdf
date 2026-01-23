@@ -121,7 +121,11 @@
     <!--  Conteudo Principal  -->
     <Grid Grid.Row="0">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition
+          x:Name="TreeViewColumn"
+          Width="{Binding TreeViewWidth, Mode=TwoWay, Converter={StaticResource Double2GridLengthConverter}}"
+          MinWidth="0"
+          MaxWidth="500" />
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition
           Width="{Binding FileListWidth, Mode=TwoWay, Converter={StaticResource Double2GridLengthConverter}}"
@@ -135,21 +139,12 @@
       <Border Grid.Column="0" ClipToBounds="True">
         <Border.Style>
           <Style TargetType="Border">
-            <Setter Property="Width" Value="{Binding TreeViewWidth}" />
             <Setter Property="Opacity" Value="1" />
             <Style.Triggers>
               <DataTrigger Binding="{Binding IsTreeViewVisible}" Value="False">
                 <DataTrigger.EnterActions>
                   <BeginStoryboard>
                     <Storyboard>
-                      <DoubleAnimation
-                        Storyboard.TargetProperty="Width"
-                        To="0"
-                        Duration="0:0:0.3">
-                        <DoubleAnimation.EasingFunction>
-                          <CubicEase EasingMode="EaseInOut" />
-                        </DoubleAnimation.EasingFunction>
-                      </DoubleAnimation>
                       <DoubleAnimation
                         Storyboard.TargetProperty="Opacity"
                         To="0"
@@ -160,14 +155,6 @@
                 <DataTrigger.ExitActions>
                   <BeginStoryboard>
                     <Storyboard>
-                      <DoubleAnimation
-                        Storyboard.TargetProperty="Width"
-                        To="250"
-                        Duration="0:0:0.3">
-                        <DoubleAnimation.EasingFunction>
-                          <CubicEase EasingMode="EaseInOut" />
-                        </DoubleAnimation.EasingFunction>
-                      </DoubleAnimation>
                       <DoubleAnimation
                         Storyboard.TargetProperty="Opacity"
                         To="1"
@@ -191,6 +178,7 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="Background" Value="Transparent" />
+            <Setter Property="IsEnabled" Value="{Binding IsTreeViewVisible}" />
             <Setter Property="Opacity" Value="1" />
             <Style.Triggers>
               <DataTrigger Binding="{Binding IsTreeViewVisible}" Value="False">
