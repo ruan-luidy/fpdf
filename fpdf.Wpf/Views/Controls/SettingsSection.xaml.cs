@@ -1,12 +1,15 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using fpdf.Wpf.Services;
 
 namespace fpdf.Wpf.Views.Controls
 {
   public partial class SettingsSection : UserControl
   {
     public static readonly DependencyProperty TitleProperty =
-        DependencyProperty.Register(nameof(Title), typeof(string), typeof(SettingsSection));
+        DependencyProperty.Register(nameof(Title), typeof(string), typeof(SettingsSection),
+            new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     public static readonly DependencyProperty SectionContentProperty =
         DependencyProperty.Register(nameof(SectionContent), typeof(object), typeof(SettingsSection));
@@ -14,14 +17,7 @@ namespace fpdf.Wpf.Views.Controls
     public string Title
     {
       get => (string)GetValue(TitleProperty);
-      set
-      {
-        SetValue(TitleProperty, value);
-        if (SectionTitle != null)
-        {
-          SectionTitle.Visibility = string.IsNullOrEmpty(value) ? Visibility.Collapsed : Visibility.Visible;
-        }
-      }
+      set => SetValue(TitleProperty, value);
     }
 
     public object SectionContent
@@ -33,16 +29,16 @@ namespace fpdf.Wpf.Views.Controls
     public SettingsSection()
     {
       InitializeComponent();
-      Loaded += OnLoaded;
-    }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-      // Update title visibility when loaded
-      if (SectionTitle != null)
+      // Forca atualizacao quando o idioma muda
+      LocalizationManager.Instance.PropertyChanged += (_, e) =>
       {
-        SectionTitle.Visibility = string.IsNullOrEmpty(Title) ? Visibility.Collapsed : Visibility.Visible;
-      }
+        if (e.PropertyName == "Item[]")
+        {
+          var binding = BindingOperations.GetBindingExpression(this, TitleProperty);
+          binding?.UpdateTarget();
+        }
+      };
     }
   }
 }

@@ -4,6 +4,15 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- Main Window -->
+  <data name="Main_AppTitle" xml:space="preserve"><value>Fucking Portable Document Files</value></data>
+  <data name="Main_ToggleTreeTooltip" xml:space="preserve"><value>Show/Hide Folders (Ctrl+B)</value></data>
+  <data name="Main_RefreshTooltip" xml:space="preserve"><value>Refresh (Ctrl+R)</value></data>
+  <data name="Main_PrintTooltip" xml:space="preserve"><value>Print (Ctrl+P)</value></data>
+  <data name="Main_SettingsTooltip" xml:space="preserve"><value>Settings (Ctrl+,)</value></data>
+
+  <!-- File List -->
   <data name="FileList_SearchPlaceholder" xml:space="preserve"><value>Search PDF...</value></data>
   <data name="FileList_RefreshTooltip" xml:space="preserve"><value>Refresh</value></data>
   <data name="FileList_PrintSelectedTooltip" xml:space="preserve"><value>Print Selected</value></data>
@@ -16,19 +25,63 @@
   <data name="FileList_MenuClearSelection" xml:space="preserve"><value>Clear Selection</value></data>
   <data name="FileList_FilesCount" xml:space="preserve"><value>{0} files</value></data>
   <data name="FileList_SelectedCount" xml:space="preserve"><value>{0} selected</value></data>
-  <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
-  <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
+
+  <!-- Folder Tree -->
   <data name="FolderTree_PathPlaceholder" xml:space="preserve"><value>Enter path...</value></data>
   <data name="FolderTree_NavigateTooltip" xml:space="preserve"><value>Navigate</value></data>
   <data name="FolderTree_RefreshTooltip" xml:space="preserve"><value>Refresh</value></data>
   <data name="FolderTree_FavoriteMenu" xml:space="preserve"><value>Favorite</value></data>
-  <data name="Main_AppTitle" xml:space="preserve"><value>Fucking Portable Document Files</value></data>
-  <data name="Main_ToggleTreeTooltip" xml:space="preserve"><value>Show/Hide Folders (Ctrl+B)</value></data>
-  <data name="Main_RefreshTooltip" xml:space="preserve"><value>Refresh (Ctrl+R)</value></data>
-  <data name="Main_PrintTooltip" xml:space="preserve"><value>Print (Ctrl+P)</value></data>
-  <data name="Main_SettingsTooltip" xml:space="preserve"><value>Settings (Ctrl+,)</value></data>
+
+  <!-- Network -->
   <data name="Network_LocalDisk" xml:space="preserve"><value>Local Disk</value></data>
   <data name="Network_Favorites" xml:space="preserve"><value>Favorites</value></data>
   <data name="Network_NetworkPaths" xml:space="preserve"><value>Network Paths</value></data>
   <data name="Network_ThisPC" xml:space="preserve"><value>This PC</value></data>
+
+  <!-- Settings -->
+  <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Settings_AddDirectory" xml:space="preserve"><value>Add directory</value></data>
+  <data name="Settings_NoNetworkDir" xml:space="preserve"><value>No network directory configured</value></data>
+  <data name="Settings_NoFavorites" xml:space="preserve"><value>No favorite folders</value></data>
+  <data name="Settings_ClearHistory" xml:space="preserve"><value>Clear History</value></data>
+  <data name="Settings_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Settings_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Settings_Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Settings_General" xml:space="preserve"><value>General</value></data>
+  <data name="Settings_Appearance" xml:space="preserve"><value>Appearance</value></data>
+  <data name="Settings_Printing" xml:space="preserve"><value>Printing</value></data>
+  <data name="Settings_Paths" xml:space="preserve"><value>Paths</value></data>
+  <data name="Settings_Theme" xml:space="preserve"><value>Theme</value></data>
+  <data name="Settings_ShowThumbnails" xml:space="preserve"><value>Show thumbnails</value></data>
+  <data name="Settings_ThumbnailSize" xml:space="preserve"><value>Thumbnail size</value></data>
+  <data name="Settings_RememberLastFolder" xml:space="preserve"><value>Remember last folder</value></data>
+  <data name="Settings_DefaultPrinter" xml:space="preserve"><value>Default printer</value></data>
+  <data name="Settings_DefaultCopies" xml:space="preserve"><value>Default copies</value></data>
+  <data name="Settings_DoubleSided" xml:space="preserve"><value>Double-sided printing</value></data>
+  <data name="Settings_NetworkDirectories" xml:space="preserve"><value>Network directories</value></data>
+  <data name="Settings_FavoriteFolders" xml:space="preserve"><value>Favorite folders</value></data>
+  <data name="Settings_RecentFolders" xml:space="preserve"><value>Recent folders</value></data>
+
+  <!-- Print Queue -->
+  <data name="PrintQueue_NoPrinter" xml:space="preserve"><value>No printer</value></data>
+  <data name="PrintQueue_InQueue" xml:space="preserve"><value>in queue</value></data>
+  <data name="PrintQueue_Completed" xml:space="preserve"><value>completed</value></data>
+  <data name="PrintQueue_Errors" xml:space="preserve"><value>error(s)</value></data>
+  <data name="PrintQueue_PrintThis" xml:space="preserve"><value>Print this file</value></data>
+  <data name="PrintQueue_Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="PrintQueue_Copies" xml:space="preserve"><value>Copies:</value></data>
+  <data name="PrintQueue_Pages" xml:space="preserve"><value>Pages:</value></data>
+  <data name="PrintQueue_EmptyQueue" xml:space="preserve"><value>Print queue empty</value></data>
+  <data name="PrintQueue_ClearCompleted" xml:space="preserve"><value>Clear Completed</value></data>
+  <data name="PrintQueue_PrintAll" xml:space="preserve"><value>Print All</value></data>
+  <data name="PrintQueue_ViewQueue" xml:space="preserve"><value>View print queue</value></data>
+  <data name="PrintQueue_Print" xml:space="preserve"><value>Print</value></data>
+  <data name="PrintQueue_CountFormat" xml:space="preserve"><value>{0} in queue</value></data>
+
+  <!-- PDF Viewer -->
+  <data name="PdfViewer_OpenDefault" xml:space="preserve"><value>Open in default app</value></data>
+  <data name="PdfViewer_DefaultAppInfo" xml:space="preserve"><value>Viewing using system default application</value></data>
+  <data name="PdfViewer_SelectPdf" xml:space="preserve"><value>Select a PDF to view</value></data>
+  <data name="PdfViewer_NoFile" xml:space="preserve"><value>No file selected</value></data>
 </root>

@@ -56,6 +56,16 @@ public partial class FileListViewModel : ObservableObject
 
     FilesView = CollectionViewSource.GetDefaultView(Files);
     FilesView.Filter = FilterFiles;
+
+    // Atualiza textos localizados quando o idioma muda
+    LocalizationManager.Instance.PropertyChanged += (_, e) =>
+    {
+      if (e.PropertyName == "Item[]")
+      {
+        OnPropertyChanged(nameof(FileCountText));
+        OnPropertyChanged(nameof(SelectedCountText));
+      }
+    };
   }
 
   partial void OnSearchTextChanged(string value)

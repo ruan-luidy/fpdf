@@ -8,6 +8,7 @@ public class AppSettings
   public List<string> RecentFolders { get; set; } = new();
   public int MaxRecentFolders { get; set; } = 10;
   public string Theme { get; set; } = "Light";
+  public string Language { get; set; } = "pt-BR";
   public List<string> CustomNetworkPaths { get; set; } = new();
 
   public double WindowWidth { get; set; } = 1200;

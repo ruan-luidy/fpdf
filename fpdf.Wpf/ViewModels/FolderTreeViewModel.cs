@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using fpdf.Core.Models;
 using fpdf.Core.Services;
+using fpdf.Wpf.Services;
 
 namespace fpdf.Wpf.ViewModels;
 
@@ -33,6 +34,25 @@ public partial class FolderTreeViewModel : ObservableObject
     {
         _networkService = networkService;
         _settingsService = settingsService;
+
+        // Atualiza nomes das categorias quando o idioma muda
+        LocalizationManager.Instance.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == "Item[]")
+            {
+                UpdateCategoryNames();
+            }
+        };
+    }
+
+    private void UpdateCategoryNames()
+    {
+        if (_favoritesCategory != null)
+            _favoritesCategory.Name = LocalizationManager.Instance.GetString("Network_Favorites");
+        if (_networkPathsCategory != null)
+            _networkPathsCategory.Name = LocalizationManager.Instance.GetString("Network_NetworkPaths");
+        if (_thisPcCategory != null)
+            _thisPcCategory.Name = LocalizationManager.Instance.GetString("Network_ThisPC");
     }
 
     [RelayCommand]
@@ -47,7 +67,7 @@ public partial class FolderTreeViewModel : ObservableObject
             // Categoria: Favoritos
             _favoritesCategory = new NetworkFolder
             {
-                Name = "Favoritos",
+                Name = LocalizationManager.Instance.GetString("Network_Favorites"),
                 IsCategory = true,
                 IconKind = "Star",
                 IsExpanded = true
@@ -55,12 +75,12 @@ public partial class FolderTreeViewModel : ObservableObject
             await LoadFavoritesIntoCategory();
             RootFolders.Add(_favoritesCategory);
 
-            // Categoria: Diretórios de Rede
+            // Categoria: Diretorios de Rede
             if (_settingsService.Settings.CustomNetworkPaths.Count > 0)
             {
                 _networkPathsCategory = new NetworkFolder
                 {
-                    Name = "Diretórios de Rede",
+                    Name = LocalizationManager.Instance.GetString("Network_NetworkPaths"),
                     IsCategory = true,
                     IconKind = "Network",
                     IsExpanded = true
@@ -72,7 +92,7 @@ public partial class FolderTreeViewModel : ObservableObject
             // Categoria: Este PC
             _thisPcCategory = new NetworkFolder
             {
-                Name = "Este PC",
+                Name = LocalizationManager.Instance.GetString("Network_ThisPC"),
                 IsCategory = true,
                 IconKind = "Desktop",
                 IsExpanded = true
@@ -226,7 +246,7 @@ public partial class FolderTreeViewModel : ObservableObject
             {
                 _networkPathsCategory = new NetworkFolder
                 {
-                    Name = "Diretórios de Rede",
+                    Name = LocalizationManager.Instance.GetString("Network_NetworkPaths"),
                     IsCategory = true,
                     IconKind = "Network",
                     IsExpanded = true

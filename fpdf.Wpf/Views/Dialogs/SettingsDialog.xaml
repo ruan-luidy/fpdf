@@ -1,25 +1,25 @@
 ﻿<hc:Window
-x:Class="fpdf.Wpf.Views.Dialogs.SettingsDialog"
-xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-xmlns:behaviors="clr-namespace:fpdf.Wpf.Behaviors"
-xmlns:control="clr-namespace:fpdf.Wpf.Views.Controls"
-xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-xmlns:hc="https://handyorg.github.io/handycontrol"
-xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-xmlns:ext="clr-namespace:fpdf.Wpf.Extensions"
-xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
-Title="{ext:Loc Settings_Title}"
-Width="500"
-Height="600"
-d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
-ResizeMode="NoResize"
-ShowInTaskbar="False"
-Style="{StaticResource WindowWin10}"
-SystemBackdropType="Acrylic"
-WindowStartupLocation="CenterOwner"
-mc:Ignorable="d">
+  x:Class="fpdf.Wpf.Views.Dialogs.SettingsDialog"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:behaviors="clr-namespace:fpdf.Wpf.Behaviors"
+  xmlns:control="clr-namespace:fpdf.Wpf.Views.Controls"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:ext="clr-namespace:fpdf.Wpf.Extensions"
+  xmlns:hc="https://handyorg.github.io/handycontrol"
+  xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
+  Title="{ext:Loc Settings_Title}"
+  Width="500"
+  Height="600"
+  d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
+  ResizeMode="NoResize"
+  ShowInTaskbar="False"
+  Style="{StaticResource WindowWin10}"
+  SystemBackdropType="Acrylic"
+  WindowStartupLocation="CenterOwner"
+  mc:Ignorable="d">
 
   <hc:Window.Resources>
     <!--  Estilo customizado do ListBoxItem com efeitos visuais  -->
@@ -55,10 +55,10 @@ mc:Ignorable="d">
       VerticalScrollBarVisibility="Auto">
       <StackPanel Margin="20">
         <!--  Impressao  -->
-        <control:SettingsSection Title="Impressão">
+        <control:SettingsSection Title="{ext:Loc Settings_Printing}">
           <control:SettingsSection.SectionContent>
             <StackPanel>
-              <control:SettingsItem Label="Impressora padrão">
+              <control:SettingsItem Label="{ext:Loc Settings_DefaultPrinter}">
                 <control:SettingsItem.ItemContent>
                   <ComboBox
                     Width="300"
@@ -72,7 +72,7 @@ mc:Ignorable="d">
 
               <Border Height="1" Background="{DynamicResource BorderBrush}" />
 
-              <control:SettingsItem Label="Cópias padrão">
+              <control:SettingsItem Label="{ext:Loc Settings_DefaultCopies}">
                 <control:SettingsItem.ItemContent>
                   <hc:NumericUpDown
                     Width="100"
@@ -85,16 +85,16 @@ mc:Ignorable="d">
 
               <Border Height="1" Background="{DynamicResource BorderBrush}" />
 
-              <control:SettingsToggleItem IsChecked="{Binding DefaultDuplex}" Label="Duplex por padrão" />
+              <control:SettingsToggleItem IsChecked="{Binding DefaultDuplex}" Label="{ext:Loc Settings_DoubleSided}" />
             </StackPanel>
           </control:SettingsSection.SectionContent>
         </control:SettingsSection>
 
         <!--  Aparencia  -->
-        <control:SettingsSection Title="Aparência">
+        <control:SettingsSection Title="{ext:Loc Settings_Appearance}">
           <control:SettingsSection.SectionContent>
             <StackPanel>
-              <control:SettingsItem Label="Idioma">
+              <control:SettingsItem Label="{ext:Loc Settings_Language}">
                 <control:SettingsItem.ItemContent>
                   <ComboBox
                     Width="200"
@@ -107,7 +107,7 @@ mc:Ignorable="d">
 
               <Border Height="1" Background="{DynamicResource BorderBrush}" />
 
-              <control:SettingsItem Label="Tema">
+              <control:SettingsItem Label="{ext:Loc Settings_Theme}">
                 <control:SettingsItem.ItemContent>
                   <ComboBox
                     Width="150"
@@ -119,11 +119,11 @@ mc:Ignorable="d">
 
               <Border Height="1" Background="{DynamicResource BorderBrush}" />
 
-              <control:SettingsToggleItem IsChecked="{Binding ShowThumbnails}" Label="Mostrar miniaturas" />
+              <control:SettingsToggleItem IsChecked="{Binding ShowThumbnails}" Label="{ext:Loc Settings_ShowThumbnails}" />
 
               <Border Height="1" Background="{DynamicResource BorderBrush}" />
 
-              <control:SettingsItem Label="Tamanho da miniatura">
+              <control:SettingsItem Label="{ext:Loc Settings_ThumbnailSize}">
                 <control:SettingsItem.ItemContent>
                   <StackPanel Width="200" Orientation="Horizontal">
                     <Slider
@@ -146,14 +146,14 @@ mc:Ignorable="d">
         </control:SettingsSection>
 
         <!--  Navegacao  -->
-        <control:SettingsSection Title="Navegação">
+        <control:SettingsSection Title="{ext:Loc Settings_General}">
           <control:SettingsSection.SectionContent>
-            <control:SettingsToggleItem IsChecked="{Binding RememberLastFolder}" Label="Lembrar última pasta aberta" />
+            <control:SettingsToggleItem IsChecked="{Binding RememberLastFolder}" Label="{ext:Loc Settings_RememberLastFolder}" />
           </control:SettingsSection.SectionContent>
         </control:SettingsSection>
 
         <!--  Diretorios de Rede  -->
-        <control:SettingsSection Title="Diretórios de Rede">
+        <control:SettingsSection Title="{ext:Loc Settings_NetworkDirectories}">
           <control:SettingsSection.SectionContent>
             <StackPanel>
               <!--  Campo para adicionar  -->
@@ -181,13 +181,15 @@ mc:Ignorable="d">
 
                   <Button
                     Grid.Column="1"
+                    Width="24"
+                    Height="24"
                     Margin="0,0,7,0"
                     Command="{Binding AddNetworkPathCommand}"
                     Style="{StaticResource ButtonIconCustom}"
-                    ToolTip="Adicionar diretório">
+                    ToolTip="{ext:Loc Settings_AddDirectory}">
                     <icon:PackIconPhosphorIcons
-                      Width="14"
-                      Height="14"
+                      Width="12"
+                      Height="12"
                       Kind="Plus" />
                   </Button>
                 </Grid>
@@ -235,7 +237,7 @@ mc:Ignorable="d">
                           Command="{Binding DataContext.RemoveNetworkPathCommand, RelativeSource={RelativeSource AncestorType=hc:Window}}"
                           CommandParameter="{Binding}"
                           Style="{StaticResource ButtonIconCustom}"
-                          ToolTip="Remover">
+                          ToolTip="{ext:Loc Settings_Remove}">
                           <icon:PackIconPhosphorIcons
                             Width="12"
                             Height="12"
@@ -260,7 +262,7 @@ mc:Ignorable="d">
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Foreground="{DynamicResource SecondaryTextBrush}"
-                  Text="Nenhum diretório de rede configurado"
+                  Text="{ext:Loc Settings_NoNetworkDir}"
                   Visibility="{Binding CustomNetworkPaths.Count, Converter={StaticResource Int2VisibilityReConverter}}" />
               </Grid>
             </StackPanel>
@@ -268,7 +270,7 @@ mc:Ignorable="d">
         </control:SettingsSection>
 
         <!--  Pastas favoritas  -->
-        <control:SettingsSection Title="Pastas Favoritas">
+        <control:SettingsSection Title="{ext:Loc Settings_FavoriteFolders}">
           <control:SettingsSection.SectionContent>
             <Grid>
               <ListBox
@@ -300,7 +302,7 @@ mc:Ignorable="d">
                         Command="{Binding DataContext.RemoveFavoriteFolderCommand, RelativeSource={RelativeSource AncestorType=hc:Window}}"
                         CommandParameter="{Binding}"
                         Style="{StaticResource ButtonIconCustom}"
-                        ToolTip="Remover">
+                        ToolTip="{ext:Loc Settings_Remove}">
                         <icon:PackIconPhosphorIcons
                           Width="12"
                           Height="12"
@@ -325,14 +327,14 @@ mc:Ignorable="d">
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource SecondaryTextBrush}"
-                Text="Nenhuma pasta favorita"
+                Text="{ext:Loc Settings_NoFavorites}"
                 Visibility="{Binding FavoriteFolders.Count, Converter={StaticResource Int2VisibilityReConverter}}" />
             </Grid>
           </control:SettingsSection.SectionContent>
         </control:SettingsSection>
 
         <!--  Pastas recentes  -->
-        <control:SettingsSection Title="Pastas Recentes" Margin="0,0,0,70">
+        <control:SettingsSection Title="{ext:Loc Settings_RecentFolders}" Margin="0,0,0,70">
           <control:SettingsSection.SectionContent>
             <Grid>
               <Grid.RowDefinitions>
@@ -361,7 +363,7 @@ mc:Ignorable="d">
                 Margin="0,8,8,8"
                 HorizontalAlignment="Right"
                 Command="{Binding ClearRecentFoldersCommand}"
-                Content="Limpar Historico" />
+                Content="{ext:Loc Settings_ClearHistory}" />
             </Grid>
           </control:SettingsSection.SectionContent>
         </control:SettingsSection>
@@ -389,13 +391,13 @@ mc:Ignorable="d">
         <Button
           Width="100"
           Click="Cancel_Click"
-          Content="Cancelar"
+          Content="{ext:Loc Settings_Cancel}"
           IsCancel="True" />
         <Button
           Width="100"
           Margin="8,0,0,0"
           Click="Save_Click"
-          Content="Salvar"
+          Content="{ext:Loc Settings_Save}"
           Style="{StaticResource ButtonPrimary}" />
       </StackPanel>
     </Border>

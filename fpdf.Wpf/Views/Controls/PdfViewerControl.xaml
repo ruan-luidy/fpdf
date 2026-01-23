@@ -3,6 +3,7 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:ext="clr-namespace:fpdf.Wpf.Extensions"
   xmlns:hc="https://handyorg.github.io/handycontrol"
   xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -30,7 +31,7 @@
         <Button
           Click="OnOpenExternalClick"
           Style="{StaticResource ButtonIconCustom}"
-          ToolTip="Abrir no aplicativo padrão">
+          ToolTip="{ext:Loc PdfViewer_OpenDefault}">
           <icon:PackIconPhosphorIcons Kind="ArrowSquareOut" />
         </Button>
 
@@ -40,7 +41,7 @@
           Margin="8,0"
           VerticalAlignment="Center"
           Foreground="{DynamicResource SecondaryTextBrush}"
-          Text="Visualização usando o aplicativo padrão do sistema" />
+          Text="{ext:Loc PdfViewer_DefaultAppInfo}" />
       </StackPanel>
     </Border>
 
@@ -69,7 +70,7 @@
           <TextBlock
             Margin="0,16,0,0"
             Foreground="{DynamicResource SecondaryTextBrush}"
-            Text="Selecione um PDF para visualizar" />
+            Text="{ext:Loc PdfViewer_SelectPdf}" />
         </StackPanel>
 
         <!--  Mensagem de erro  -->
@@ -113,7 +114,7 @@
       BorderThickness="1"
       CornerRadius="0,0,4,4">
       <TextBlock
-        Text="{Binding CurrentFile.FileName, FallbackValue='Nenhum arquivo selecionado'}"
+        Text="{Binding CurrentFile.FileName}"
         TextTrimming="CharacterEllipsis"
         ToolTip="{Binding CurrentFile.FullPath}" />
     </Border>

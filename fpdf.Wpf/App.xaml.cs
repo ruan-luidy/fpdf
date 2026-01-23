@@ -53,9 +53,9 @@ public partial class App : Application
     var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
     await settingsService.LoadAsync();
 
-    // Inicializa idioma (pode carregar de configurações depois)
+    // Inicializa idioma a partir das configuracoes salvas
     var localizationManager = _serviceProvider.GetRequiredService<LocalizationManager>();
-    localizationManager.SetLanguage("pt-BR");
+    localizationManager.SetLanguage(settingsService.Settings.Language);
 
     // Cria e exibe a janela principal
     var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();

@@ -1,15 +1,23 @@
+using System.ComponentModel;
 using System.Globalization;
 using System.Resources;
 using fpdf.Core.Services;
 
 namespace fpdf.Wpf.Services;
 
-public class LocalizationManager : ILocalizationService
+public class LocalizationManager : ILocalizationService, INotifyPropertyChanged
 {
     private static LocalizationManager? _instance;
     private readonly ResourceManager _resourceManager;
-    
+
     public static LocalizationManager Instance => _instance ??= new LocalizationManager();
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    /// <summary>
+    /// Indexador para binding XAML dinÃ¢mico. Uso: {Binding [Key], Source={x:Static services:LocalizationManager.Instance}}
+    /// </summary>
+    public string this[string key] => GetString(key);
 
     private LocalizationManager()
     {
@@ -20,12 +28,15 @@ public class LocalizationManager : ILocalizationService
     public void SetLanguage(string cultureName)
     {
         var culture = new CultureInfo(cultureName);
-        
+
         CultureInfo.CurrentCulture = culture;
         CultureInfo.CurrentUICulture = culture;
-        
+
         Thread.CurrentThread.CurrentCulture = culture;
         Thread.CurrentThread.CurrentUICulture = culture;
+
+        // Notifica que TODAS as strings mudaram (o indexador mudou)
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
     }
 
     public string GetCurrentLanguage()
@@ -49,9 +60,9 @@ public class LocalizationManager : ILocalizationService
     {
         return
         [
-            new LanguageInfo { Code = "pt-BR", Name = "Português (Brasil)", NativeName = "Português" },
+            new LanguageInfo { Code = "pt-BR", Name = "PortuguÃªs (Brasil)", NativeName = "PortuguÃªs" },
             new LanguageInfo { Code = "en-US", Name = "English (United States)", NativeName = "English" },
-            new LanguageInfo { Code = "es-ES", Name = "Español (España)", NativeName = "Español" }
+            new LanguageInfo { Code = "es-ES", Name = "EspaÃ±ol (EspaÃ±a)", NativeName = "EspaÃ±ol" }
         ];
     }
 }

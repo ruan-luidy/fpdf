@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using fpdf.Core.Models;
 using fpdf.Core.Services;
+using fpdf.Wpf.Services;
 
 namespace fpdf.Wpf.ViewModels;
 
@@ -38,12 +39,27 @@ public partial class PrintQueueViewModel : ObservableObject
   public ObservableCollection<PrinterInfo> Printers { get; } = new();
   public ObservableCollection<PrintJob> Jobs { get; } = new();
 
+  public string PendingCountText => $"{PendingCount} {LocalizationManager.Instance.GetString("PrintQueue_InQueue")}";
+  public string CompletedCountText => $"{CompletedCount} {LocalizationManager.Instance.GetString("PrintQueue_Completed")}";
+  public string FailedCountText => $"{FailedCount} {LocalizationManager.Instance.GetString("PrintQueue_Errors")}";
+
   public PrintQueueViewModel(IPrintService printService, ISettingsService settingsService)
   {
     _printService = printService;
     _settingsService = settingsService;
 
     _printService.JobStatusChanged += OnJobStatusChanged;
+
+    // Atualiza texto localizado quando o idioma muda
+    LocalizationManager.Instance.PropertyChanged += (_, e) =>
+    {
+      if (e.PropertyName == "Item[]")
+      {
+        OnPropertyChanged(nameof(PendingCountText));
+        OnPropertyChanged(nameof(CompletedCountText));
+        OnPropertyChanged(nameof(FailedCountText));
+      }
+    };
   }
 
   [RelayCommand]
@@ -213,5 +229,20 @@ public partial class PrintQueueViewModel : ObservableObject
     PendingCount = Jobs.Count(j => j.Status == PrintJobStatus.Pending || j.Status == PrintJobStatus.Printing);
     CompletedCount = Jobs.Count(j => j.Status == PrintJobStatus.Completed);
     FailedCount = Jobs.Count(j => j.Status == PrintJobStatus.Failed);
+  }
+
+  partial void OnPendingCountChanged(int value)
+  {
+    OnPropertyChanged(nameof(PendingCountText));
+  }
+
+  partial void OnCompletedCountChanged(int value)
+  {
+    OnPropertyChanged(nameof(CompletedCountText));
+  }
+
+  partial void OnFailedCountChanged(int value)
+  {
+    OnPropertyChanged(nameof(FailedCountText));
   }
 }

@@ -71,8 +71,8 @@ public partial class SettingsViewModel : ObservableObject
     DefaultCopies = settings.DefaultCopies;
     DefaultDuplex = settings.DefaultDuplex;
 
-    var currentLang = _localizationManager.GetCurrentLanguage();
-    SelectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == currentLang);
+    SelectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == settings.Language)
+                       ?? AvailableLanguages.FirstOrDefault(l => l.Code == "pt-BR");
 
     FavoriteFolders.Clear();
     foreach (var folder in settings.FavoriteFolders)
@@ -107,6 +107,7 @@ public partial class SettingsViewModel : ObservableObject
 
     settings.DefaultPrinter = DefaultPrinter;
     settings.Theme = Theme;
+    settings.Language = SelectedLanguage?.Code ?? "pt-BR";
     settings.ShowThumbnails = ShowThumbnails;
     settings.ThumbnailSize = ThumbnailSize;
     settings.RememberLastFolder = RememberLastFolder;
