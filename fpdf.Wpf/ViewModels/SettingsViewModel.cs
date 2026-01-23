@@ -69,11 +69,15 @@ public partial class SettingsViewModel : ObservableObject
 
     try
     {
+      // IMPORTANTE: Recarrega as configuracoes do disco
+      // Isso garante que sempre tenhamos os valores mais recentes salvos
+      await _settingsService.LoadAsync();
+      
       var settings = _settingsService.Settings;
 
-      // Guarda o idioma ATUAL (do LocalizationManager) para restaurar se cancelar
-      // Nao usa settings.Language porque pode estar desatualizado se houve mudanca sem salvar
-      _originalLanguage = _localizationManager.GetCurrentLanguage();
+      // Guarda o idioma salvo nas configuracoes para restaurar se cancelar
+      // Usa settings.Language que eh o valor persistido
+      _originalLanguage = settings.Language ?? "pt-BR";
       System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Original language set to: {_originalLanguage}");
 
       Theme = settings.Theme;
@@ -83,10 +87,11 @@ public partial class SettingsViewModel : ObservableObject
       DefaultCopies = settings.DefaultCopies;
       DefaultDuplex = settings.DefaultDuplex;
 
-      // Carrega o idioma atual do LocalizationManager (nao das configuracoes salvas)
-      var currentLang = _localizationManager.GetCurrentLanguage();
-      System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Current language from LocalizationManager: {currentLang}");
-      SelectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == currentLang)
+      // Carrega o idioma das configuracoes salvas (nao do LocalizationManager atual)
+      // Isso garante que ao reabrir o dialog, sempre mostre o idioma salvo
+      var savedLang = settings.Language ?? "pt-BR";
+      System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Saved language from settings: {savedLang}");
+      SelectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == savedLang)
                          ?? AvailableLanguages.FirstOrDefault(l => l.Code == "pt-BR");
       System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] SelectedLanguage set to: {SelectedLanguage?.Code}");
 
@@ -108,7 +113,7 @@ public partial class SettingsViewModel : ObservableObject
         CustomNetworkPaths.Add(path);
       }
 
-      // Carrega impressoras PRIMEIRO, depois define a selecionada
+      // Carrega impressoras PRIMEIRO
       Printers.Clear();
       var printers = await _printService.GetPrintersAsync();
       System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Loaded {printers.Count} printers");
@@ -118,15 +123,33 @@ public partial class SettingsViewModel : ObservableObject
         System.Diagnostics.Debug.WriteLine($"[SettingsViewModel]   - {printer.Name}");
       }
 
-      // Define a impressora padrao DEPOIS de carregar a lista
-      System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Setting DefaultPrinter to: {settings.DefaultPrinter}");
-      DefaultPrinter = settings.DefaultPrinter;
+      // IMPORTANTE: Define a impressora padrao DEPOIS de carregar a lista
+      // Isso garante que o binding do ComboBox funcione corretamente
+      var savedPrinter = settings.DefaultPrinter;
+      System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Setting DefaultPrinter to: {savedPrinter}");
+      
+      // Se nao houver impressora salva ou ela nao existir mais, usa a primeira disponivel
+      if (string.IsNullOrEmpty(savedPrinter) || !Printers.Any(p => p.Name == savedPrinter))
+      {
+        savedPrinter = Printers.FirstOrDefault()?.Name;
+        System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Printer not found or empty, using first: {savedPrinter}");
+      }
+      
+      DefaultPrinter = savedPrinter;
       System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] DefaultPrinter is now: {DefaultPrinter}");
     }
     finally
     {
       _isLoading = false;
       System.Diagnostics.Debug.WriteLine("[SettingsViewModel] LoadAsync completed");
+      
+      // IMPORTANTE: Garante que o idioma salvo seja aplicado ao abrir o dialog
+      // Isso evita que o dialog abra com idioma diferente do salvo
+      if (!string.IsNullOrEmpty(_originalLanguage))
+      {
+        System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Applying original language: {_originalLanguage}");
+        _localizationManager.SetLanguage(_originalLanguage);
+      }
     }
   }
 
@@ -158,6 +181,14 @@ public partial class SettingsViewModel : ObservableObject
 
     // Atualiza o idioma original para o novo valor salvo
     _originalLanguage = settings.Language;
+    
+    // IMPORTANTE: Aplica o idioma salvo no LocalizationManager
+    // Isso garante que o idioma salvo seja o ativo na aplicacao
+    if (!string.IsNullOrEmpty(_originalLanguage))
+    {
+      _localizationManager.SetLanguage(_originalLanguage);
+    }
+    
     System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] SaveAsync completed. Original language updated to: {_originalLanguage}");
   }
 
