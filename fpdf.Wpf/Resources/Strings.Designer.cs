@@ -322,6 +322,15 @@ namespace fpdf.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Limpar Tudo.
+        /// </summary>
+        public static string PrintQueue_ClearAll {
+            get {
+                return ResourceManager.GetString("PrintQueue_ClearAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Limpar Concluídos.
         /// </summary>
         public static string PrintQueue_ClearCompleted {
