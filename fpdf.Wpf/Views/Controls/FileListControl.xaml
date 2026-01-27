@@ -239,7 +239,7 @@
       </DataGrid.Columns>
 
       <DataGrid.ContextMenu>
-        <ContextMenu>
+        <ContextMenu Style="{StaticResource ContextMenu.Small}">
           <MenuItem Command="{Binding PlacementTarget.DataContext.PrintSelectedCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{ext:Loc FileList_MenuPrint}">
             <MenuItem.Icon>
               <icon:PackIconPhosphorIcons Kind="Printer" />
