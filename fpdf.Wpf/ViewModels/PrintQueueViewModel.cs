@@ -7,6 +7,15 @@ using fpdf.Wpf.Services;
 
 namespace fpdf.Wpf.ViewModels;
 
+/// <summary>
+/// ViewModel otimizado para gerenciar filas de impressao com centenas de jobs.
+/// 
+/// Otimizacoes implementadas:
+/// - UI Virtualization: Renderiza apenas itens visiveis (VirtualizingStackPanel)
+/// - Cache de contadores: Atualiza contadores incrementalmente ao inves de recalcular
+/// - Auto-cleanup: Remove jobs completados automaticamente apos limite configuravel
+/// - Progress tracking: Mostra progresso detalhado durante impressao em lote
+/// </summary>
 public partial class PrintQueueViewModel : ObservableObject
 {
   private readonly IPrintService _printService;
@@ -35,6 +44,9 @@ public partial class PrintQueueViewModel : ObservableObject
 
   [ObservableProperty]
   private bool _duplex;
+  
+  [ObservableProperty]
+  private string _progressText = string.Empty;
 
   public ObservableCollection<PrinterInfo> Printers { get; } = new();
   public ObservableCollection<PrintJob> Jobs { get; } = new();
@@ -116,10 +128,15 @@ public partial class PrintQueueViewModel : ObservableObject
     try
     {
       var pendingJobs = Jobs.Where(j => j.Status == PrintJobStatus.Pending).ToList();
+      var totalJobs = pendingJobs.Count;
+      var currentJob = 0;
 
       var progress = new Progress<PrintJob>(job =>
       {
-        UpdateCounts();
+        currentJob++;
+        ProgressText = $"{currentJob}/{totalJobs}";
+        UpdateCountsIncremental(job);
+        AutoCleanupCompletedJobs();
       });
 
       await _printService.PrintBatchAsync(pendingJobs, progress);
@@ -127,6 +144,7 @@ public partial class PrintQueueViewModel : ObservableObject
     finally
     {
       IsPrinting = false;
+      ProgressText = string.Empty;
       UpdateCounts();
     }
   }
@@ -196,6 +214,14 @@ public partial class PrintQueueViewModel : ObservableObject
   }
 
   [RelayCommand]
+  private void ClearAllJobs()
+  {
+    _printService.CancelAllJobs();
+    Jobs.Clear();
+    UpdateCounts();
+  }
+
+  [RelayCommand]
   private void RetryFailed()
   {
     foreach (var job in Jobs.Where(j => j.Status == PrintJobStatus.Failed))
@@ -220,8 +246,42 @@ public partial class PrintQueueViewModel : ObservableObject
   {
     App.Current.Dispatcher.Invoke(() =>
     {
-      UpdateCounts();
+      UpdateCountsIncremental(job);
+      AutoCleanupCompletedJobs();
     });
+  }
+
+  /// <summary>
+  /// Atualiza contadores de forma incremental baseado no status do job
+  /// Evita recalcular toda a colecao
+  /// </summary>
+  private void UpdateCountsIncremental(PrintJob job)
+  {
+    switch (job.Status)
+    {
+      case PrintJobStatus.Pending:
+      case PrintJobStatus.Printing:
+        // Recalcula apenas se necessario
+        if (PendingCount != Jobs.Count(j => j.Status == PrintJobStatus.Pending || j.Status == PrintJobStatus.Printing))
+        {
+          PendingCount = Jobs.Count(j => j.Status == PrintJobStatus.Pending || j.Status == PrintJobStatus.Printing);
+        }
+        break;
+
+      case PrintJobStatus.Completed:
+        if (PendingCount > 0) PendingCount--;
+        CompletedCount++;
+        break;
+
+      case PrintJobStatus.Failed:
+        if (PendingCount > 0) PendingCount--;
+        FailedCount++;
+        break;
+
+      case PrintJobStatus.Cancelled:
+        if (PendingCount > 0) PendingCount--;
+        break;
+    }
   }
 
   private void UpdateCounts()
@@ -229,6 +289,33 @@ public partial class PrintQueueViewModel : ObservableObject
     PendingCount = Jobs.Count(j => j.Status == PrintJobStatus.Pending || j.Status == PrintJobStatus.Printing);
     CompletedCount = Jobs.Count(j => j.Status == PrintJobStatus.Completed);
     FailedCount = Jobs.Count(j => j.Status == PrintJobStatus.Failed);
+  }
+  
+  /// <summary>
+  /// Remove automaticamente jobs completados quando exceder o limite
+  /// Mantém apenas os mais recentes
+  /// </summary>
+  private void AutoCleanupCompletedJobs()
+  {
+    // Verifica se auto-cleanup esta habilitado
+    if (!_settingsService.Settings.AutoCleanupCompletedJobs)
+      return;
+    
+    var maxJobs = _settingsService.Settings.MaxCompletedJobsInQueue;
+    
+    var completedJobs = Jobs
+      .Where(j => j.Status == PrintJobStatus.Completed)
+      .OrderBy(j => j.CompletedAt)
+      .ToList();
+
+    if (completedJobs.Count > maxJobs)
+    {
+      var jobsToRemove = completedJobs.Take(completedJobs.Count - maxJobs).ToList();
+      foreach (var job in jobsToRemove)
+      {
+        Jobs.Remove(job);
+      }
+    }
   }
 
   partial void OnPendingCountChanged(int value)

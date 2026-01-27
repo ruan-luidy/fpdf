@@ -74,6 +74,7 @@
   <data name="PrintQueue_Pages" xml:space="preserve"><value>Páginas:</value></data>
   <data name="PrintQueue_EmptyQueue" xml:space="preserve"><value>Fila de impressão vazia</value></data>
   <data name="PrintQueue_ClearCompleted" xml:space="preserve"><value>Limpar Concluídos</value></data>
+  <data name="PrintQueue_ClearAll" xml:space="preserve"><value>Limpar Tudo</value></data>
   <data name="PrintQueue_PrintAll" xml:space="preserve"><value>Imprimir Tudo</value></data>
   <data name="PrintQueue_ViewQueue" xml:space="preserve"><value>Ver fila de impressão</value></data>
   <data name="PrintQueue_Print" xml:space="preserve"><value>Imprimir</value></data>

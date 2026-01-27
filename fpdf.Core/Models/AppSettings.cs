@@ -20,4 +20,8 @@ public class AppSettings
   public bool RememberLastFolder { get; set; } = true;
   public int DefaultCopies { get; set; } = 1;
   public bool DefaultDuplex { get; set; }
+  
+  // Configuracoes da fila de impressao
+  public int MaxCompletedJobsInQueue { get; set; } = 100; // Manter apenas os ultimos N jobs completados
+  public bool AutoCleanupCompletedJobs { get; set; } = true; // Auto-limpar jobs completados automaticamente
 }

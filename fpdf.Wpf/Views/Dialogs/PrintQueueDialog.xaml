@@ -86,6 +86,25 @@
         Foreground="{DynamicResource DangerBrush}"
         Text="{Binding FailedCountText}"
         Visibility="{Binding FailedCount, Converter={StaticResource Int2VisibilityConverter}}" />
+
+      <!--  Progresso da impressao  -->
+      <StackPanel
+        Margin="16,0,0,0"
+        Orientation="Horizontal"
+        Visibility="{Binding ProgressText, Converter={StaticResource String2VisibilityConverter}}">
+        <icon:PackIconPhosphorIcons
+          Width="14"
+          Height="14"
+          Margin="0,0,6,0"
+          VerticalAlignment="Center"
+          Foreground="{DynamicResource InfoBrush}"
+          Kind="ArrowClockwise" />
+        <TextBlock
+          VerticalAlignment="Center"
+          FontWeight="SemiBold"
+          Foreground="{DynamicResource InfoBrush}"
+          Text="{Binding ProgressText}" />
+      </StackPanel>
     </StackPanel>
 
     <!--  Lista de jobs  -->
@@ -101,7 +120,16 @@
           ItemsSource="{Binding Jobs}"
           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
           Style="{StaticResource ListBox.Small}"
+          VirtualizingPanel.CacheLength="20"
+          VirtualizingPanel.CacheLengthUnit="Item"
+          VirtualizingPanel.IsVirtualizing="True"
+          VirtualizingPanel.VirtualizationMode="Recycling"
           Visibility="{Binding Jobs.Count, Converter={StaticResource Int2VisibilityConverter}}">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <VirtualizingStackPanel />
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
           <ListBox.ItemContainerStyle>
             <Style BasedOn="{StaticResource CustomListBoxItemStyle}" TargetType="ListBoxItem" />
           </ListBox.ItemContainerStyle>
@@ -275,6 +303,7 @@
     <Grid Grid.Row="3" Margin="0,16,0,0">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="Auto" />
       </Grid.ColumnDefinitions>
@@ -285,7 +314,13 @@
         Content="{ext:Loc PrintQueue_ClearCompleted}" />
 
       <Button
-        Grid.Column="2"
+        Grid.Column="1"
+        Margin="8,0,0,0"
+        Command="{Binding ClearAllJobsCommand}"
+        Content="{ext:Loc PrintQueue_ClearAll}" />
+
+      <Button
+        Grid.Column="3"
         MinWidth="120"
         Command="{Binding PrintQueueCommand}"
         IsEnabled="{Binding IsPrinting, Converter={StaticResource Boolean2BooleanReConverter}}"
