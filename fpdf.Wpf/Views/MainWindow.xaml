@@ -6,9 +6,11 @@ xmlns:controls="clr-namespace:fpdf.Wpf.Views.Controls"
 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 xmlns:hc="https://handyorg.github.io/handycontrol"
 xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+xmlns:behaviors="clr-namespace:fpdf.Wpf.Behaviors"
 xmlns:ext="clr-namespace:fpdf.Wpf.Extensions"
 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
+behaviors:FileDragDropBehavior.DropCommand="{Binding DropFilesCommand}"
 Width="1200"
 Height="800"
 MinWidth="800"
@@ -78,6 +80,13 @@ mc:Ignorable="d">
           <icon:PackIconPhosphorIcons Kind="Printer" />
         </Button>
 
+        <Button
+          Command="{Binding OpenPrintHistoryCommand}"
+          Style="{StaticResource ButtonIconCustom}"
+          ToolTip="{ext:Loc PrintHistory_Tooltip}">
+          <icon:PackIconPhosphorIcons Kind="ClockCounterClockwise" />
+        </Button>
+
         <hc:Divider
           MaxHeight="16"
           Margin="4,0"
@@ -110,6 +119,10 @@ mc:Ignorable="d">
     <KeyBinding
       Key="Comma"
       Command="{Binding OpenSettingsCommand}"
+      Modifiers="Ctrl" />
+    <KeyBinding
+      Key="H"
+      Command="{Binding OpenPrintHistoryCommand}"
       Modifiers="Ctrl" />
   </hc:Window.InputBindings>
 

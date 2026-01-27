@@ -37,6 +37,7 @@
   <data name="Network_Favorites" xml:space="preserve"><value>Favoritos</value></data>
   <data name="Network_NetworkPaths" xml:space="preserve"><value>Rutas de Red</value></data>
   <data name="Network_ThisPC" xml:space="preserve"><value>Este PC</value></data>
+  <data name="Network_Network" xml:space="preserve"><value>Red</value></data>
 
   <!-- Settings -->
   <data name="Settings_Title" xml:space="preserve"><value>Configuración</value></data>
@@ -79,6 +80,19 @@
   <data name="PrintQueue_ViewQueue" xml:space="preserve"><value>Ver cola de impresión</value></data>
   <data name="PrintQueue_Print" xml:space="preserve"><value>Imprimir</value></data>
   <data name="PrintQueue_CountFormat" xml:space="preserve"><value>{0} en cola</value></data>
+
+  <!-- Print History -->
+  <data name="PrintHistory_Title" xml:space="preserve"><value>Historial de Impresiones</value></data>
+  <data name="PrintHistory_Search" xml:space="preserve"><value>Buscar en historial...</value></data>
+  <data name="PrintHistory_Status" xml:space="preserve"><value>Estado</value></data>
+  <data name="PrintHistory_Printer" xml:space="preserve"><value>Impresora</value></data>
+  <data name="PrintHistory_DateFrom" xml:space="preserve"><value>Fecha desde</value></data>
+  <data name="PrintHistory_DateTo" xml:space="preserve"><value>Fecha hasta</value></data>
+  <data name="PrintHistory_Reprint" xml:space="preserve"><value>Reimprimir</value></data>
+  <data name="PrintHistory_ClearOld" xml:space="preserve"><value>Limpiar Antiguos (30 días)</value></data>
+  <data name="PrintHistory_ClearFilters" xml:space="preserve"><value>Limpiar Filtros</value></data>
+  <data name="PrintHistory_NoRecords" xml:space="preserve"><value>Ningún registro encontrado</value></data>
+  <data name="PrintHistory_Tooltip" xml:space="preserve"><value>Historial de Impresiones (Ctrl+H)</value></data>
 
   <!-- PDF Viewer -->
   <data name="PdfViewer_OpenDefault" xml:space="preserve"><value>Abrir en aplicación predeterminada</value></data>

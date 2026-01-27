@@ -23,4 +23,16 @@ public partial class PrintQueueControl : UserControl
       dialog.Show();
     }
   }
+
+  private async void OpenHistoryDialog_Click(object sender, RoutedEventArgs e)
+  {
+    var vm = App.GetService<PrintHistoryViewModel>();
+    var dialog = new PrintHistoryDialog(vm)
+    {
+      Owner = Window.GetWindow(this)
+    };
+
+    await vm.LoadCommand.ExecuteAsync(null);
+    dialog.Show();
+  }
 }

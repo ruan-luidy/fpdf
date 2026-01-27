@@ -13,4 +13,6 @@ public interface INetworkService
   Task<bool> HasSubfoldersAsync(string path, CancellationToken cancellationToken = default);
 
   Task<List<NetworkFolder>> GetNetworkRootsAsync(CancellationToken cancellationToken = default);
+
+  Task<List<NetworkFolder>> EnumerateNetworkAsync(CancellationToken cancellationToken = default);
 }

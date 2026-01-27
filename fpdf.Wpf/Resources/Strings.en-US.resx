@@ -37,6 +37,7 @@
   <data name="Network_Favorites" xml:space="preserve"><value>Favorites</value></data>
   <data name="Network_NetworkPaths" xml:space="preserve"><value>Network Paths</value></data>
   <data name="Network_ThisPC" xml:space="preserve"><value>This PC</value></data>
+  <data name="Network_Network" xml:space="preserve"><value>Network</value></data>
 
   <!-- Settings -->
   <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
@@ -79,6 +80,19 @@
   <data name="PrintQueue_ViewQueue" xml:space="preserve"><value>View print queue</value></data>
   <data name="PrintQueue_Print" xml:space="preserve"><value>Print</value></data>
   <data name="PrintQueue_CountFormat" xml:space="preserve"><value>{0} in queue</value></data>
+
+  <!-- Print History -->
+  <data name="PrintHistory_Title" xml:space="preserve"><value>Print History</value></data>
+  <data name="PrintHistory_Search" xml:space="preserve"><value>Search history...</value></data>
+  <data name="PrintHistory_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="PrintHistory_Printer" xml:space="preserve"><value>Printer</value></data>
+  <data name="PrintHistory_DateFrom" xml:space="preserve"><value>Date from</value></data>
+  <data name="PrintHistory_DateTo" xml:space="preserve"><value>Date to</value></data>
+  <data name="PrintHistory_Reprint" xml:space="preserve"><value>Reprint</value></data>
+  <data name="PrintHistory_ClearOld" xml:space="preserve"><value>Clear Old (30 days)</value></data>
+  <data name="PrintHistory_ClearFilters" xml:space="preserve"><value>Clear Filters</value></data>
+  <data name="PrintHistory_NoRecords" xml:space="preserve"><value>No records found</value></data>
+  <data name="PrintHistory_Tooltip" xml:space="preserve"><value>Print History (Ctrl+H)</value></data>
 
   <!-- PDF Viewer -->
   <data name="PdfViewer_OpenDefault" xml:space="preserve"><value>Open in default app</value></data>

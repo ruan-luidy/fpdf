@@ -1,5 +1,7 @@
 ﻿using fpdf.Core.Models;
+using fpdf.Core.Native;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace fpdf.Core.Services;
 
@@ -13,6 +15,119 @@ public class NetworkService : INetworkService
     _settingsService = settingsService;
     _localizationService = localizationService;
   }
+
+  public async Task<List<NetworkFolder>> EnumerateNetworkAsync(CancellationToken cancellationToken = default)
+  {
+    return await Task.Run(() =>
+    {
+      var folders = new List<NetworkFolder>();
+      try
+      {
+        EnumerateNetworkResources(null, folders, cancellationToken);
+      }
+      catch
+      {
+        // Rede indisponivel - retorna vazio
+      }
+      return folders;
+    }, cancellationToken);
+  }
+
+  private static void EnumerateNetworkResources(
+    WNetInterop.NETRESOURCE? root,
+    List<NetworkFolder> folders,
+    CancellationToken cancellationToken)
+  {
+    int result = WNetInterop.WNetOpenEnum(
+      WNetInterop.RESOURCE_GLOBALNET,
+      WNetInterop.RESOURCETYPE_DISK,
+      0,
+      root,
+      out IntPtr hEnum);
+
+    if (result != WNetInterop.NO_ERROR)
+      return;
+
+    try
+    {
+      int bufferSize = 16384;
+      IntPtr buffer = Marshal.AllocHGlobal(bufferSize);
+
+      try
+      {
+        while (!cancellationToken.IsCancellationRequested)
+        {
+          int count = -1;
+          int size = bufferSize;
+          result = WNetInterop.WNetEnumResource(hEnum, ref count, buffer, ref size);
+
+          if (result == WNetInterop.ERROR_NO_MORE_ITEMS)
+            break;
+
+          if (result != WNetInterop.NO_ERROR)
+            break;
+
+          int entrySize = Marshal.SizeOf<WNetInterop.NETRESOURCE>();
+          for (int i = 0; i < count; i++)
+          {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            IntPtr ptr = buffer + i * entrySize;
+            var nr = Marshal.PtrToStructure<WNetInterop.NETRESOURCE>(ptr)!;
+
+            string name = nr.lpRemoteName ?? nr.lpComment ?? "Unknown";
+            string displayName = name;
+
+            // Para shares, mostra apenas o nome do share
+            if (nr.dwDisplayType == WNetInterop.RESOURCEDISPLAYTYPE_SHARE && name.Contains('\\'))
+            {
+              displayName = name.Split('\\', StringSplitOptions.RemoveEmptyEntries).LastOrDefault() ?? name;
+            }
+            // Para servers, remove as barras
+            else if (nr.dwDisplayType == WNetInterop.RESOURCEDISPLAYTYPE_SERVER)
+            {
+              displayName = name.TrimStart('\\');
+            }
+
+            bool isContainer = (nr.dwUsage & WNetInterop.RESOURCEUSAGE_CONTAINER) != 0;
+            bool isShare = nr.dwDisplayType == WNetInterop.RESOURCEDISPLAYTYPE_SHARE;
+
+            string iconKind = nr.dwDisplayType switch
+            {
+              WNetInterop.RESOURCEDISPLAYTYPE_DOMAIN => "Globe",
+              WNetInterop.RESOURCEDISPLAYTYPE_SERVER => "Desktop",
+              WNetInterop.RESOURCEDISPLAYTYPE_SHARE => "Folder",
+              _ => "Network"
+            };
+
+            var folder = new NetworkFolder
+            {
+              Name = displayName,
+              FullPath = name,
+              IconKind = iconKind
+            };
+
+            // Shares e containers podem ter filhos
+            if (isContainer || isShare)
+            {
+              folder.AddDummyChild();
+            }
+
+            folders.Add(folder);
+          }
+        }
+      }
+      finally
+      {
+        Marshal.FreeHGlobal(buffer);
+      }
+    }
+    finally
+    {
+      WNetInterop.WNetCloseEnum(hEnum);
+    }
+  }
+
   public async Task<List<NetworkFolder>> GetSubfoldersAsync(string path, CancellationToken cancellationToken = default)
   {
     return await Task.Run(() =>
@@ -24,9 +139,23 @@ public class NetworkService : INetworkService
         // Caso especial: raiz da rede \\
         if (path == "\\\\")
         {
-          // Lista computadores da rede (workgroup/domain)
-          // Nota: Isso pode ser lento dependendo da rede
-          // Por enquanto, retorna vazio e o usuário deve digitar o caminho UNC manualmente
+          // Enumera via WNet API
+          EnumerateNetworkResources(null, folders, cancellationToken);
+          return folders;
+        }
+
+        // Verifica se eh um recurso de rede (workgroup/server) que precisa de WNet
+        if (path.StartsWith(@"\\") && !Directory.Exists(path))
+        {
+          // Tenta enumerar como recurso de rede
+          var nr = new WNetInterop.NETRESOURCE
+          {
+            dwScope = WNetInterop.RESOURCE_GLOBALNET,
+            dwType = WNetInterop.RESOURCETYPE_DISK,
+            dwUsage = WNetInterop.RESOURCEUSAGE_CONTAINER,
+            lpRemoteName = path
+          };
+          EnumerateNetworkResources(nr, folders, cancellationToken);
           return folders;
         }
 

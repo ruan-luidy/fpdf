@@ -1,0 +1,272 @@
+<hc:Window
+  x:Class="fpdf.Wpf.Views.Dialogs.PrintHistoryDialog"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:ext="clr-namespace:fpdf.Wpf.Extensions"
+  xmlns:hc="https://handyorg.github.io/handycontrol"
+  xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:models="clr-namespace:fpdf.Core.Models;assembly=fpdf.Core"
+  xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
+  Title="{ext:Loc PrintHistory_Title}"
+  Width="850"
+  Height="550"
+  d:DataContext="{d:DesignInstance Type=vm:PrintHistoryViewModel}"
+  BorderBrush="{DynamicResource BorderBrush}"
+  BorderThickness="1"
+  ResizeMode="CanResizeWithGrip"
+  ShowInTaskbar="False"
+  Style="{StaticResource WindowWin10}"
+  SystemBackdropType="Acrylic"
+  WindowStartupLocation="CenterOwner"
+  mc:Ignorable="d">
+
+  <Grid Margin="16">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <!-- Titulo -->
+    <StackPanel Grid.Row="0" Orientation="Horizontal">
+      <icon:PackIconPhosphorIcons
+        Width="20"
+        Height="20"
+        Margin="0,0,8,0"
+        VerticalAlignment="Center"
+        Foreground="{DynamicResource PrimaryBrush}"
+        Kind="ClockCounterClockwise" />
+      <TextBlock
+        VerticalAlignment="Center"
+        FontSize="14"
+        FontWeight="SemiBold"
+        Text="{ext:Loc PrintHistory_Title}" />
+    </StackPanel>
+
+    <!-- Filtros -->
+    <Grid Grid.Row="1" Margin="0,12,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+      <!-- Busca -->
+      <hc:TextBox
+        Grid.Column="0"
+        Margin="0,0,8,0"
+        hc:InfoElement.Placeholder="{ext:Loc PrintHistory_Search}"
+        Style="{StaticResource TextBox.Small}"
+        Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=400}" />
+
+      <!-- Status -->
+      <ComboBox
+        Grid.Column="1"
+        Width="120"
+        Margin="0,0,8,0"
+        hc:InfoElement.Placeholder="{ext:Loc PrintHistory_Status}"
+        DisplayMemberPath=""
+        IsSynchronizedWithCurrentItem="False"
+        ItemsSource="{Binding Statuses}"
+        SelectedItem="{Binding SelectedStatus}"
+        Style="{StaticResource ComboBox.Small}" />
+
+      <!-- Impressora -->
+      <ComboBox
+        Grid.Column="2"
+        Width="150"
+        Margin="0,0,8,0"
+        hc:InfoElement.Placeholder="{ext:Loc PrintHistory_Printer}"
+        DisplayMemberPath=""
+        IsSynchronizedWithCurrentItem="False"
+        ItemsSource="{Binding Printers}"
+        SelectedItem="{Binding SelectedPrinter}"
+        Style="{StaticResource ComboBox.Small}" />
+
+      <!-- Data De -->
+      <hc:DatePicker
+        Grid.Column="3"
+        Width="130"
+        Margin="0,0,8,0"
+        hc:InfoElement.Placeholder="{ext:Loc PrintHistory_DateFrom}"
+        SelectedDate="{Binding DateFrom}"
+        Style="{StaticResource DatePicker.Small}" />
+
+      <!-- Data Ate -->
+      <hc:DatePicker
+        Grid.Column="4"
+        Width="130"
+        hc:InfoElement.Placeholder="{ext:Loc PrintHistory_DateTo}"
+        SelectedDate="{Binding DateTo}"
+        Style="{StaticResource DatePicker.Small}" />
+    </Grid>
+
+    <!-- Lista de registros -->
+    <Border
+      Grid.Row="2"
+      Margin="0,12,0,0"
+      Padding="0"
+      Style="{StaticResource BorderRegion}">
+      <Grid>
+        <DataGrid
+          AutoGenerateColumns="False"
+          Background="Transparent"
+          BorderThickness="0"
+          CanUserSortColumns="True"
+          EnableRowVirtualization="True"
+          HeadersVisibility="Column"
+          IsReadOnly="True"
+          ItemsSource="{Binding Records}"
+          SelectionMode="Single"
+          Style="{StaticResource DataGrid.Small}"
+          VirtualizingPanel.IsVirtualizing="True"
+          VirtualizingPanel.VirtualizationMode="Recycling"
+          Visibility="{Binding Records.Count, Converter={StaticResource Int2VisibilityConverter}}">
+          <DataGrid.Columns>
+            <!-- Status -->
+            <DataGridTemplateColumn Width="40" Header="">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate DataType="{x:Type models:PrintHistoryRecord}">
+                  <icon:PackIconPhosphorIcons
+                    Width="16"
+                    Height="16"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <icon:PackIconPhosphorIcons.Style>
+                      <Style TargetType="icon:PackIconPhosphorIcons">
+                        <Setter Property="Kind" Value="Check" />
+                        <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding Status}" Value="Failed">
+                            <Setter Property="Kind" Value="X" />
+                            <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding Status}" Value="Cancelled">
+                            <Setter Property="Kind" Value="Prohibit" />
+                            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </icon:PackIconPhosphorIcons.Style>
+                  </icon:PackIconPhosphorIcons>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <!-- Nome -->
+            <DataGridTextColumn
+              Width="*"
+              Binding="{Binding FileName}"
+              Header="{ext:Loc FileList_ColumnName}" />
+
+            <!-- Impressora -->
+            <DataGridTextColumn
+              Width="140"
+              Binding="{Binding PrinterName}"
+              Header="{ext:Loc PrintHistory_Printer}" />
+
+            <!-- Copias -->
+            <DataGridTextColumn
+              Width="60"
+              Binding="{Binding Copies}"
+              Header="{ext:Loc PrintQueue_Copies}" />
+
+            <!-- Paginas -->
+            <DataGridTextColumn
+              Width="70"
+              Binding="{Binding PageRange}"
+              Header="{ext:Loc PrintQueue_Pages}" />
+
+            <!-- Data -->
+            <DataGridTextColumn
+              Width="130"
+              Binding="{Binding CreatedAt, StringFormat={}{0:dd/MM/yyyy HH:mm}}"
+              Header="{ext:Loc FileList_ColumnModified}" />
+
+            <!-- Reimprimir -->
+            <DataGridTemplateColumn Width="40">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate DataType="{x:Type models:PrintHistoryRecord}">
+                  <Button
+                    Command="{Binding DataContext.ReprintCommand, RelativeSource={RelativeSource AncestorType=hc:Window}}"
+                    CommandParameter="{Binding}"
+                    Style="{StaticResource ButtonIconCustom}"
+                    ToolTip="{ext:Loc PrintHistory_Reprint}">
+                    <icon:PackIconPhosphorIcons
+                      Width="14"
+                      Height="14"
+                      Kind="Printer" />
+                  </Button>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Placeholder vazio -->
+        <StackPanel
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          Visibility="{Binding Records.Count, Converter={StaticResource Int2VisibilityReConverter}}">
+          <icon:PackIconPhosphorIcons
+            Width="48"
+            Height="48"
+            HorizontalAlignment="Center"
+            Foreground="{DynamicResource SecondaryTextBrush}"
+            Kind="ClockCounterClockwise" />
+          <TextBlock
+            Margin="0,8,0,0"
+            Foreground="{DynamicResource SecondaryTextBrush}"
+            Text="{ext:Loc PrintHistory_NoRecords}" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- Rodape: paginacao e acoes -->
+    <Grid Grid.Row="3" Margin="0,12,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+      <!-- Limpar antigos -->
+      <Button
+        Grid.Column="0"
+        Command="{Binding ClearOldCommand}"
+        Content="{ext:Loc PrintHistory_ClearOld}" />
+
+      <!-- Paginacao -->
+      <StackPanel
+        Grid.Column="1"
+        HorizontalAlignment="Center"
+        Orientation="Horizontal">
+        <Button
+          Command="{Binding PreviousPageCommand}"
+          Style="{StaticResource ButtonIconCustom}">
+          <icon:PackIconPhosphorIcons Kind="CaretLeft" />
+        </Button>
+        <TextBlock
+          Margin="12,0"
+          VerticalAlignment="Center"
+          Text="{Binding PageInfoText}" />
+        <Button
+          Command="{Binding NextPageCommand}"
+          Style="{StaticResource ButtonIconCustom}">
+          <icon:PackIconPhosphorIcons Kind="CaretRight" />
+        </Button>
+      </StackPanel>
+
+      <!-- Limpar filtros -->
+      <Button
+        Grid.Column="2"
+        Command="{Binding ClearFiltersCommand}"
+        Content="{ext:Loc PrintHistory_ClearFilters}" />
+    </Grid>
+  </Grid>
+</hc:Window>

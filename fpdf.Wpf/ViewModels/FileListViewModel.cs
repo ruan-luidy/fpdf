@@ -191,6 +191,43 @@ public partial class FileListViewModel : ObservableObject
   }
 
   [RelayCommand]
+  private void DropFiles(string[] paths)
+  {
+    if (paths == null || paths.Length == 0) return;
+
+    // Se todos vem da mesma pasta, navega para la
+    var firstDir = System.IO.Path.GetDirectoryName(paths[0]);
+    if (firstDir != null && paths.All(p => System.IO.Path.GetDirectoryName(p) == firstDir))
+    {
+      _ = LoadFilesAsync(firstDir);
+      return;
+    }
+
+    // Caso contrario, adiciona como arquivos temporarios na lista
+    foreach (var path in paths)
+    {
+      var fileInfo = new System.IO.FileInfo(path);
+      if (!fileInfo.Exists) continue;
+
+      var pdfFile = new PdfFileInfo
+      {
+        FileName = fileInfo.Name,
+        FullPath = fileInfo.FullName,
+        FileSize = fileInfo.Length,
+        LastModified = fileInfo.LastWriteTime
+      };
+
+      // Evita duplicatas
+      if (!Files.Any(f => f.FullPath == pdfFile.FullPath))
+      {
+        Files.Add(pdfFile);
+      }
+    }
+
+    FileCount = Files.Count;
+  }
+
+  [RelayCommand]
   private void Sort(string column)
   {
     if (SortColumn == column)

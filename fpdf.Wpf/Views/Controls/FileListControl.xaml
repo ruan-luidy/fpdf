@@ -11,6 +11,7 @@
   xmlns:models="clr-namespace:fpdf.Core.Models;assembly=fpdf.Core"
   xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
   d:DataContext="{d:DesignInstance Type=vm:FileListViewModel}"
+  behaviors:FileDragDropBehavior.DropCommand="{Binding DropFilesCommand}"
   mc:Ignorable="d">
 
   <UserControl.Resources>

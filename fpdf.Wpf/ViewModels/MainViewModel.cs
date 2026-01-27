@@ -45,6 +45,7 @@ public partial class MainViewModel : ObservableObject
   private CancellationTokenSource? _animationCts;
 
   public event EventHandler? OpenSettingsRequested;
+  public event EventHandler? OpenPrintHistoryRequested;
 
   partial void OnIsTreeViewVisibleChanged(bool value)
   {
@@ -155,6 +156,19 @@ public partial class MainViewModel : ObservableObject
   private void OpenSettings()
   {
     OpenSettingsRequested?.Invoke(this, EventArgs.Empty);
+  }
+
+  [RelayCommand]
+  private void OpenPrintHistory()
+  {
+    OpenPrintHistoryRequested?.Invoke(this, EventArgs.Empty);
+  }
+
+  [RelayCommand]
+  private void DropFiles(string[] paths)
+  {
+    if (paths == null || paths.Length == 0) return;
+    FileList.DropFilesCommand.Execute(paths);
   }
 
   [RelayCommand]

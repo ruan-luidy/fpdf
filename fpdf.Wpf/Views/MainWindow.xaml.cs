@@ -12,6 +12,7 @@ public partial class MainWindow : HandyControl.Controls.Window
     DataContext = viewModel;
 
     viewModel.OpenSettingsRequested += OnOpenSettingsRequested;
+    viewModel.OpenPrintHistoryRequested += OnOpenPrintHistoryRequested;
   }
 
   private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -44,6 +45,18 @@ public partial class MainWindow : HandyControl.Controls.Window
     }
   }
 
+  private async void OnOpenPrintHistoryRequested(object? sender, EventArgs e)
+  {
+    var vm = App.GetService<PrintHistoryViewModel>();
+    var dialog = new PrintHistoryDialog(vm)
+    {
+      Owner = this
+    };
+
+    await vm.LoadCommand.ExecuteAsync(null);
+    dialog.Show();
+  }
+
   protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
   {
     base.OnClosing(e);
@@ -51,6 +64,7 @@ public partial class MainWindow : HandyControl.Controls.Window
     if (DataContext is MainViewModel vm)
     {
       vm.OpenSettingsRequested -= OnOpenSettingsRequested;
+      vm.OpenPrintHistoryRequested -= OnOpenPrintHistoryRequested;
       _ = vm.SaveLayoutCommand.ExecuteAsync(null);
     }
   }

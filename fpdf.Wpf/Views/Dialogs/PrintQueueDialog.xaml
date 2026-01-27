@@ -6,6 +6,7 @@
   xmlns:ext="clr-namespace:fpdf.Wpf.Extensions"
   xmlns:hc="https://handyorg.github.io/handycontrol"
   xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:behaviors="clr-namespace:fpdf.Wpf.Behaviors"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:models="clr-namespace:fpdf.Core.Models;assembly=fpdf.Core"
   xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
@@ -44,7 +45,7 @@
     </Style>
   </hc:Window.Resources>
 
-  <Grid Margin="16">
+  <Grid Margin="16" behaviors:FileDragDropBehavior.DropCommand="{Binding DropFilesCommand}">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />

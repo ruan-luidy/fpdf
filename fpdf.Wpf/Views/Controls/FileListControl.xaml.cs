@@ -1,5 +1,6 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using fpdf.Core.Models;
 using fpdf.Wpf.ViewModels;
 
@@ -7,12 +8,59 @@ namespace fpdf.Wpf.Views.Controls;
 
 public partial class FileListControl : UserControl
 {
+  private Point _dragStartPoint;
+  private bool _isDragging;
+
   public FileListControl()
   {
     InitializeComponent();
+    FilesDataGrid.PreviewMouseLeftButtonDown += DataGrid_PreviewMouseLeftButtonDown;
+    FilesDataGrid.PreviewMouseMove += DataGrid_PreviewMouseMove;
+    FilesDataGrid.PreviewMouseLeftButtonUp += DataGrid_PreviewMouseLeftButtonUp;
   }
 
   private FileListViewModel? ViewModel => DataContext as FileListViewModel;
+
+  private void DataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+  {
+    _dragStartPoint = e.GetPosition(null);
+    _isDragging = false;
+  }
+
+  private void DataGrid_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+  {
+    _isDragging = false;
+  }
+
+  private void DataGrid_PreviewMouseMove(object sender, MouseEventArgs e)
+  {
+    if (e.LeftButton != MouseButtonState.Pressed) return;
+    if (_isDragging) return;
+
+    var position = e.GetPosition(null);
+    var diff = _dragStartPoint - position;
+
+    if (Math.Abs(diff.X) < SystemParameters.MinimumHorizontalDragDistance &&
+        Math.Abs(diff.Y) < SystemParameters.MinimumVerticalDragDistance)
+      return;
+
+    var selectedFiles = ViewModel?.GetSelectedFiles().ToList();
+    if (selectedFiles == null || selectedFiles.Count == 0)
+    {
+      if (ViewModel?.SelectedFile != null)
+        selectedFiles = new List<PdfFileInfo> { ViewModel.SelectedFile };
+      else
+        return;
+    }
+
+    _isDragging = true;
+
+    var filePaths = selectedFiles.Select(f => f.FullPath).ToArray();
+    var dataObject = new DataObject(DataFormats.FileDrop, filePaths);
+    DragDrop.DoDragDrop(FilesDataGrid, dataObject, DragDropEffects.Copy);
+
+    _isDragging = false;
+  }
 
   private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {

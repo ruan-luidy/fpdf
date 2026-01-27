@@ -16,6 +16,7 @@ public partial class FolderTreeViewModel : ObservableObject
     private NetworkFolder? _favoritesCategory;
     private NetworkFolder? _thisPcCategory;
     private NetworkFolder? _networkPathsCategory;
+    private NetworkFolder? _networkCategory;
 
     [ObservableProperty]
     private bool _isLoading;
@@ -53,6 +54,8 @@ public partial class FolderTreeViewModel : ObservableObject
             _networkPathsCategory.Name = LocalizationManager.Instance.GetString("Network_NetworkPaths");
         if (_thisPcCategory != null)
             _thisPcCategory.Name = LocalizationManager.Instance.GetString("Network_ThisPC");
+        if (_networkCategory != null)
+            _networkCategory.Name = LocalizationManager.Instance.GetString("Network_Network");
     }
 
     [RelayCommand]
@@ -107,6 +110,17 @@ public partial class FolderTreeViewModel : ObservableObject
             _thisPcCategory.HasLoadedChildren = true;
 
             RootFolders.Add(_thisPcCategory);
+
+            // Categoria: Rede
+            _networkCategory = new NetworkFolder
+            {
+                Name = LocalizationManager.Instance.GetString("Network_Network"),
+                IsCategory = true,
+                IconKind = "Network",
+                IsExpanded = false
+            };
+            _networkCategory.AddDummyChild();
+            RootFolders.Add(_networkCategory);
         }
         finally
         {
@@ -150,7 +164,31 @@ public partial class FolderTreeViewModel : ObservableObject
     [RelayCommand]
     private async Task ExpandFolderAsync(NetworkFolder folder)
     {
-        if (folder.IsCategory || folder.HasLoadedChildren || folder.IsLoading) return;
+        if (folder.HasLoadedChildren || folder.IsLoading) return;
+
+        // Categoria "Rede" - carrega via WNet API
+        if (folder == _networkCategory)
+        {
+            folder.IsLoading = true;
+            try
+            {
+                folder.ClearDummyChild();
+                var networkRoots = await _networkService.EnumerateNetworkAsync();
+                foreach (var root in networkRoots)
+                {
+                    root.Parent = folder;
+                    folder.SubFolders.Add(root);
+                }
+                folder.HasLoadedChildren = true;
+            }
+            finally
+            {
+                folder.IsLoading = false;
+            }
+            return;
+        }
+
+        if (folder.IsCategory) return;
 
         folder.IsLoading = true;
 

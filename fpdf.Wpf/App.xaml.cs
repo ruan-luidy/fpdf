@@ -29,6 +29,7 @@ public partial class App : Application
     services.AddSingleton<IPdfService, PdfService>();
     services.AddSingleton<IPrintService, PrintService>();
     services.AddSingleton<ISettingsService, SettingsService>();
+    services.AddSingleton<IPrintHistoryService, PrintHistoryService>();
     services.AddSingleton<ILocalizationService>(_ => LocalizationManager.Instance);
     services.AddSingleton<LocalizationManager>(_ => LocalizationManager.Instance);
 
@@ -39,6 +40,7 @@ public partial class App : Application
     services.AddTransient<PdfViewerViewModel>();
     services.AddTransient<PrintQueueViewModel>();
     services.AddTransient<SettingsViewModel>();
+    services.AddTransient<PrintHistoryViewModel>();
 
     // Views
     services.AddTransient<MainWindow>();
@@ -62,6 +64,10 @@ public partial class App : Application
     localizationManager.SetLanguage(settingsService.Settings.Language);
 
     System.Diagnostics.Debug.WriteLine($"[App] Language set to: {localizationManager.GetCurrentLanguage()}");
+
+    // Inicializa banco de dados do historico
+    var historyService = _serviceProvider.GetRequiredService<IPrintHistoryService>();
+    await historyService.InitializeAsync();
 
     // Cria e exibe a janela principal
     var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();

@@ -41,6 +41,18 @@
       </StackPanel>
     </Button>
 
+    <!--  Historico  -->
+    <Button
+      Margin="0,0,8,0"
+      Click="OpenHistoryDialog_Click"
+      Style="{StaticResource ButtonIconCustom}"
+      ToolTip="{ext:Loc PrintHistory_Tooltip}">
+      <icon:PackIconPhosphorIcons
+        Width="14"
+        Height="14"
+        Kind="ClockCounterClockwise" />
+    </Button>
+
     <!--  Botao Imprimir  -->
     <Button
       Command="{Binding PrintQueueCommand}"

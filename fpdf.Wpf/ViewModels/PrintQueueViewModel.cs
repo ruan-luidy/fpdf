@@ -20,6 +20,7 @@ public partial class PrintQueueViewModel : ObservableObject
 {
   private readonly IPrintService _printService;
   private readonly ISettingsService _settingsService;
+  private readonly IPrintHistoryService _historyService;
 
   [ObservableProperty]
   private PrinterInfo? _selectedPrinter;
@@ -55,10 +56,11 @@ public partial class PrintQueueViewModel : ObservableObject
   public string CompletedCountText => $"{CompletedCount} {LocalizationManager.Instance.GetString("PrintQueue_Completed")}";
   public string FailedCountText => $"{FailedCount} {LocalizationManager.Instance.GetString("PrintQueue_Errors")}";
 
-  public PrintQueueViewModel(IPrintService printService, ISettingsService settingsService)
+  public PrintQueueViewModel(IPrintService printService, ISettingsService settingsService, IPrintHistoryService historyService)
   {
     _printService = printService;
     _settingsService = settingsService;
+    _historyService = historyService;
 
     _printService.JobStatusChanged += OnJobStatusChanged;
 
@@ -109,6 +111,32 @@ public partial class PrintQueueViewModel : ObservableObject
         Copies = Copies,
         PageRange = PageRange,
         PageCount = file.PageCount,
+        Duplex = Duplex
+      };
+
+      Jobs.Add(job);
+    }
+
+    UpdateCounts();
+  }
+
+  [RelayCommand]
+  private void DropFiles(string[] paths)
+  {
+    if (paths == null || paths.Length == 0 || SelectedPrinter == null) return;
+
+    foreach (var path in paths)
+    {
+      var fileInfo = new System.IO.FileInfo(path);
+      if (!fileInfo.Exists) continue;
+
+      var job = new PrintJob
+      {
+        FilePath = fileInfo.FullName,
+        FileName = fileInfo.Name,
+        PrinterName = SelectedPrinter.Name,
+        Copies = Copies,
+        PageRange = PageRange,
         Duplex = Duplex
       };
 
@@ -249,6 +277,41 @@ public partial class PrintQueueViewModel : ObservableObject
       UpdateCountsIncremental(job);
       AutoCleanupCompletedJobs();
     });
+
+    // Salva no historico quando o job termina
+    if (job.Status == PrintJobStatus.Completed ||
+        job.Status == PrintJobStatus.Failed ||
+        job.Status == PrintJobStatus.Cancelled)
+    {
+      _ = SaveToHistoryAsync(job);
+    }
+  }
+
+  private async Task SaveToHistoryAsync(PrintJob job)
+  {
+    try
+    {
+      var record = new PrintHistoryRecord
+      {
+        FileName = job.FileName,
+        FilePath = job.FilePath,
+        PrinterName = job.PrinterName,
+        Copies = job.Copies,
+        PageRange = job.PageRange,
+        PageCount = job.PageCount,
+        Duplex = job.Duplex,
+        Status = job.Status.ToString(),
+        ErrorMessage = job.ErrorMessage,
+        CreatedAt = job.CreatedAt,
+        CompletedAt = job.CompletedAt
+      };
+
+      await _historyService.SaveJobAsync(record);
+    }
+    catch
+    {
+      // Falha ao salvar historico - nao interrompe o fluxo
+    }
   }
 
   /// <summary>
