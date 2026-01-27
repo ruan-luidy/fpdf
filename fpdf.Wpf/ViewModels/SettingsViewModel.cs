@@ -44,6 +44,12 @@ public partial class SettingsViewModel : ObservableObject
   [ObservableProperty]
   private LanguageInfo? _selectedLanguage;
 
+  [ObservableProperty]
+  private bool _recursiveSearch;
+
+  [ObservableProperty]
+  private string _supportedExtensions = string.Empty;
+
   public ObservableCollection<string> FavoriteFolders { get; } = new();
   public ObservableCollection<string> RecentFolders { get; } = new();
   public ObservableCollection<string> CustomNetworkPaths { get; } = new();
@@ -86,6 +92,8 @@ public partial class SettingsViewModel : ObservableObject
       RememberLastFolder = settings.RememberLastFolder;
       DefaultCopies = settings.DefaultCopies;
       DefaultDuplex = settings.DefaultDuplex;
+      RecursiveSearch = settings.RecursiveSearch;
+      SupportedExtensions = string.Join(", ", settings.SupportedFileExtensions);
 
       // Carrega o idioma das configuracoes salvas (nao do LocalizationManager atual)
       // Isso garante que ao reabrir o dialog, sempre mostre o idioma salvo
@@ -168,6 +176,21 @@ public partial class SettingsViewModel : ObservableObject
     settings.RememberLastFolder = RememberLastFolder;
     settings.DefaultCopies = DefaultCopies;
     settings.DefaultDuplex = DefaultDuplex;
+    settings.RecursiveSearch = RecursiveSearch;
+
+    // Parse supported extensions
+    var extensions = SupportedExtensions
+        .Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+        .Select(e => e.Trim())
+        .Where(e => !string.IsNullOrWhiteSpace(e))
+        .Select(e => e.StartsWith(".") ? e : "." + e)
+        .Distinct()
+        .ToList();
+
+    if (extensions.Count > 0)
+    {
+      settings.SupportedFileExtensions = extensions;
+    }
 
     System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Saving - Language: {settings.Language}, Printer: {settings.DefaultPrinter}");
 

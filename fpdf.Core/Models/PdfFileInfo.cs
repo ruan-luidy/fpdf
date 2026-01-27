@@ -29,6 +29,36 @@ public partial class PdfFileInfo : ObservableObject
   [ObservableProperty]
   private bool _isLoadingThumbnail;
 
+  public string FileExtension => System.IO.Path.GetExtension(FullPath).ToLowerInvariant();
+
+  public string FileIcon
+  {
+    get
+    {
+      return FileExtension switch
+      {
+        ".pdf" => "FilePdf",
+        ".step" or ".stp" => "Cube",
+        ".dwg" => "StackSimple",
+        _ => "File"
+      };
+    }
+  }
+
+  public string FileIconColor
+  {
+    get
+    {
+      return FileExtension switch
+      {
+        ".pdf" => "DangerBrush",
+        ".step" or ".stp" => "PrimaryBrush",
+        ".dwg" => "WarningBrush",
+        _ => "PrimaryTextBrush"
+      };
+    }
+  }
+
   public string FileSizeFormatted => FormatFileSize(FileSize);
 
   public string LastModifiedFormatted => LastModified.ToString("dd/MM/yyyy HH:mm");

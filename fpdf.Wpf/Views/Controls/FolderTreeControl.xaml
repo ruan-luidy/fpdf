@@ -317,7 +317,7 @@
       </TreeView.ItemContainerStyle>
 
       <TreeView.ContextMenu>
-        <ContextMenu>
+        <ContextMenu Style="{StaticResource ContextMenu.Small}">
           <MenuItem
             Command="{Binding PlacementTarget.DataContext.RefreshFolderCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
             CommandParameter="{Binding PlacementTarget.DataContext.SelectedFolder, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
@@ -332,6 +332,15 @@
             Header="{ext:Loc FolderTree_FavoriteMenu}">
             <MenuItem.Icon>
               <icon:PackIconPhosphorIcons Kind="Star" />
+            </MenuItem.Icon>
+          </MenuItem>
+          <Separator />
+          <MenuItem
+            IsCheckable="True"
+            IsChecked="{Binding PlacementTarget.DataContext.RecursiveSearch, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            Header="{ext:Loc FolderTree_RecursiveSearch}">
+            <MenuItem.Icon>
+              <icon:PackIconPhosphorIcons Kind="Folders" />
             </MenuItem.Icon>
           </MenuItem>
         </ContextMenu>

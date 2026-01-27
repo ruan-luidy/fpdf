@@ -24,4 +24,8 @@ public class AppSettings
   // Configuracoes da fila de impressao
   public int MaxCompletedJobsInQueue { get; set; } = 100; // Manter apenas os ultimos N jobs completados
   public bool AutoCleanupCompletedJobs { get; set; } = true; // Auto-limpar jobs completados automaticamente
+  
+  // Configuracoes de arquivos
+  public List<string> SupportedFileExtensions { get; set; } = new() { ".pdf", ".step", ".stp", ".dwg" };
+  public bool RecursiveSearch { get; set; } = false;
 }

@@ -31,6 +31,7 @@
   <data name="FolderTree_NavigateTooltip" xml:space="preserve"><value>Navegar</value></data>
   <data name="FolderTree_RefreshTooltip" xml:space="preserve"><value>Atualizar</value></data>
   <data name="FolderTree_FavoriteMenu" xml:space="preserve"><value>Favorito</value></data>
+  <data name="FolderTree_RecursiveSearch" xml:space="preserve"><value>Busca Recursiva</value></data>
 
   <!-- Network -->
   <data name="Network_LocalDisk" xml:space="preserve"><value>Disco Local</value></data>
@@ -63,6 +64,11 @@
   <data name="Settings_NetworkDirectories" xml:space="preserve"><value>Diretórios de rede</value></data>
   <data name="Settings_FavoriteFolders" xml:space="preserve"><value>Pastas favoritas</value></data>
   <data name="Settings_RecentFolders" xml:space="preserve"><value>Pastas recentes</value></data>
+  <data name="Settings_RecursiveSearch" xml:space="preserve"><value>Busca recursiva</value></data>
+  <data name="Settings_RecursiveSearchDesc" xml:space="preserve"><value>Buscar arquivos em subpastas</value></data>
+  <data name="Settings_SupportedExtensions" xml:space="preserve"><value>Extensões suportadas</value></data>
+  <data name="Settings_SupportedExtensionsDesc" xml:space="preserve"><value>Ex: .pdf, .step, .stp, .dwg</value></data>
+  <data name="Settings_Files" xml:space="preserve"><value>Arquivos</value></data>
 
   <!-- Print Queue -->
   <data name="PrintQueue_NoPrinter" xml:space="preserve"><value>Nenhuma impressora</value></data>

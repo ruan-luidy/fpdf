@@ -152,6 +152,31 @@
           </control:SettingsSection.SectionContent>
         </control:SettingsSection>
 
+        <!--  Arquivos  -->
+        <control:SettingsSection Title="{ext:Loc Settings_Files}">
+          <control:SettingsSection.SectionContent>
+            <StackPanel>
+              <control:SettingsToggleItem 
+                IsChecked="{Binding RecursiveSearch}" 
+                Label="{ext:Loc Settings_RecursiveSearch}" 
+                Description="{ext:Loc Settings_RecursiveSearchDesc}" />
+
+              <Border Height="1" Background="{DynamicResource BorderBrush}" />
+
+              <control:SettingsItem 
+                Label="{ext:Loc Settings_SupportedExtensions}" 
+                Description="{ext:Loc Settings_SupportedExtensionsDesc}">
+                <control:SettingsItem.ItemContent>
+                  <hc:TextBox
+                    Width="250"
+                    Text="{Binding SupportedExtensions, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource TextBox.Small}" />
+                </control:SettingsItem.ItemContent>
+              </control:SettingsItem>
+            </StackPanel>
+          </control:SettingsSection.SectionContent>
+        </control:SettingsSection>
+
         <!--  Diretorios de Rede  -->
         <control:SettingsSection Title="{ext:Loc Settings_NetworkDirectories}">
           <control:SettingsSection.SectionContent>

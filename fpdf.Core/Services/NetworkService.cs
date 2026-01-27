@@ -216,20 +216,27 @@ public class NetworkService : INetworkService
       try
       {
         var dirInfo = new DirectoryInfo(path);
-        var pdfFiles = dirInfo.GetFiles("*.pdf", SearchOption.TopDirectoryOnly)
-            .OrderBy(f => f.Name);
+        var extensions = _settingsService.Settings.SupportedFileExtensions;
+        var searchOption = _settingsService.Settings.RecursiveSearch ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
-        foreach (var file in pdfFiles)
+        foreach (var extension in extensions)
         {
-          cancellationToken.ThrowIfCancellationRequested();
+          var pattern = $"*{extension}";
+          var matchingFiles = dirInfo.GetFiles(pattern, searchOption)
+              .OrderBy(f => f.Name);
 
-          files.Add(new PdfFileInfo
+          foreach (var file in matchingFiles)
           {
-            FileName = file.Name,
-            FullPath = file.FullName,
-            FileSize = file.Length,
-            LastModified = file.LastWriteTime
-          });
+            cancellationToken.ThrowIfCancellationRequested();
+
+            files.Add(new PdfFileInfo
+            {
+              FileName = file.Name,
+              FullPath = file.FullName,
+              FileSize = file.Length,
+              LastModified = file.LastWriteTime
+            });
+          }
         }
       }
       catch (UnauthorizedAccessException)

@@ -10,8 +10,8 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:models="clr-namespace:fpdf.Core.Models;assembly=fpdf.Core"
   xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
-  d:DataContext="{d:DesignInstance Type=vm:FileListViewModel}"
   behaviors:FileDragDropBehavior.DropCommand="{Binding DropFilesCommand}"
+  d:DataContext="{d:DesignInstance Type=vm:FileListViewModel}"
   mc:Ignorable="d">
 
   <UserControl.Resources>
@@ -177,12 +177,13 @@
             <DataTemplate DataType="{x:Type models:PdfFileInfo}">
               <Grid>
                 <icon:PackIconPhosphorIcons
+                  x:Name="FileIcon"
                   Width="18"
                   Height="18"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Foreground="{DynamicResource DangerBrush}"
-                  Kind="FilePdf"
+                  Kind="{Binding FileIcon}"
                   Visibility="{Binding IsLoadingThumbnail, Converter={StaticResource Boolean2VisibilityReConverter}}" />
                 <hc:CircleProgressBar
                   Width="16"
@@ -194,6 +195,20 @@
                   IsIndeterminate="True"
                   Visibility="{Binding IsLoadingThumbnail, Converter={StaticResource Boolean2VisibilityConverter}}" />
               </Grid>
+              <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding FileExtension}" Value=".pdf">
+                  <Setter TargetName="FileIcon" Property="Foreground" Value="{DynamicResource DangerBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FileExtension}" Value=".step">
+                  <Setter TargetName="FileIcon" Property="Foreground" Value="{DynamicResource PrimaryBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FileExtension}" Value=".stp">
+                  <Setter TargetName="FileIcon" Property="Foreground" Value="{DynamicResource PrimaryBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FileExtension}" Value=".dwg">
+                  <Setter TargetName="FileIcon" Property="Foreground" Value="{DynamicResource WarningBrush}" />
+                </DataTrigger>
+              </DataTemplate.Triggers>
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>

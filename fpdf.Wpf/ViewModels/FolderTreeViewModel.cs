@@ -27,6 +27,20 @@ public partial class FolderTreeViewModel : ObservableObject
     [ObservableProperty]
     private string _rootPath = string.Empty;
 
+    public bool RecursiveSearch
+    {
+        get => _settingsService.Settings.RecursiveSearch;
+        set
+        {
+            if (_settingsService.Settings.RecursiveSearch != value)
+            {
+                _settingsService.Settings.RecursiveSearch = value;
+                OnPropertyChanged();
+                _ = _settingsService.SaveAsync();
+            }
+        }
+    }
+
     public ObservableCollection<NetworkFolder> RootFolders { get; } = new();
 
     public event EventHandler<NetworkFolder>? FolderSelected;
