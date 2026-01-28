@@ -256,6 +256,35 @@ public partial class FileListViewModel : ObservableObject
     await LoadFilesAsync(CurrentPath);
   }
 
+  [RelayCommand]
+  private void OpenFileLocation(PdfFileInfo? file)
+  {
+    file ??= SelectedFile;
+    if (file == null || !System.IO.File.Exists(file.FullPath)) return;
+
+    try
+    {
+      // Abre o Explorer e seleciona o arquivo
+      System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{file.FullPath}\"");
+    }
+    catch
+    {
+      // Se falhar, tenta abrir apenas a pasta
+      try
+      {
+        var directory = System.IO.Path.GetDirectoryName(file.FullPath);
+        if (directory != null && System.IO.Directory.Exists(directory))
+        {
+          System.Diagnostics.Process.Start("explorer.exe", directory);
+        }
+      }
+      catch
+      {
+        // Ignora se falhar
+      }
+    }
+  }
+
   private bool FilterFiles(object obj)
   {
     if (obj is not PdfFileInfo file) return false;

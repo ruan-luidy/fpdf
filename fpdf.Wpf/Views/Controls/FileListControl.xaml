@@ -260,6 +260,14 @@ mc:Ignorable="d">
               <icon:PackIconPhosphorIcons Kind="Printer" />
             </MenuItem.Icon>
           </MenuItem>
+          <MenuItem 
+            Command="{Binding PlacementTarget.DataContext.OpenFileLocationCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            Header="{ext:Loc FileList_MenuOpenLocation}">
+            <MenuItem.Icon>
+              <icon:PackIconPhosphorIcons Kind="FolderOpen" />
+            </MenuItem.Icon>
+          </MenuItem>
           <Separator />
           <MenuItem Command="{Binding PlacementTarget.DataContext.SelectAllCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{ext:Loc FileList_MenuSelectAll}">
             <MenuItem.Icon>

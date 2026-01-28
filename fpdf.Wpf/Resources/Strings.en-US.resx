@@ -21,6 +21,7 @@
   <data name="FileList_ColumnSize" xml:space="preserve"><value>Size</value></data>
   <data name="FileList_ColumnModified" xml:space="preserve"><value>Modified</value></data>
   <data name="FileList_MenuPrint" xml:space="preserve"><value>Print</value></data>
+  <data name="FileList_MenuOpenLocation" xml:space="preserve"><value>Open file location</value></data>
   <data name="FileList_MenuSelectAll" xml:space="preserve"><value>Select All</value></data>
   <data name="FileList_MenuClearSelection" xml:space="preserve"><value>Clear Selection</value></data>
   <data name="FileList_FilesCount" xml:space="preserve"><value>{0} files</value></data>
