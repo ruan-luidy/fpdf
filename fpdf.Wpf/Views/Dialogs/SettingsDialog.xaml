@@ -17,7 +17,7 @@
   ResizeMode="NoResize"
   ShowInTaskbar="False"
   Style="{StaticResource WindowWin10}"
-  SystemBackdropType="Acrylic"
+  SystemBackdropType="Mica"
   WindowStartupLocation="CenterOwner"
   mc:Ignorable="d">
 
@@ -156,21 +156,19 @@
         <control:SettingsSection Title="{ext:Loc Settings_Files}">
           <control:SettingsSection.SectionContent>
             <StackPanel>
-              <control:SettingsToggleItem 
-                IsChecked="{Binding RecursiveSearch}" 
-                Label="{ext:Loc Settings_RecursiveSearch}" 
-                Description="{ext:Loc Settings_RecursiveSearchDesc}" />
+              <control:SettingsToggleItem
+                Description="{ext:Loc Settings_RecursiveSearchDesc}"
+                IsChecked="{Binding RecursiveSearch}"
+                Label="{ext:Loc Settings_RecursiveSearch}" />
 
               <Border Height="1" Background="{DynamicResource BorderBrush}" />
 
-              <control:SettingsItem 
-                Label="{ext:Loc Settings_SupportedExtensions}" 
-                Description="{ext:Loc Settings_SupportedExtensionsDesc}">
+              <control:SettingsItem Description="{ext:Loc Settings_SupportedExtensionsDesc}" Label="{ext:Loc Settings_SupportedExtensions}">
                 <control:SettingsItem.ItemContent>
                   <hc:TextBox
                     Width="250"
-                    Text="{Binding SupportedExtensions, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource TextBox.Small}" />
+                    Style="{StaticResource TextBox.Small}"
+                    Text="{Binding SupportedExtensions, UpdateSourceTrigger=PropertyChanged}" />
                 </control:SettingsItem.ItemContent>
               </control:SettingsItem>
             </StackPanel>

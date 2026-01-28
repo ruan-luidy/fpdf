@@ -34,8 +34,8 @@
       ToolTip="{ext:Loc PrintQueue_ViewQueue}">
       <StackPanel Orientation="Horizontal">
         <icon:PackIconPhosphorIcons
-          Width="14"
-          Height="14"
+          Width="16"
+          Height="16"
           Kind="Queue" />
         <TextBlock Margin="6,0,0,0" Text="{Binding PendingCountText}" />
       </StackPanel>
@@ -48,8 +48,8 @@
       Style="{StaticResource ButtonIconCustom}"
       ToolTip="{ext:Loc PrintHistory_Tooltip}">
       <icon:PackIconPhosphorIcons
-        Width="14"
-        Height="14"
+        Width="16"
+        Height="16"
         Kind="ClockCounterClockwise" />
     </Button>
 

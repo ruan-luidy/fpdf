@@ -98,8 +98,12 @@
         </Border>
 
         <!--  Loading  -->
-        <Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource Boolean2VisibilityConverter}}">
-          <hc:LoadingCircle />
+        <Border Background="Transparent" Visibility="{Binding IsLoading, Converter={StaticResource Boolean2VisibilityConverter}}">
+          <hc:CircleProgressBar
+            Width="60"
+            Height="60"
+            Background="Transparent"
+            IsIndeterminate="True" />
         </Border>
       </Grid>
     </Border>
