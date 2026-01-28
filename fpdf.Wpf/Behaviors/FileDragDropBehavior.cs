@@ -70,9 +70,13 @@ public static class FileDragDropBehavior
     if (e.Data.GetDataPresent(DataFormats.FileDrop))
     {
       var files = (string[]?)e.Data.GetData(DataFormats.FileDrop);
-      if (files != null && files.Any(f => f.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase)))
+      if (files != null && files.Any(f => 
+        f.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) ||
+        f.EndsWith(".step", StringComparison.OrdinalIgnoreCase) ||
+        f.EndsWith(".stp", StringComparison.OrdinalIgnoreCase) ||
+        f.EndsWith(".dwg", StringComparison.OrdinalIgnoreCase)))
       {
-        e.Effects = DragDropEffects.Copy;
+        e.Effects = DragDropEffects.Copy; // Sempre copia, nunca move
         e.Handled = true;
         return;
       }
@@ -89,23 +93,28 @@ public static class FileDragDropBehavior
     var files = (string[]?)e.Data.GetData(DataFormats.FileDrop);
     if (files == null) return;
 
-    var pdfFiles = files
-      .Where(f => f.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) && File.Exists(f))
+    // Aceita .pdf, .step, .stp e .dwg
+    var supportedFiles = files
+      .Where(f => File.Exists(f) && (
+        f.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) ||
+        f.EndsWith(".step", StringComparison.OrdinalIgnoreCase) ||
+        f.EndsWith(".stp", StringComparison.OrdinalIgnoreCase) ||
+        f.EndsWith(".dwg", StringComparison.OrdinalIgnoreCase)))
       .ToArray();
 
-    if (pdfFiles.Length == 0) return;
+    if (supportedFiles.Length == 0) return;
 
     var element = (UIElement)sender;
     var command = GetDropCommand(element);
-    if (command?.CanExecute(pdfFiles) == true)
+    if (command?.CanExecute(supportedFiles) == true)
     {
-      command.Execute(pdfFiles);
+      command.Execute(supportedFiles);
     }
 
     e.Handled = true;
   }
 
-  public static string[] FilterPdfFiles(DragEventArgs e)
+  public static string[] FilterSupportedFiles(DragEventArgs e)
   {
     if (!e.Data.GetDataPresent(DataFormats.FileDrop))
       return Array.Empty<string>();
@@ -114,7 +123,14 @@ public static class FileDragDropBehavior
     if (files == null) return Array.Empty<string>();
 
     return files
-      .Where(f => f.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) && File.Exists(f))
+      .Where(f => File.Exists(f) && (
+        f.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) ||
+        f.EndsWith(".step", StringComparison.OrdinalIgnoreCase) ||
+        f.EndsWith(".stp", StringComparison.OrdinalIgnoreCase) ||
+        f.EndsWith(".dwg", StringComparison.OrdinalIgnoreCase)))
       .ToArray();
   }
+
+  // Mantido para compatibilidade
+  public static string[] FilterPdfFiles(DragEventArgs e) => FilterSupportedFiles(e);
 }

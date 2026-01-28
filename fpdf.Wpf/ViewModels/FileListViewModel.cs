@@ -190,6 +190,9 @@ public partial class FileListViewModel : ObservableObject
     }
   }
 
+  // REMOVIDO: Nao aceita mais drop de arquivos de fora para dentro
+  // Apenas permite arrastar DE DENTRO para FORA
+  /*
   [RelayCommand]
   private void DropFiles(string[] paths)
   {
@@ -226,6 +229,7 @@ public partial class FileListViewModel : ObservableObject
 
     FileCount = Files.Count;
   }
+  */
 
   [RelayCommand]
   private void Sort(string column)

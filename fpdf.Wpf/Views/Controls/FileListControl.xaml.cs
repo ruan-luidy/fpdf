@@ -57,6 +57,9 @@ public partial class FileListControl : UserControl
 
     var filePaths = selectedFiles.Select(f => f.FullPath).ToArray();
     var dataObject = new DataObject(DataFormats.FileDrop, filePaths);
+    
+    // IMPORTANTE: Usa DragDropEffects.Copy para garantir que os arquivos
+    // sejam COPIADOS e nunca MOVIDOS quando arrastados para fora do app
     DragDrop.DoDragDrop(FilesDataGrid, dataObject, DragDropEffects.Copy);
 
     _isDragging = false;

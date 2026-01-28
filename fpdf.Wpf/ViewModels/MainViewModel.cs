@@ -164,12 +164,15 @@ public partial class MainViewModel : ObservableObject
     OpenPrintHistoryRequested?.Invoke(this, EventArgs.Empty);
   }
 
+  // REMOVIDO: Nao aceita mais drop de arquivos de fora para dentro
+  /*
   [RelayCommand]
   private void DropFiles(string[] paths)
   {
     if (paths == null || paths.Length == 0) return;
     FileList.DropFilesCommand.Execute(paths);
   }
+  */
 
   [RelayCommand]
   private async Task CloseSettingsAsync(bool save)
