@@ -93,7 +93,10 @@ public partial class SettingsViewModel : ObservableObject
       DefaultCopies = settings.DefaultCopies;
       DefaultDuplex = settings.DefaultDuplex;
       RecursiveSearch = settings.RecursiveSearch;
-      SupportedExtensions = string.Join(", ", settings.SupportedFileExtensions);
+      var extensions = settings.SupportedFileExtensions.Count > 0
+          ? settings.SupportedFileExtensions
+          : AppSettings.DefaultExtensions;
+      SupportedExtensions = string.Join(", ", extensions);
 
       // Carrega o idioma das configuracoes salvas (nao do LocalizationManager atual)
       // Isso garante que ao reabrir o dialog, sempre mostre o idioma salvo
@@ -178,18 +181,32 @@ public partial class SettingsViewModel : ObservableObject
     settings.DefaultDuplex = DefaultDuplex;
     settings.RecursiveSearch = RecursiveSearch;
 
-    // Parse supported extensions
+    // Parse supported extensions - SEMPRE limpa e substitui
     var extensions = SupportedExtensions
         .Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-        .Select(e => e.Trim())
+        .Select(e => e.Trim().ToLowerInvariant())
         .Where(e => !string.IsNullOrWhiteSpace(e))
         .Select(e => e.StartsWith(".") ? e : "." + e)
         .Distinct()
         .ToList();
 
+    System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Extensions to save: {string.Join(", ", extensions)}");
+
+    settings.SupportedFileExtensions.Clear();
     if (extensions.Count > 0)
     {
-      settings.SupportedFileExtensions = extensions;
+      foreach (var ext in extensions)
+      {
+        settings.SupportedFileExtensions.Add(ext);
+      }
+    }
+    else
+    {
+      // Usa extensoes padrao se nenhuma foi especificada
+      foreach (var ext in AppSettings.DefaultExtensions)
+      {
+        settings.SupportedFileExtensions.Add(ext);
+      }
     }
 
     System.Diagnostics.Debug.WriteLine($"[SettingsViewModel] Saving - Language: {settings.Language}, Printer: {settings.DefaultPrinter}");

@@ -216,7 +216,8 @@ public class NetworkService : INetworkService
       try
       {
         var dirInfo = new DirectoryInfo(path);
-        var extensions = _settingsService.Settings.SupportedFileExtensions;
+        var settingsExtensions = _settingsService.Settings.SupportedFileExtensions;
+        var extensions = (settingsExtensions.Count > 0 ? settingsExtensions : AppSettings.DefaultExtensions).Distinct();
         var searchOption = _settingsService.Settings.RecursiveSearch ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
         foreach (var extension in extensions)

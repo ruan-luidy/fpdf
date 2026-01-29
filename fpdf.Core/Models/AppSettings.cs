@@ -26,6 +26,9 @@ public class AppSettings
   public bool AutoCleanupCompletedJobs { get; set; } = true; // Auto-limpar jobs completados automaticamente
   
   // Configuracoes de arquivos
-  public List<string> SupportedFileExtensions { get; set; } = new() { ".pdf", ".step", ".stp", ".dwg" };
+  public List<string> SupportedFileExtensions { get; set; } = new();
   public bool RecursiveSearch { get; set; } = false;
+
+  // Extensoes padrao caso a lista esteja vazia
+  public static readonly List<string> DefaultExtensions = new() { ".pdf", ".step", ".stp", ".dwg" };
 }

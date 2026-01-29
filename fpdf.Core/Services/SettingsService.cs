@@ -30,7 +30,11 @@ public class SettingsService : ISettingsService
           if (File.Exists(_settingsPath))
           {
             var json = File.ReadAllText(_settingsPath);
-            Settings = JsonConvert.DeserializeObject<AppSettings>(json) ?? new AppSettings();
+            var serializerSettings = new JsonSerializerSettings
+            {
+              ObjectCreationHandling = ObjectCreationHandling.Replace
+            };
+            Settings = JsonConvert.DeserializeObject<AppSettings>(json, serializerSettings) ?? new AppSettings();
             System.Diagnostics.Debug.WriteLine($"[SettingsService] Loaded from {_settingsPath}");
             System.Diagnostics.Debug.WriteLine($"[SettingsService] Language: {Settings.Language}, Printer: {Settings.DefaultPrinter}");
           }
