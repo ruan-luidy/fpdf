@@ -7,7 +7,7 @@
   xmlns:hc="https://handyorg.github.io/handycontrol"
   xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:preview="clr-namespace:fpdf.Wpf.Controls.PreviewHandler"
+  xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
   xmlns:vm="clr-namespace:fpdf.Wpf.ViewModels"
   d:DataContext="{d:DesignInstance Type=vm:PdfViewerViewModel}"
   mc:Ignorable="d">
@@ -53,8 +53,11 @@
       BorderBrush="{DynamicResource BorderBrush}"
       BorderThickness="1,0,1,0">
       <Grid>
-        <!--  Preview Handler Host  -->
-        <preview:PreviewHandlerHost x:Name="PreviewHost" Visibility="{Binding CurrentFile, Converter={StaticResource Object2VisibilityConverter}}" />
+        <!--  WebView2 PDF Viewer  -->
+        <wv2:WebView2
+          x:Name="WebViewer"
+          DefaultBackgroundColor="Transparent"
+          Visibility="{Binding CurrentFile, Converter={StaticResource Object2VisibilityConverter}}" />
 
         <!--  Placeholder quando nao ha arquivo  -->
         <StackPanel
