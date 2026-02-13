@@ -29,6 +29,13 @@
 		<ProjectReference Include="..\fpdf.Core\fpdf.Core.csproj" />
 	</ItemGroup>
 
+	<!-- PDF.js viewer (copiado para output) -->
+	<ItemGroup>
+		<Content Include="Assets\pdfjs\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
 	<!-- Recursos de localizacao -->
 	<ItemGroup>
 		<EmbeddedResource Update="Resources\Strings.resx">

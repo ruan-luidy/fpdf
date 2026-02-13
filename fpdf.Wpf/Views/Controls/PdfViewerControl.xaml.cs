@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Web.WebView2.Core;
@@ -9,34 +10,8 @@ namespace fpdf.Wpf.Views.Controls;
 public partial class PdfViewerControl : UserControl
 {
     private bool _isWebViewReady;
-
-    // Middle-click drag to pan in any direction
-    private const string PanScript = """
-        (function() {
-            let panning = false, lastX = 0, lastY = 0;
-            document.addEventListener('pointerdown', e => {
-                if (e.button === 1) {
-                    panning = true;
-                    lastX = e.clientX;
-                    lastY = e.clientY;
-                    document.body.style.cursor = 'grabbing';
-                    e.preventDefault();
-                }
-            });
-            document.addEventListener('pointermove', e => {
-                if (!panning) return;
-                window.scrollBy(lastX - e.clientX, lastY - e.clientY);
-                lastX = e.clientX;
-                lastY = e.clientY;
-            });
-            document.addEventListener('pointerup', e => {
-                if (e.button === 1) {
-                    panning = false;
-                    document.body.style.cursor = '';
-                }
-            });
-        })();
-        """;
+    private const string ViewerHost = "pdfjs.local";
+    private const string FileHost = "pdffile.local";
 
     public PdfViewerControl()
     {
@@ -50,17 +25,19 @@ public partial class PdfViewerControl : UserControl
         try
         {
             await WebViewer.EnsureCoreWebView2Async();
-            _isWebViewReady = true;
+
+            var pdfjsPath = Path.Combine(AppContext.BaseDirectory, "Assets", "pdfjs");
+            WebViewer.CoreWebView2.SetVirtualHostNameToFolderMapping(
+                ViewerHost, pdfjsPath, CoreWebView2HostResourceAccessKind.Allow);
 
             WebViewer.CoreWebView2.Settings.AreDevToolsEnabled = false;
             WebViewer.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
             WebViewer.CoreWebView2.Settings.IsStatusBarEnabled = false;
             WebViewer.CoreWebView2.Settings.IsGeneralAutofillEnabled = false;
 
-            // Inject pan script for every page load (including PDFs)
-            await WebViewer.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(PanScript);
-
             WebViewer.CoreWebView2.NavigationCompleted += OnNavigationCompleted;
+
+            _isWebViewReady = true;
 
             // If a file was already set before WebView2 was ready, navigate now
             if (DataContext is PdfViewerViewModel vm && vm.CurrentFile != null)
@@ -123,8 +100,16 @@ public partial class PdfViewerControl : UserControl
 
     private void NavigateTo(string filePath)
     {
-        var uri = new Uri(filePath).AbsoluteUri;
-        WebViewer.CoreWebView2.Navigate(uri);
+        var directory = Path.GetDirectoryName(filePath)!;
+        var fileName = Path.GetFileName(filePath);
+
+        // Map the PDF's directory so pdf.js can fetch it via https
+        WebViewer.CoreWebView2.SetVirtualHostNameToFolderMapping(
+            FileHost, directory, CoreWebView2HostResourceAccessKind.Allow);
+
+        var pdfUrl = $"https://{FileHost}/{Uri.EscapeDataString(fileName)}";
+        var viewerUrl = $"https://{ViewerHost}/web/viewer.html?file={Uri.EscapeDataString(pdfUrl)}";
+        WebViewer.CoreWebView2.Navigate(viewerUrl);
     }
 
     private void OnOpenExternalClick(object sender, RoutedEventArgs e)
